@@ -20,6 +20,7 @@ $(document).ready(function(){
 	var pos;
 	var map;
 	var userMarker;
+	var selectedLocation = {};
 	
 	
 	
@@ -113,8 +114,13 @@ $(document).ready(function(){
 	}; //close createMarker
 	
 	function createListItem(place) {
-		$('#schools').empty();  
-		$('<li>'+place.name+'</li>').appendTo('#schools');
+		 
+		console.log(place); 
+		$('<li>'+place.name+'</li>').appendTo('#schools').click(function(e) {  
+				console.log(place.name);
+				selectedLocation = place;
+			
+		});
 	};	
 
 	
@@ -123,14 +129,13 @@ $(document).ready(function(){
 	//////////////////////////////////////////////////////////////////////////////////////  AJAX
 */	
 	
-/*
 	function addLocation(data){ 
-	
+		console.log("addLocation ",data.geometry.location.$a);
 		$.ajax({
 			type:'POST',
 			data:{
-				latitude: data.latitude,
-				longitude: data.longitude
+				latitude: data.geometry.location.$a,
+				longitude: data.geometry.location.ab
 			},
 			url: 'xhr/addlocation.php',
 			dataType: 'json',
@@ -139,7 +144,6 @@ $(document).ready(function(){
 			}
 		});
 	};
-*/
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -169,10 +173,11 @@ $(document).ready(function(){
 	});
 	
 	$('#showSchools').click(function(e) {  
+		$('#schools').empty();
 		getUniversities();
 	});
 	
-	$().click(function(e) {  
-		
+	$('#addSchool').click(function(e) {  
+		addLocation(selectedLocation);
 	});
 });
