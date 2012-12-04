@@ -12,18 +12,15 @@
 
 $(document).ready(function(){
 	
-	var = 	userLat = '',
-	userLong = ''
-	mapHTMLContainer = $('#map_canvas');
+	var userLat = '',
+	userLong = '';
 	
 	var map;
 	var infowindow;
 	var pos;
 	var map;
-	var mapOptions = {
-		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		zoom: 15
-	};
+	var userMarker;
+	
 	
 	
 	
@@ -38,80 +35,95 @@ $(document).ready(function(){
 		;
 	
 	function initialize() {
-        map = new google.maps.Map(mapHTMLContainer, mapOptions);
-
-        // Try HTML5 geolocation
-        if(navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            pos = new google.maps.LatLng(position.coords.latitude,
-                                             position.coords.longitude);
-
-            infowindow = new google.maps.InfoWindow();
-	        var request = {
-			    location: pos,
-			    radius: 1500,
-			    types: ['university']  
-		      };
-		    
-		    var service = new google.maps.places.PlacesService(map);
-		    service.nearbySearch(request, callback);
-
-            map.setCenter(pos);
-          }, function() {
-            handleNoGeolocation(true);
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleNoGeolocation(false);
-        }
-      } //close try geolocation
-      
-      
-
-      function handleNoGeolocation(errorFlag) {
+	
+        pos = new google.maps.LatLng(geoIPLat, geoIPLong);
+		var mapOptions = {
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			zoom: 15,
+			center:pos
+		};
+		console.log(mapOptions.center);
+		map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions); //create a map and place it in its container with initial options
+		userMarker = new google.maps.Marker({
+            position: pos,
+            map: map,
+            title: 'You are here'
+        });
+        infowindow = new google.maps.InfoWindow();
+      };
+	
+	function handleNoGeolocation(errorFlag) {
         if (errorFlag) {
           var content = 'Error: The Geolocation service failed.';
         } else {
           var content = 'Error: Your browser doesn\'t support geolocation.';
         }
-      }
-        
-	    function callback(results, status) {
-	        if (status == google.maps.places.PlacesServiceStatus.OK) {
-	        	console.log(results);
-	          for (var i = 0; i < results.length; i++) {
-	          
-	            createMarker(results[i]);
-	          }
-	        }
-	    }
-      
-
-      function createMarker(place) {
-	        var placeLoc = place.geometry.location;
-	        var marker = new google.maps.Marker({
-	          map: map,
-	          position: place.geometry.location
-	        });
-	
-	        google.maps.event.addListener(marker, 'click', function() {
-	          infowindow.setContent(place.name);
-	          infowindow.open(map, this);
-	        });
-	      }
-        var options = {
-          map: map,
-          position: pos,
-          zoom: 14
-        };
-
-        var infowindow = new google.maps.InfoWindow(options);
-        //map.setCenter(options.position);
-      
-
-      google.maps.event.addDomListener(window, 'load', initialize);
+      };
 	
 	
+	
+	
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
+	
+	
+
+/*
+	//////////////////////////////////////////////////////////////////////////////////////  user generated calls
+*/	
+
+
+
+	
+	function getUniversities() {  
+		
+        var request = {
+		    location: pos,
+		    radius: 9000,
+		    types: ['university']  
+	      };
+	      
+	    var service = new google.maps.places.PlacesService(map);
+	    service.nearbySearch(request, callback);
+
+	}; //close getUniversities
+	    
+	function callback(results, status) {
+		
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			for (var i = 0; i < results.length; i++) {
+				createMarker(results[i]);
+				createListItem(results[i]);
+			}
+		}
+	}; //close callback
+
+	function createMarker(place) {
+		var placeLoc = place.geometry.location;
+		var marker = new google.maps.Marker({
+		  	map: map,
+		  	position: place.geometry.location
+		});
+
+		google.maps.event.addListener(marker, 'click', function() {
+			
+		  	infowindow.setContent(place.name);
+		  	infowindow.open(map, this);
+		});
+	}; //close createMarker
+	
+	function createListItem(place) {
+		$('#schools').empty();  
+		$('<li>'+place.name+'</li>').appendTo('#schools');
+	};	
+
+	
+	
+/*
+	//////////////////////////////////////////////////////////////////////////////////////  AJAX
+*/	
+	
+/*
 	function addLocation(data){ 
 	
 		$.ajax({
@@ -127,24 +139,40 @@ $(document).ready(function(){
 			}
 		});
 	};
-	
-	
-	$('button').click(function(e) {  
-		navigator.geolocation.getCurrentPosition(success, error);
+*/
 
-		function success(data) {  
-			
-			console.log("success ",data);
-			userLat = data.coords.latitude;
-			userLong = data.coords.longitude;
-			addLocation(data.coords);
-		};
+/*
+	//////////////////////////////////////////////////////////////////////////////////////  Click Events
+*/	
+
+	$('#useGPS').click(function(e) { //enables the use of GPS and moved the user's marker to there location 
+		 
+		if(navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) { //on success
 		
-		function error(data) {  
-			
-			console.log("error ",data);
-		};
+				userLat = position.coords.latitude;
+				userLong = position.coords.longitude;
+								
+				pos = new google.maps.LatLng(userLat, userLong);
+				userMarker.setPosition(pos);
+				map.setCenter(pos);
 		
+			}, function() {
+				//when geolocation didn't work
+				handleNoGeolocation(true);
+			});
+		} else {
+		// Browser doesn't support Geolocation
+			handleNoGeolocation(false);
+		}
 		return false;
+	});
+	
+	$('#showSchools').click(function(e) {  
+		getUniversities();
+	});
+	
+	$().click(function(e) {  
+		
 	});
 });
