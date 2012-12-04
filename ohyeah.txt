@@ -1,1 +1,4 @@
-what what
+logo =
+	width: 140.837px
+	height: 62.569px
+
