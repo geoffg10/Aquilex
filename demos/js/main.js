@@ -35,31 +35,33 @@ $(document).ready(function(){
 		geoIPLong = geoip_longitude()
 		;
 	
-	function initialize() {
+	//initialize() is the first function fired, it is called on a domlistener for window load
+	//it loads the map first based off of the users IP
+	function initialize() { 
 	
-        pos = new google.maps.LatLng(geoIPLat, geoIPLong);
+        pos = new google.maps.LatLng(geoIPLat, geoIPLong); //create map position
 		var mapOptions = {
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			zoom: 15,
 			center:pos
 		};
-		console.log(mapOptions.center);
+		
 		map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions); //create a map and place it in its container with initial options
-		userMarker = new google.maps.Marker({
+		userMarker = new google.maps.Marker({ //create current location marker on the map
             position: pos,
             map: map,
             title: 'You are here'
         });
-        infowindow = new google.maps.InfoWindow();
-      };
+        infowindow = new google.maps.InfoWindow();  //create infowindow, this is called later to display the location details when clicked
+      }; //close initialize
 	
-	function handleNoGeolocation(errorFlag) {
+	function handleNoGeolocation(errorFlag) { //this is fired when geolocation is accessed by user and there is a fail, it accepts a boolean
         if (errorFlag) {
           var content = 'Error: The Geolocation service failed.';
         } else {
           var content = 'Error: Your browser doesn\'t support geolocation.';
         }
-      };
+      }; // close handleNoGeolocation
 	
 	
 	
@@ -76,44 +78,44 @@ $(document).ready(function(){
 
 
 	
-	function getUniversities() {  
+	function getUniversities() {  //gets universities in users location
 		
         var request = {
 		    location: pos,
-		    radius: 9000,
+		    radius: 9000, //this is in meters, its about 5 miles
 		    types: ['university']  
 	      };
 	      
-	    var service = new google.maps.places.PlacesService(map);
-	    service.nearbySearch(request, callback);
+	    var service = new google.maps.places.PlacesService(map);  //create a google places service
+	    service.nearbySearch(request, callback);  //first parm is the request object, then runs the function with the results
 
 	}; //close getUniversities
 	    
-	function callback(results, status) {
+	function callback(results, status) {  //first param is the results json object from the getUniversities query, the second param is the status
 		
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
 			for (var i = 0; i < results.length; i++) {
-				createMarker(results[i]);
-				createListItem(results[i]);
+				createMarker(results[i]); //create the markers on the map
+				createListItem(results[i]); //create the viewable list on the page
 			}
 		}
 	}; //close callback
 
-	function createMarker(place) {
+	function createMarker(place) { //creates markers on the map
 		var placeLoc = place.geometry.location;
 		var marker = new google.maps.Marker({
 		  	map: map,
 		  	position: place.geometry.location
 		});
-
-		google.maps.event.addListener(marker, 'click', function() {
+		
+		google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the marker's details
 			
 		  	infowindow.setContent(place.name);
 		  	infowindow.open(map, this);
 		});
 	}; //close createMarker
 	
-	function createListItem(place) {
+	function createListItem(place) { //creates the list items for view by the user and also adds a click function so the user can choose it as their location
 		 
 		console.log(place); 
 		$('<li>'+place.name+'</li>').appendTo('#schools').click(function(e) {  
@@ -129,7 +131,7 @@ $(document).ready(function(){
 	//////////////////////////////////////////////////////////////////////////////////////  AJAX
 */	
 	
-	function addLocation(data){ 
+	function addLocation(data){ // add location to DB, takes the place object
 		console.log("addLocation ",data.geometry.location.$a);
 		$.ajax({
 			type:'POST',
@@ -151,7 +153,7 @@ $(document).ready(function(){
 
 	$('#useGPS').click(function(e) { //enables the use of GPS and moved the user's marker to there location 
 		 
-		if(navigator.geolocation) {
+		if(navigator.geolocation) { //if geolocation is possible for user
 			navigator.geolocation.getCurrentPosition(function(position) { //on success
 		
 				userLat = position.coords.latitude;
@@ -172,12 +174,12 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$('#showSchools').click(function(e) {  
+	$('#showSchools').click(function(e) {  //display list of schools
 		$('#schools').empty();
 		getUniversities();
 	});
 	
-	$('#addSchool').click(function(e) {  
-		addLocation(selectedLocation);
+	$('#addSchool').click(function(e) {  //button to add location to DB
+		addLocation(selectedLocation); //add to DB function
 	});
 });
