@@ -50,9 +50,14 @@ $(document).ready(function(){
 		userMarker = new google.maps.Marker({ //create current location marker on the map
             position: pos,
             map: map,
-            title: 'You are here'
+            title: 'You are here',
+            draggable: true
         });
         infowindow = new google.maps.InfoWindow();  //create infowindow, this is called later to display the location details when clicked
+        
+        google.maps.event.addListener(userMarker, 'dragend', function() { 
+        	
+		});
       }; //close initialize
 	
 	function handleNoGeolocation(errorFlag) { //this is fired when geolocation is accessed by user and there is a fail, it accepts a boolean
@@ -147,6 +152,23 @@ $(document).ready(function(){
 			}
 		});
 	};
+	
+	function addUserLocation(data){ // add location to DB, takes the place object
+		//console.log("addLocation ",data.geometry.location.$a);
+		console.log(data);
+		$.ajax({
+			type:'POST',
+			data:{
+				latitude: data.$a,
+				longitude: data.ab
+			},
+			url: 'xhr/addlocation.php',
+			dataType: 'json',
+			success:function(data) {  
+				console.log(data);
+			}
+		});
+	};
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -182,5 +204,8 @@ $(document).ready(function(){
 	
 	$('#addSchool').click(function(e) {  //button to add location to DB
 		addLocation(selectedLocation); //add to DB function
+	});
+	$('#addLocation').click(function(e) {  //button to add location to DB
+		addUserLocation(userMarker.position); //add to DB function
 	});
 });
