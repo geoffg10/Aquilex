@@ -112,6 +112,7 @@ $(document).ready(function(){
 			
 		  	infowindow.setContent(place.name);
 		  	infowindow.open(map, this);
+		  	map.setZoom(17);
 		});
 	}; //close createMarker
 	
