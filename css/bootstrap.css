@@ -3773,7 +3773,7 @@ input[type="submit"].btn.btn-mini {
 
 .nav {
   margin-bottom: 20px;
-  margin-left: 0;
+/*   margin-left: 0; */
   list-style: none;
 }
 
@@ -4244,9 +4244,9 @@ input[type="submit"].btn.btn-mini {
 }
 
 .navbar .divider-vertical {
-  height: 40px;
-  margin: 0 9px;
-  border-right: 1px solid #ffffff;
+  height: 126px;
+  margin: 0 9px 0 40px;
+  border-right: 1px solid #a4a1a1;
   border-left: 1px solid #f2f2f2;
 }
 
