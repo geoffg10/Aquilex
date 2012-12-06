@@ -1,6 +1,5 @@
 /*  
-The completer	
-Author: Geoffrey Ganga
+Aquilex - user settings
 */
 
 (function($){
@@ -12,16 +11,7 @@ Author: Geoffrey Ganga
 	
 	
 	init();
-	
-		
-	
-	
 
-	
-
-		
-		
-	
 //-----------account settings	
 
 
@@ -32,17 +22,8 @@ Author: Geoffrey Ganga
 	$('#accSet').live('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
-		$('#accnt-settings').slideDown('slow', function() {
-	
-    // Animation complete.
-  });
-			/*
-$( "#accnt-settings" ).animate({
-			  opacity: "show"
-			}, "slow" );
-*/
-
-			
+		$('#accnt-settings').slideDown('slow', function() {});
+				
 		}else{
 			$('#accnt-settings').addClass("hide")
 		}
@@ -54,58 +35,46 @@ $( "#accnt-settings" ).animate({
 	//when the user clicks on the change password
 		// show the change password form
 	
-		$('#cPass').live('click', function(){
+	$('#cPass').live('click', function(){
 		if($('#chngpw').hasClass("hide"))
-		{
-/* 			$('#chngpw').removeClass("hide") */
-			  $("#accnt-settings").hide("slow",function(){
-					$( "#chngpw" ).animate({
-						opacity: "show"
-						}, "slow" );
-				});
-				
-				
-			//$('#accnt-settings').addClass("hide")
-			
-		}else{
-			$('#chngpw').addClass("hide")
-			$('#accnt-settings').removeClass("hide")
-
-		}
-		
-		
-	})// end of change password option
+	{
+		  $("#accnt-settings").hide("slow",function(){
+				$( "#chngpw" ).animate({
+					opacity: "show"
+					}, "slow" );
+			});			
+	}else{
+		$('#chngpw').addClass("hide")
+		$('#accnt-settings').removeClass("hide")
+	}
+	
+	
+})// end of change password option
 	
 	
 	
 	//when the user clicks on the cancel buton
 		// hide the change password form
 			//goes back to the account settings menu
-		$('#cancelchangepw').live('click', function(){
+			
+			
+	$('#cancelchangepw').live('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
-		
-		$("#chngpw").hide("slow",function(){
-					$( "#accnt-settings" ).animate({
-						opacity: "show"
-						}, "slow" );
-				});
-			/*
-$('#accnt-settings').removeClass("hide")
-			$('#chngpw').addClass("hide")
-*/
-
-			
-
-
-			
+	
+			$("#chngpw").hide("slow",function(){
+				$( "#accnt-settings" ).animate({
+					opacity: "show"
+					}, "slow" );
+			});
+	
 		}else{
 			$('#chngpw').removeClass("hide")
-						$('#accnt-settings').addClass("hide")
-
+			$('#accnt-settings').addClass("hide")
+	
 		}
-		
-		
+	
+	
 	})// end of canceling changing password
 	
 	
@@ -117,23 +86,15 @@ $('#accnt-settings').removeClass("hide")
 		if($('#deleteModel').hasClass("hide"))
 		{
 		
-		$("#accnt-settings").hide("slow",function(){
-					$( "#deleteModel" ).animate({
-						opacity: "show"
-						}, "slow" );
-				});
-			/*
-$('#accnt-settings').removeClass("hide")
-			$('#chngpw').addClass("hide")
-*/
-
-			
-
-
-			
+			$("#accnt-settings").hide("slow",function(){
+				$( "#deleteModel" ).animate({
+					opacity: "show"
+					}, "slow" );
+			});
+	
 		}else{
 			$('#accnt-settings').removeClass("hide")
-						$('#deleteModel').addClass("hide")
+			$('#deleteModel').addClass("hide")
 
 		}
 		
@@ -150,20 +111,19 @@ $('#accnt-settings').removeClass("hide")
 		if($('#accnt-settings').hasClass("hide"))
 		{
 		
-		$("#deleteModel").hide("slow",function(){
-					$( "#accnt-settings" ).animate({
-						opacity: "show"
-						}, "slow" );
+			$("#deleteModel").hide("slow",function(){
+				$( "#accnt-settings" ).animate({
+					opacity: "show"
+					}, "slow" );
 				});
 	
 		}else{
 			$('#deleteModel').removeClass("hide")
-						$('#accnt-settings').addClass("hide")
+			$('#accnt-settings').addClass("hide")
 
 		}
 
-		
-		
+
 	})// end of  cancel delete model popup
 	
 	
@@ -179,62 +139,43 @@ $('#accnt-settings').removeClass("hide")
 		{
 		
 		$("#deleteModel").hide("slow",function(){
-					$( "#accnt-settings" ).animate({
-						opacity: "show"
-						}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
-				});
+			$( "#accnt-settings" ).animate({
+				opacity: "show"
+				}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
+			});
 	
 		}else{
 			$('#deleteModel').removeClass("hide")
-						$('#accountDelted').addClass("hide")
+			$('#accountDelted').addClass("hide")
 
 		}
 
 		
 		
 	})// end of  cancel delete model popup
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
 	//when the user clicks close on the account settings menu
 		//hide the account settings menu
 	
 	$('#settingsBack').live('click', function(){
-	$('#accnt-settings').slideUp('slow', function() {
-	
-    // Animation complete.
-  });
-		/*
-$("#accnt-settings").hide("slow",function(){
-					
-				});
-*/
-			//$('#accnt-settings').addClass("hide")
+		$('#accnt-settings').slideUp('slow', function() {});
+		
 
 	})// end of closing account settings
 
 
+	// when the user changes their password
+		//modal pops up with a congrats 
+			//then disapears back to the home app
 	$('#pwBtn').live('click', function(){
 		$("#chngpw").hide("slow",function(){
-					$("#active-account").fadeIn().delay(2000).fadeOut();
+			$("#active-account").fadeIn().delay(2000).fadeOut();
 
+		});
 
-				});
-
-/* $("#active-account").fadeIn().delay(2000).fadeOut(); */
-})
+	})// end of changing password succes
 		
 		
 
