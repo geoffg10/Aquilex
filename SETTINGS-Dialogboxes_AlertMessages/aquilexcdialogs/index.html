@@ -42,6 +42,7 @@
 	  <!-- // DROP DOWN NAV -->
 	        		<ul class="nav nav-right pull-right">
 	        			<li class="dropdown star">
+<!-- 	   // FAVORITES DROP DOWN -->
 	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_star.png"/></a>
 	        				<ul class="dropdown-menu nav-tabs nav-stacked ">
 								<li><a href="#">Full Sail University</a></i></li>
@@ -50,6 +51,7 @@
 								<li><a href="#">University of Alabama</a></li>
 	        				</ul>
 	        			</li>
+<!-- 	   // SETTINGS DROP DOWN -->
 	        			<li class="divider-vertical divider-down"></li>
 	        			<li class="dropdown cog">
 	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_cog.png"/></a>
@@ -64,73 +66,60 @@
 	        </div> <!-- close navbar -->
         </div>
         
-        
+<!-- 	   // USER SETTINGS MENU -->
+
             <div id="accnt-settings" class="hide">
-        	<ul class="nav nav-tabs nav-stacked">
-              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
-              <li id="dPass"><a href="#">DELETE ACCOUNT</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
-            </ul>
-      					<p id="settingsBack"><a href="#">close</a></p>
-        </div>	
+	        	<ul class="nav nav-tabs nav-stacked">
+	              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
+	              <li id="dPass"><a href="#">DELETE ACCOUNT</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
+	            </ul>
+      			<p id="settingsBack"><a href="#">close</a></p>
+	       </div>	
+	       
+<!-- 	   // SEARCH BAR -->	       
          <div class="input-append aquilex-searchBar clearfix">
-  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
-  <button class="btn" type="button"><i class="icon-search"></i></button>
-</div>
+			  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
+			  <button class="btn" type="button"><i class="icon-search"></i></button>
+		</div>
         
-        <!--
-<div class="hide" id="chngpw">
-        	<form>
-			  <fieldset>
-			    <legend>Change your password</legend>
-			    <input type="password" placeholder="new password">
-			    <button type="submit" class="btn">Submit</button>
-			  </fieldset>
-			</form>
-        </div>
-        
--->
-        
-                <div class="hide" id="chngpw">
-
-        <form class="form-horizontal">
-        	<legend class="aquilex-cpwTitle">Change your password</legend>
-
-  <div class="control-group">
-    <div class="controls aquilex-pwchange">
-      <input type="password" id="inputPassword" placeholder="New Password">
-    </div>
-  </div>
-      <div class="controls">
-
-      <button  id="pwBtn" type="submit" class="btn">Submit</button>
-
-    </div>
-          					<p id="cancelchangepw" class="aquilex-cancel"><a href="#">cancel</a></p>
-
-  </div>
-</form>
-        
-                </div>
+     
+ <!-- 	   // CHANGE PASSWORD -->       
+         <div class="hide" id="chngpw">
+         	<form class="form-horizontal">
+        		<legend class="aquilex-cpwTitle">Change your password</legend>
+        			<div class="control-group">
+        				<div class="controls aquilex-pwchange">
+        					<input type="password" id="inputPassword" placeholder="New Password">
+        				</div>
+        			</div>
+        			<div class="controls">
+        				<button  id="pwBtn" type="submit" class="btn">Submit</button>
+        			</div>
+          			<p id="cancelchangepw" class="aquilex-cancel"><a href="#">cancel</a></p>
+  			</form>
+         </div>
+         
+         
+<!-- 	   // SIGN UP THANK YOU MODAL -->         
         <div id="active-account" class="hide">
-        <div class="alert alert-success">
-           <p> Success! Thanks for signing up! 
-Please check your inbox for your
-varification email.</p>
-			      <p>Love,</p>
+        	<div class="alert alert-success">
+        		<p> Success! Thanks for signing up! Please check your inbox for your varification email.</p>
+			    <p>Love,</p>
 				<p>-AQUILEX </p>        
-				 </div>
-   
-        
+			</div>
         </div>
         
+        
+        
+<!-- 	   // DELETE ACCOUNT MODAL -->
         <div  id="deleteModel"class="alert fade in hide">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <h4 class="alert-heading">Delete Account</h4>
-            <p>Are you sure you want to delete your account?</p>
-            <p>
-              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
-            </p>
-          </div>        
+	            <h4 class="alert-heading">Delete Account</h4>
+	            <p>Are you sure you want to delete your account?</p>
+	            <p>
+	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
+	            </p>
+        </div>        
         
 
 	
@@ -143,6 +132,7 @@ varification email.</p>
 	<script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 
+<!-- THIS SCRIPT IS TO LET YOU UTILZE THE IOS SIMULATOR -->
 <script>
       !function ($) {
         $(function(){
