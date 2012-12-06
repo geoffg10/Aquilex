@@ -11,7 +11,7 @@
 
 
 $(document).ready(function(){
-	
+	console.log('asdlkfjas');
 	var userLat = '',
 	userLong = '';
 	
@@ -71,7 +71,7 @@ $(document).ready(function(){
 	
 	
 	
-	
+	//initialize();
 	google.maps.event.addDomListener(window, 'load', initialize);
 	
 	

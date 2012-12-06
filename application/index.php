@@ -2,7 +2,7 @@
 	include_once('models/controllerModel.php');
 	$controllerModel = new controllerModel();	
 	if(empty($_GET['controller'])){
-		echo 'ajsdlf';
+		echo '<br/>'; //remember to remove this
 		$controllerModel->getController('map');
 	}else{
 		$controller = $_GET["controller"];
