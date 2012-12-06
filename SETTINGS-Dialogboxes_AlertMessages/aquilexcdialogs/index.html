@@ -31,12 +31,12 @@
 <body class="landing">
 
 	<!-- Parent container for the page, load your core templates into this div -->
-	<div id="wrapper"></div>
-	<div class="masthead">
+	<section id="wrapper"></section>
+	<section class="masthead">
 <!-- 		//NAVIGATION -->
-	        <div class="navbar aquilex-nav">
-	        	<div class="navbar-inner dark-header">
-	        		<div class="container">
+	        <section class="navbar aquilex-nav">
+	        	<section class="navbar-inner dark-header">
+	        		<section class="container">
 <!-- 	   // LOGO -->
 	        		<a class="brand aquilex-logo" href="#"><img src="imgs/smallerlogo1.png" /></a>
 	  <!-- // DROP DOWN NAV -->
@@ -61,65 +61,65 @@
 							</ul>
 	        			</li>
 	        		</ul>
-	        		</div>
-	        	</div> <!-- close navbar-inner -->
-	        </div> <!-- close navbar -->
-        </div>
+	        		</section>
+	        	</section> <!-- close navbar-inner -->
+	        </section> <!-- close navbar -->
+        </section>
         
 <!-- 	   // USER SETTINGS MENU -->
 
-            <div id="accnt-settings" class="hide">
+            <section id="accnt-settings" class="hide">
 	        	<ul class="nav nav-tabs nav-stacked">
 	              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
 	              <li id="dPass"><a href="#">DELETE ACCOUNT</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
 	            </ul>
       			<p id="settingsBack"><a href="#">close</a></p>
-	       </div>	
+	       </section>	
 	       
 <!-- 	   // SEARCH BAR -->	       
-         <div class="input-append aquilex-searchBar clearfix">
+         <section class="input-append aquilex-searchBar clearfix">
 			  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
 			  <button class="btn" type="button"><i class="icon-search"></i></button>
-		</div>
+		</section>
         
      
  <!-- 	   // CHANGE PASSWORD -->       
-         <div class="hide" id="chngpw">
+         <section class="hide" id="chngpw">
          	<form class="form-horizontal">
         		<legend class="aquilex-cpwTitle">Change your password</legend>
-        			<div class="control-group">
-        				<div class="controls aquilex-pwchange">
+        			<section class="control-group">
+        				<section class="controls aquilex-pwchange">
         					<input type="password" id="inputPassword" placeholder="New Password">
-        				</div>
-        			</div>
-        			<div class="controls">
+        				</section>
+        			</section>
+        			<section class="controls">
         				<button  id="pwBtn" type="submit" class="btn">Submit</button>
-        			</div>
+        			</section>
           			<p id="cancelchangepw" class="aquilex-cancel"><a href="#">cancel</a></p>
   			</form>
-         </div>
+         </section>
          
          
 <!-- 	   // SIGN UP THANK YOU MODAL -->         
-        <div id="active-account" class="hide">
-        	<div class="alert alert-success">
+        <section id="active-account" class="hide">
+        	<section class="alert alert-success">
         		<p> Success! Thanks for signing up! Please check your inbox for your varification email.</p>
 			    <p>Love,</p>
 				<p>-AQUILEX </p>        
-			</div>
-        </div>
+			</section>
+        </section>
         
         
         
 <!-- 	   // DELETE ACCOUNT MODAL -->
-        <div  id="deleteModel"class="alert fade in hide">
+        <section  id="deleteModel"class="alert fade in hide">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
 	            <h4 class="alert-heading">Delete Account</h4>
 	            <p>Are you sure you want to delete your account?</p>
 	            <p>
 	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
 	            </p>
-        </div>        
+        </section>        
         
 
 	
