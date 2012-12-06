@@ -208,18 +208,5 @@ $(document).ready(function(){
 	$('#addLocation').click(function(e) {  //button to add location to DB
 		addUserLocation(userMarker.position); //add to DB function
 	});
-	$('#login').submit(function(e) { 
-		
-		$.ajax({
-			type:'POST', 
-			url: 'xhr/login.php', 
-			data:$(this).serialize(), 
-			success: function(response) {
-				console.log(response);
-		    }});
-		
-		    return false;
-		console.log(e);
-		return false;
-	 });
+	
 });
