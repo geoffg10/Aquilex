@@ -9,6 +9,6 @@
 		echo json_encode(array('message'=>'connected', 'result'=>$loginResult));
 	}else{
 		$checkEmailResult = $loginModel->checkEmail($_POST);
-		echo json_encode(array('message'=>'something is missing', 'result'=>$checkEmailResult));
+		echo json_encode(array('message'=>'email only', 'result'=>$checkEmailResult));
 	}
 ?>

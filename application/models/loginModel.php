@@ -14,7 +14,7 @@
 			foreach($resultData as $value){
 				array_push($emails, $value);
 			}
-			return $message = array('user emails'=>$emails);
+			return $resultData;//$message = array('user emails'=>$emails);
 		}
 		
 		public function checkUser($data){  //first step is to check if the email exists in the table
