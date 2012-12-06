@@ -55,19 +55,16 @@
 	        			<li class="divider-vertical divider-down"></li>
 	        			<li class="dropdown cog">
 	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_cog.png"/></a>
-						<!--
-	<ul class="dropdown-menu nav-tabs nav-stacked">
+	        			    
+							<ul  id="dropDown-settings"class="dropdown-menu nav-tabs nav-stacked">
 								<li><a href="#">CHANGE USER</a></li>
 								<li><a id="accSet" href="#" data-toggle="dropdown">ACCOUNT SETTINGS</a></li>
 							</ul>
--->
 							
-							<ul class="dropdown-menu nav-tabs nav-stacked hide">
-								<li><input class="input-block-level" type="email" class="email" placeholder="Email"  /></li>
-								<li><input class="input-block-level" type="password" class="password" placeholder="Password" /></li>
-								<li><input class="btn btn-success" type="submit" value="Log In" /></li>
-
+							<ul id="dropDown-login" class="dropdown-menu nav-tabs nav-stacked hide">
+								<li><a id="log-me-in" href="#">LOGIN</a></li>
 							</ul>
+						
 							
 	        			</li>
 	        		</ul>
@@ -75,6 +72,32 @@
 	        	</section> <!-- close navbar-inner -->
 	        </section> <!-- close navbar -->
         </section>
+        
+        
+        <section id="aquilex-login" class="login hide">
+        	<section id="aq-form-login" class="alert alert-success">
+			<form class="form-signin" action="#" method="post" class="loginForm">
+		
+			
+					<input class="input-block-level" type="email" class="email" placeholder="Email"  />
+					
+					
+					<input class="input-block-level" type="password" class="password" placeholder="Password" />
+					
+					
+					<input class="btn btn-success" type="submit" value="Log In" />
+					
+					<section class="error">
+		
+					</section>
+					
+					<p class="forgotPW"><a href="#">forgot password?</a></p>
+					<p class="cancelLogin"><a id="cancel-login" class="btn btn-danger muted" href="#">cancel</a></p>
+
+			  </form>
+        	</section>
+				</section><!-- end of login -->
+
         
 <!-- 	   // USER SETTINGS MENU -->
 

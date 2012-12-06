@@ -1,5 +1,6 @@
 /*  
-Aquilex - user settings
+The completer	
+Author: Geoffrey Ganga
 */
 
 (function($){
@@ -11,7 +12,16 @@ Aquilex - user settings
 	
 	
 	init();
+	
+		
+	
+	
 
+	
+
+		
+		
+	
 //-----------account settings	
 
 
@@ -22,8 +32,17 @@ Aquilex - user settings
 	$('#accSet').live('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
-		$('#accnt-settings').slideDown('slow', function() {});
-				
+		$('#accnt-settings').slideDown('slow', function() {
+	
+    // Animation complete.
+  });
+			/*
+$( "#accnt-settings" ).animate({
+			  opacity: "show"
+			}, "slow" );
+*/
+
+			
 		}else{
 			$('#accnt-settings').addClass("hide")
 		}
@@ -35,46 +54,58 @@ Aquilex - user settings
 	//when the user clicks on the change password
 		// show the change password form
 	
-	$('#cPass').live('click', function(){
+		$('#cPass').live('click', function(){
 		if($('#chngpw').hasClass("hide"))
-	{
-		  $("#accnt-settings").hide("slow",function(){
-				$( "#chngpw" ).animate({
-					opacity: "show"
-					}, "slow" );
-			});			
-	}else{
-		$('#chngpw').addClass("hide")
-		$('#accnt-settings').removeClass("hide")
-	}
-	
-	
-})// end of change password option
+		{
+/* 			$('#chngpw').removeClass("hide") */
+			  $("#accnt-settings").hide("slow",function(){
+					$( "#chngpw" ).animate({
+						opacity: "show"
+						}, "slow" );
+				});
+				
+				
+			//$('#accnt-settings').addClass("hide")
+			
+		}else{
+			$('#chngpw').addClass("hide")
+			$('#accnt-settings').removeClass("hide")
+
+		}
+		
+		
+	})// end of change password option
 	
 	
 	
 	//when the user clicks on the cancel buton
 		// hide the change password form
 			//goes back to the account settings menu
-			
-			
-	$('#cancelchangepw').live('click', function(){
+		$('#cancelchangepw').live('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
-	
-			$("#chngpw").hide("slow",function(){
-				$( "#accnt-settings" ).animate({
-					opacity: "show"
-					}, "slow" );
-			});
-	
+		
+		$("#chngpw").hide("slow",function(){
+					$( "#accnt-settings" ).animate({
+						opacity: "show"
+						}, "slow" );
+				});
+			/*
+$('#accnt-settings').removeClass("hide")
+			$('#chngpw').addClass("hide")
+*/
+
+			
+
+
+			
 		}else{
 			$('#chngpw').removeClass("hide")
-			$('#accnt-settings').addClass("hide")
-	
+						$('#accnt-settings').addClass("hide")
+
 		}
-	
-	
+		
+		
 	})// end of canceling changing password
 	
 	
@@ -86,15 +117,23 @@ Aquilex - user settings
 		if($('#deleteModel').hasClass("hide"))
 		{
 		
-			$("#accnt-settings").hide("slow",function(){
-				$( "#deleteModel" ).animate({
-					opacity: "show"
-					}, "slow" );
-			});
-	
+		$("#accnt-settings").hide("slow",function(){
+					$( "#deleteModel" ).animate({
+						opacity: "show"
+						}, "slow" );
+				});
+			/*
+$('#accnt-settings').removeClass("hide")
+			$('#chngpw').addClass("hide")
+*/
+
+			
+
+
+			
 		}else{
 			$('#accnt-settings').removeClass("hide")
-			$('#deleteModel').addClass("hide")
+						$('#deleteModel').addClass("hide")
 
 		}
 		
@@ -111,19 +150,20 @@ Aquilex - user settings
 		if($('#accnt-settings').hasClass("hide"))
 		{
 		
-			$("#deleteModel").hide("slow",function(){
-				$( "#accnt-settings" ).animate({
-					opacity: "show"
-					}, "slow" );
+		$("#deleteModel").hide("slow",function(){
+					$( "#accnt-settings" ).animate({
+						opacity: "show"
+						}, "slow" );
 				});
 	
 		}else{
 			$('#deleteModel').removeClass("hide")
-			$('#accnt-settings').addClass("hide")
+						$('#accnt-settings').addClass("hide")
 
 		}
 
-
+		
+		
 	})// end of  cancel delete model popup
 	
 	
@@ -139,43 +179,109 @@ Aquilex - user settings
 		{
 		
 		$("#deleteModel").hide("slow",function(){
-			$( "#accnt-settings" ).animate({
-				opacity: "show"
-				}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
-			});
+					$( "#accnt-settings" ).animate({
+						opacity: "show"
+						}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
+				});
 	
 		}else{
 			$('#deleteModel').removeClass("hide")
-			$('#accountDelted').addClass("hide")
+						$('#accountDelted').addClass("hide")
 
 		}
 
 		
 		
 	})// end of  cancel delete model popup
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//when the user clicks close on the account settings menu
 		//hide the account settings menu
 	
 	$('#settingsBack').live('click', function(){
-		$('#accnt-settings').slideUp('slow', function() {});
-		
+	$('#accnt-settings').slideUp('slow', function() {
+	
+    // Animation complete.
+  });
+		/*
+$("#accnt-settings").hide("slow",function(){
+					
+				});
+*/
+			//$('#accnt-settings').addClass("hide")
 
 	})// end of closing account settings
 
 
-	// when the user changes their password
-		//modal pops up with a congrats 
-			//then disapears back to the home app
 	$('#pwBtn').live('click', function(){
 		$("#chngpw").hide("slow",function(){
-			$("#active-account").fadeIn().delay(2000).fadeOut();
+					$("#active-account").fadeIn().delay(2000).fadeOut();
 
-		});
 
-	})// end of changing password succes
+				});
+
+/* $("#active-account").fadeIn().delay(2000).fadeOut(); */
+})
+
+/* login form display */
+
+
+$('#log-me-in').live('click', function(){
+		if($('#aquilex-login').hasClass("hide"))
+		{
+			$('#aquilex-login').removeClass("hide")
+		}else{
+			$('#aquilex-login').addClass("hide")
+		}
+		
+		
+	})// end of canceling changing password
+	
+	
+// CANCEL THE LOGIN 	
+$('#cancel-login').live('click', function(){
+		if($('#aquilex-login').hasClass("hide"))
+		{
+			$('#aquilex-login').removeClass("hide")
+		}else{
+			$('#aquilex-login').addClass("hide")
+		}
+		
+		
+	})// end of canceling changing password
+
+
+
+
+
+	var state = true;
+		function switchNav(){ //switches the navigation to display login/settings
+			if(state){ //if true display  settings and hide login
+				$("#dropDown-settings").addClass("hide");
+				$("#dropDown-login").removeClass("hide");
+			}else{ //if false hide settings and display login
+				$("#dropDown-settings").removeClass("hide");
+				$("#dropDown-login").addClass("hide");
+			}
+			
+		}
+		switchNav();
+		
+		
+		
 		
 		
 
