@@ -14,15 +14,15 @@
 <body>
 
  <div class="masthead">
-        <div class="navbar">
+        <div class="navbar aquilex-nav">
         	<div class="navbar-inner dark-header">
         		<div class="container">
         		<a class="brand aquilex-logo" href="#"><img src="imgs/smallerlogo1.png" /></a>
-        		<ul class="nav nav-right">
+        		<ul class="nav nav-right pull-right">
         			<li class="dropdown star">
         				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_star.png"/></a>
-        				<ul class="dropdown-menu">
-							<li><a href="#">Full Sail University</a></li>
+        				<ul class="dropdown-menu nav-tabs nav-stacked ">
+							<li><a href="#">Full Sail University</a></i></li>
 							<li><a href="#">University of Central Florida</a></li>
 							<li><a href="#">Georgia Tech</a></li>
 							<li><a href="#">University of Alabama</a></li>
@@ -31,9 +31,9 @@
         			<li class="divider-vertical divider-down"></li>
         			<li class="dropdown cog">
         			    <a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_cog.png"/></a>
-						<ul class="dropdown-menu">
-							<li><a href="#">CHANGE PASSWORD</a></li>
-							<li><a href="#">DELETE PASSWORD</a></li>
+						<ul class="dropdown-menu nav-tabs nav-stacked">
+							<li><a href="#">SWITCH USER</a></li>
+							<li><a href="#">ACCOUNT SETTINGS</a></li>
 						</ul>
         			</li>
         		</ul>
@@ -41,10 +41,23 @@
         	</div> <!-- close navbar-inner -->
         </div> <!-- close navbar -->
         
-        <form class="navbar-form">
+        <div class="accnt-settings">
+        <ul class="nav nav-tabs nav-stacked">
+              <li class=""><a href="#">CHANGE PASSWORD</a></li>
+              <li><a href="#">DELETE ACCOUNT</a></li>
+            </ul>
+        </div>
+        
+        <div class="input-append aquilex-searchBar clearfix">
+  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
+  <button class="btn" type="button"><i class="icon-search"></i></button>
+</div>
+ <!--
+       <form class="navbar-form">
   <input type="text" class="span2 searchBar">
   <button type="submit" class="btn searchBtn"><img src="imgs/search_icon.png"></button>
 </form>
+-->
         <!--
 <form class="form-search">
   <div class="input-append">
@@ -57,19 +70,21 @@
         
        </div>
 
-			
-		
-   
-   <div class="search">
-   
-   </div><!-- end of search -->
    
    <div class="map">
    
    </div><!-- end of map -->
    
-   <div class="adSpace">
+   <div class="alert alert-success">
+           <p> Success! Thanks for signing up! 
+Please check your inbox for your
+varification email.</p>
+			      <p>Love,</p>
+				<p>-AQUILEX </p>        
+				 </div>
    
+   <div class="adSpace">
+   		<img src="imgs/ad.png"/>
    </div><!-- end of adSpace-->
    
 	

@@ -134,3 +134,25 @@ input.span2.aquilex-span{
 .accnt-settings{
 	display: none;
 }
+
+.hide{
+	display:none;
+}
+.form-horizontal .controls.aquilex-pwchange {
+margin-left: 5%;
+}
+legend.aquilex-cpwTitle{
+	padding-left: 5%;	
+}
+
+.aquilex-cancel{
+	margin-top: -5%;
+	margin-left: 7%;
+	text-decoration: underline;
+}
+
+/*
+.form-horizontal .controls:first-child {
+  *padding-left: 180px;
+}
+*/
