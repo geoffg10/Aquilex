@@ -176,4 +176,18 @@ legend.aquilex-cpwTitle{
 #dropDown-login{
 	display: none;
 }
+<<<<<<< HEAD
+>>>>>>> html-branch-edits
+=======
+
+.schoo-modal{
+	position: relative;
+}
+.modal.aquilex-school-modal{
+top:0;
+left:0;
+margin:0;
+width: 100%;
+
+}
 >>>>>>> html-branch-edits
