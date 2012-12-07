@@ -18,6 +18,7 @@
 	
 </head>
 <body class="landing">
+
 	<!-- Parent container for the page, load your core templates into this div -->
 	<section id="wrapper"></section>
 	<section class="masthead">
@@ -26,12 +27,16 @@
 	        	<section class="navbar-inner dark-header">
 	        		<section class="container">
 <!-- 	   // LOGO -->
-	        		<a class="brand aquilex-logo" href="#"><img src="imgs/smallerlogo1.png" /></a>
+
+	        		<a class="brand aquilex-logo" href="#"><img src="img/smallerlogo1.png" /></a>
+
 	  <!-- // DROP DOWN NAV -->
 	        		<ul class="nav nav-right pull-right">
 	        			<li class="dropdown star">
 <!-- 	   // FAVORITES DROP DOWN -->
-	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_star.png"/></a>
+
+	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_star.png"/></a>
+
 	        				<ul class="dropdown-menu nav-tabs nav-stacked ">
 								<li><a href="#">Full Sail University</a></i></li>
 								<li><a href="#">University of Central Florida</a></li>
@@ -42,20 +47,20 @@
 <!-- 	   // SETTINGS DROP DOWN -->
 	        			<li class="divider-vertical divider-down"></li>
 	        			<li class="dropdown cog">
-	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_cog.png"/></a>
-						<!--
-	<ul class="dropdown-menu nav-tabs nav-stacked">
+
+
+	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png"/></a>
+	        			    
+							<ul  id="dropDown-settings"class="dropdown-menu nav-tabs nav-stacked">
 								<li><a href="#">CHANGE USER</a></li>
 								<li><a id="accSet" href="#" data-toggle="dropdown">ACCOUNT SETTINGS</a></li>
 							</ul>
--->
 							
-							<ul class="dropdown-menu nav-tabs nav-stacked hide">
-								<li><input class="input-block-level" type="email" class="email" placeholder="Email"  /></li>
-								<li><input class="input-block-level" type="password" class="password" placeholder="Password" /></li>
-								<li><input class="btn btn-success" type="submit" value="Log In" /></li>
-
+							<ul id="dropDown-login" class="dropdown-menu nav-tabs nav-stacked hide">
+								<li><a id="log-me-in" href="#">LOGIN</a></li>
 							</ul>
+						
+
 							
 	        			</li>
 	        		</ul>
@@ -64,12 +69,40 @@
 	        </section> <!-- close navbar -->
         </section>
         
+
+        
+        <section id="aquilex-login" class="login hide">
+        	<section id="aq-form-login" class="alert alert-success">
+			<form id="login" class="form-signin" class="loginForm">
+		
+			
+					<input class="input-block-level" type="email" class="email" placeholder="Email"  />
+					
+					
+					<input class="input-block-level" type="password" class="password" placeholder="Password" />
+					
+					
+					<input class="btn btn-success" type="submit" value="Log In" />
+					
+					<section class="error">
+		
+					</section>
+					
+					<p class="forgotPW"><a href="#">forgot password?</a></p>
+					<p class="cancelLogin"><a id="cancel-login" class="btn btn-danger muted" href="#">cancel</a></p>
+
+			  </form>
+        	</section>
+		</section><!-- end of login -->
+
+        
+
 <!-- 	   // USER SETTINGS MENU -->
 
             <section id="accnt-settings" class="hide">
 	        	<ul class="nav nav-tabs nav-stacked">
 	              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
-	              <li id="dPass"><a href="#">DELETE ACCOUNT</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
+	              <li id="dPass"><a href="#">hghaghahlglha</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
 	            </ul>
       			<p id="settingsBack"><a href="#">close</a></p>
 	       </section>	
@@ -117,6 +150,9 @@
 	            <p>
 	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
 	            </p>
-        </section>  
+        </section>        
+        
+
+     
  
 <!--  end of header -->
