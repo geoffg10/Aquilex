@@ -244,7 +244,7 @@ $('#log-me-in').live('click', function(){
 		{
 			$('#aquilex-login').removeClass("hide")
 		}else{
-			$('#aquilex-login').addClass("hide")
+			//$('#aquilex-login').addClass("hide")
 		}
 		
 		

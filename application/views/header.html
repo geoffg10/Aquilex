@@ -1,55 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>AQUILEX - your personal tour guide</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"  />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Aquilex</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<!--  Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- CSS concatenated and minified via ant build script-->
 	 <link href="css/style.css" rel="stylesheet">
-	 <link href="css/bootstrap.css" rel="stylesheet">
-
+	 <link href="css/bootstrap.css" rel="stylesheet">	<!-- end CSS-->
+	
 </head>
-<body>
+<body class="landing">
 
- <section class="masthead">
-        <section class="navbar aquilex-nav">
-        	<section class="navbar-inner dark-header">
-        		<section class="container">
-        		<a class="brand aquilex-logo" href="#"><img src="imgs/smallerlogo1.png" /></a>
-        		<ul class="nav nav-right pull-right">
-        			<li class="dropdown star">
-        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_star.png"/></a>
-        				<ul class="dropdown-menu nav-tabs nav-stacked ">
-							<li><a href="#">Full Sail University</a></i></li>
-							<li><a href="#">University of Central Florida</a></li>
-							<li><a href="#">Georgia Tech</a></li>
-							<li><a href="#">University of Alabama</a></li>
-        				</ul>
-        			</li>
-        			<li class="divider-vertical divider-down"></li>
-        			<li class="dropdown cog">
-        			    <a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="imgs/og_cog.png"/></a>
-						<ul class="dropdown-menu nav-tabs nav-stacked">
-							<li><a href="#">SWITCH USER</a></li>
-							<li><a href="#">ACCOUNT SETTINGS</a></li>
-						</ul>
-        			</li>
-        		</ul>
-        		</section>
-        	</section> <!-- close navbar-inner -->
-        </section> <!-- close navbar -->
-        
-        <section class="accnt-settings">
-        <ul class="nav nav-tabs nav-stacked">
-              <li class=""><a href="#">CHANGE PASSWORD</a></li>
-              <li><a href="#">DELETE ACCOUNT</a></li>
-            </ul>
+	<!-- Parent container for the page, load your core templates into this div -->
+	<section id="wrapper"></section>
+	<section class="masthead">
+<!-- 		//NAVIGATION -->
+	        <section class="navbar aquilex-nav">
+	        	<section class="navbar-inner dark-header">
+	        		<section class="container">
+<!-- 	   // LOGO -->
+
+	        		<a class="brand aquilex-logo" href="#"><img src="img/smallerlogo1.png" /></a>
+
+	  <!-- // DROP DOWN NAV -->
+	        		<ul class="nav nav-right pull-right">
+	        			<li class="dropdown star">
+<!-- 	   // FAVORITES DROP DOWN -->
+
+	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_star.png"/></a>
+
+	        				<ul class="dropdown-menu nav-tabs nav-stacked ">
+								<li><a href="#">Full Sail University</a></i></li>
+								<li><a href="#">University of Central Florida</a></li>
+								<li><a href="#">Georgia Tech</a></li>
+								<li><a href="#">University of Alabama</a></li>
+	        				</ul>
+	        			</li>
+<!-- 	   // SETTINGS DROP DOWN -->
+	        			<li class="divider-vertical divider-down"></li>
+	        			<li class="dropdown cog">
+
+
+	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png"/></a>
+	        			    
+							<ul  id="dropDown-settings"class="dropdown-menu nav-tabs nav-stacked">
+								<li><a href="#">CHANGE USER</a></li>
+								<li><a id="accSet" href="#" data-toggle="dropdown">ACCOUNT SETTINGS</a></li>
+							</ul>
+							
+							<ul id="dropDown-login" class="dropdown-menu nav-tabs nav-stacked hide">
+								<li><a id="log-me-in" href="#">LOGIN</a></li>
+							</ul>
+						
+
+							
+	        			</li>
+	        		</ul>
+	        		</section>
+	        	</section> <!-- close navbar-inner -->
+	        </section> <!-- close navbar -->
         </section>
         
-        <section class="input-append aquilex-searchBar clearfix">
-  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
-  <button class="btn" type="button"><i class="icon-search"></i></button>
-</section>
- </section> <!-- close masthead -->
+
+        
+        <section id="aquilex-login" class="login hide">
+        	<section id="aq-form-login" class="alert alert-success">
+			<form id="login" class="form-signin" class="loginForm">
+		
+			
+					<input class="input-block-level" type="email" class="email" placeholder="Email"  />
+					
+					
+					<input class="input-block-level" type="password" class="password" placeholder="Password" />
+					
+					
+					<input class="btn btn-success" type="submit" value="Log In" />
+					
+					<section class="error">
+		
+					</section>
+					
+					<p class="forgotPW"><a href="#">forgot password?</a></p>
+					<p class="cancelLogin"><a id="cancel-login" class="btn btn-danger muted" href="#">cancel</a></p>
+
+			  </form>
+        	</section>
+		</section><!-- end of login -->
+
+        
+
+<!-- 	   // USER SETTINGS MENU -->
+
+            <section id="accnt-settings" class="hide">
+	        	<ul class="nav nav-tabs nav-stacked">
+	              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
+	              <li id="dPass"><a href="#">hghaghahlglha</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
+	            </ul>
+      			<p id="settingsBack"><a href="#">close</a></p>
+	       </section>	
+	       
+<!-- 	   // SEARCH BAR -->	       
+         <section class="input-append aquilex-searchBar clearfix">
+			  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
+			  <button class="btn" type="button"><i class="icon-search"></i></button>
+		</section>
+        
+     
+ <!-- 	   // CHANGE PASSWORD -->       
+         <section class="hide" id="chngpw">
+         	<form class="form-horizontal">
+        		<legend class="aquilex-cpwTitle">Change your password</legend>
+        			<section class="control-group">
+        				<section class="controls aquilex-pwchange">
+        					<input type="password" id="inputPassword" placeholder="New Password">
+        				</section>
+        			</section>
+        			<section class="controls">
+        				<button  id="pwBtn" type="submit" class="btn">Submit</button>
+        			</section>
+          			<p id="cancelchangepw" class="aquilex-cancel"><a href="#">cancel</a></p>
+  			</form>
+         </section>
+         
+         
+<!-- 	   // SIGN UP THANK YOU MODAL -->         
+        <section id="active-account" class="hide">
+        	<section class="alert alert-success">
+        		<p> Success! Thanks for signing up! Please check your inbox for your varification email.</p>
+			    <p>Love,</p>
+				<p>-AQUILEX </p>        
+			</section>
+        </section>
+        
+        
+        
+<!-- 	   // DELETE ACCOUNT MODAL -->
+        <section  id="deleteModel"class="alert fade in hide">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+	            <h4 class="alert-heading">Delete Account</h4>
+	            <p>Are you sure you want to delete your account?</p>
+	            <p>
+	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
+	            </p>
+        </section>        
+        
+
+     
  
 <!--  end of header -->
