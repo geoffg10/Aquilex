@@ -102,6 +102,7 @@ ul.downdwn-mobile-effect {
   *border-right-width: 2px;
   *border-bottom-width: 2px;
   -webkit-border-radius: 6px;
+<<<<<<< HEAD
  -moz-border-radius: 6px;
   border-radius: 6px;
 -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -110,6 +111,16 @@ ul.downdwn-mobile-effect {
 -webkit-background-clip: padding-box;
  -moz-background-clip: padding;
   background-clip: padding-box;
+=======
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+     -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+     -moz-background-clip: padding;
+          background-clip: padding-box;
+>>>>>>> html-branch-edits
 }
 div.aquilex-searchBar{
 	margin:0;
@@ -150,3 +161,19 @@ legend.aquilex-cpwTitle{
 	margin-left: 7%;
 	text-decoration: underline;
 }
+<<<<<<< HEAD
+=======
+
+/*
+.form-horizontal .controls:first-child {
+  *padding-left: 180px;
+}
+*/
+
+#dropDown-settings{
+	/* display: none; */
+}
+#dropDown-login{
+	display: none;
+}
+>>>>>>> html-branch-edits
