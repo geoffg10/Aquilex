@@ -2,7 +2,7 @@
 	class loginModel{
 		
 		
-		public function checkEmail($data){
+		public function checkEmail($data){ //check email only
 			$wildEmail = $data['email'].'%';
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
 			$sqlst = "select user_email from users where user_email like :user_email";
@@ -14,7 +14,7 @@
 			foreach($resultData as $value){
 				array_push($emails, $value);
 			}
-			return $resultData;//$message = array('user emails'=>$emails);
+			return array('success'=>'emails searched', 'emails'=>$resultData);//$message = array('user emails'=>$emails);
 		}
 		
 		public function checkUser($data){  //first step is to check if the email exists in the table
@@ -54,12 +54,13 @@
 			$results = $st->execute(array(":user_email"=>$data['email'], ":password"=>$data['password']));
 			$resultData = $st->fetchAll(); //get all responses
 			
+			
 			if($st->rowCount() > 0){
 				//there is a record
-				return $resultData[0]['id'];
+				return array('success'=>'logged in', 'userid'=>$resultData[0]['id']);
 			}else{
 				 //there isn't a record
-				return "password doesn't match";
+				return array('success'=>"password doesn't match");
 			}
 		}//close validate user
 		
