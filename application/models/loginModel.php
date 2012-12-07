@@ -33,7 +33,6 @@
 				return $insertResult;
 			}
 			
-			return $results;
 		} //close add location
 		
 		private function insertUser($data){  
