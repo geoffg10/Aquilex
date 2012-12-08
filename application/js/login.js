@@ -2,6 +2,11 @@ $(document).ready(function(){
 	
 	
 	console.log('this is running');
+	$('input[name="email"]').focusout(function(e){
+	
+		console.log(e);
+	});
+	
 	
 	
 	$('#login').submit(function(e) {
