@@ -289,16 +289,33 @@ $(document).ready(function(){
 		});
 	};	
 	
-	function makeAddedSchoolList(place){ //adding new school list which shows up on the bottom 
-		$('<li>'+place.name+'</li>').appendTo('#ourAddedList').click(function(e) {  
-							//console.log(place.name);
-							//console.log(place.geometry);
-							//console.log("this object", place);
-							//console.log("this is new sucka" ,place.reference)
-							//addmyCampus(place);
+	function makeAddedSchoolList(place){ //adding new school list which shows up on the top
+		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
+		
+				$("#schoolAddedModal").animate({opacity:"show"}, "slow", function(args){$("#schoolTestModal").delay(1000).fadeOut()})			
 
-		});
+							
+							/*
+ $("#deleteModel").hide("slow",function(){
+								$( "#accnt-settings" ).animate({
+									opacity: "show"
+									}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
+							});
+									$("#schoolTestModal").hide("slow");
+*/
+
+			
+
+		
+		
 	};	
+	
+	
+	$('#closeSchoolModal').live('click', function(){
+		
+		
+	})// end of change password option
+
 	
 		
 	
