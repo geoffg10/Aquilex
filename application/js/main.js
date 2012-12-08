@@ -187,6 +187,13 @@ $(document).ready(function(){
 			dataType: 'json',
 			success:function(data) {
 				console.log(data);
+				
+				if($(data.result).type === 'object')
+				{
+					console.log("boobs")
+				}else{
+					console.log("huge knockers")
+				}
 			},
 			error:function(error) {  
 				console.log("error ",error);
