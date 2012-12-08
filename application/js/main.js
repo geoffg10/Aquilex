@@ -58,6 +58,8 @@ $(document).ready(function(){
         google.maps.event.addListener(userMarker, 'dragend', function() { 
         	
 		});
+			getUniversities();
+
       }; //close initialize
 	
 	function handleNoGeolocation(errorFlag) { //this is fired when geolocation is accessed by user and there is a fail, it accepts a boolean
@@ -102,7 +104,9 @@ $(document).ready(function(){
 			for (var i = 0; i < results.length; i++) {
 				createMarker(results[i]); //create the markers on the map
 				createListItem(results[i]); //create the viewable list on the page
-			}
+				var google_ref_id = results[i].reference;
+				getLocations(google_ref_id);
+						}//end of for loop
 		}
 	}; //close callback
 
@@ -123,7 +127,7 @@ $(document).ready(function(){
 	
 	function createListItem(place) { //creates the list items for view by the user and also adds a click function so the user can choose it as their location
 		 
-		console.log(place); 
+		//console.log(place); 
 		$('<li>'+place.name+'</li>').appendTo('#schools').click(function(e) {  
 				console.log(place.name);
 				selectedLocation = place;
@@ -148,14 +152,16 @@ $(document).ready(function(){
 			url: 'xhr/addlocation.php',
 			dataType: 'json',
 			success:function(data) {  
-				console.log(data);
+				//console.log(data);
 			}
 		});
 	};
 	
+	
+	
 	function addUserLocation(data){ // add location to DB, takes the place object
 		//console.log("addLocation ",data.geometry.location.$a);
-		console.log(data);
+		//console.log(data);
 		$.ajax({
 			type:'POST',
 			data:{
@@ -165,10 +171,34 @@ $(document).ready(function(){
 			url: 'xhr/addlocation.php',
 			dataType: 'json',
 			success:function(data) {  
-				console.log(data);
+				//console.log(data);
 			}
 		});
 	};
+	
+	function getLocations(google_ref_id){ // performing ajax to check db with results then display results
+				//console.log("addLocation ",data.geometry.location.$a);
+											//console.log(google_ref_id) 
+
+					$.ajax({
+						type:'POST',
+						data:{
+							latitude: google_ref_id
+						},
+							url: 'xhr/getlocations.php',
+							dataType: 'json',
+							success:function(data) {
+							alert(google_ref_id);
+							console.log(data) 
+						
+
+							},
+							error:function(error) {  
+								console.log("error ",error);
+							}
+						});//end of ajax
+					};// end of function
+
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -200,6 +230,7 @@ $(document).ready(function(){
 	$('#showSchools').click(function(e) {  //display list of schools
 		$('#schools').empty();
 		getUniversities();
+		
 	});
 	
 	$('#addSchool').click(function(e) {  //button to add location to DB
@@ -208,5 +239,6 @@ $(document).ready(function(){
 	$('#addLocation').click(function(e) {  //button to add location to DB
 		addUserLocation(userMarker.position); //add to DB function
 	});
+	
 	
 });

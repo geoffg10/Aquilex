@@ -6,7 +6,7 @@
 	
 	if($_POST){
 		$locations = $locationsModel->getLocation($_POST);
-		echo json_encode(array('message'=>'locations', 'result'=>$locations))
+		echo json_encode(array('message'=>'locations', 'result'=>$locations));
 	}
 
 ?>
