@@ -104,10 +104,10 @@ $(document).ready(function(){
 			for (var i = 0; i < results.length; i++) {
 				createMarker(results[i]); //create the markers on the map
 				createListItem(results[i]); //create the viewable list on the page
-				var google_ref_id = results[i].reference;
+				var google_ref_id = results[i].id;
 				var what = "";
 				what = getLocations(results[i], google_ref_id);
-				console.log(what);
+			//	console.log(what);
 						}//end of for loop
 		}
 	}; //close callback
@@ -170,13 +170,15 @@ $(document).ready(function(){
 				latitude: data.geometry.location.$a,
 				longitude: data.geometry.location.ab,
 				name:data.name,
-				google_ref_id: data.reference,
+				google_ref_id: data.id,
 				added_by_id: 1
 			},
 			url: 'xhr/addcampus.php',
 			dataType: 'json',
-			success:function(data) {  
-				console.log(data, "was added to database");
+			success:function(successData) {  
+				console.log(successData, "was added to database");
+				//console.log(data.reference);
+				getLocations(data, data.id);
 			}
 		});
 	};
@@ -201,23 +203,24 @@ $(document).ready(function(){
 	};
 	
 	function getLocations(data, google_ref_id){ // performing ajax to check db with results then display results
-	
+		//console.log('in getlocations ',data);
 		$.ajax({
 			type:'POST',
 			data:{
-			google_ref_id: google_ref_id
+				google_ref_id: google_ref_id
 			},
 			url: 'xhr/getlocations.php',
 			dataType: 'json',
-			success:function(data) {
-				console.log(data);
+			success:function(successLocData) {
+				console.log(successLocData.result);
 				
-				if(data.result === 'no record')
+				if(successLocData.result == 'no record')
 				{
-					return "fun";
-					console.log("boobs")
+					console.log("boobs");
+					makeList(data);
 				}else{
-					console.log("huge knockers")
+					console.log("huge knockers");
+					
 				}
 			},
 			error:function(error) {  
@@ -225,7 +228,7 @@ $(document).ready(function(){
 			}
 		});//end of ajax
 		
-		makeList(data);
+		
 	};// end of function
 
 
@@ -271,9 +274,10 @@ $(document).ready(function(){
 	
 	function makeList(place){ //adding new school list which shows up on the bottom 
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
-							console.log(place.name);
+							//console.log(place.name);
 							//console.log(place.geometry);
 							//console.log("this object", place);
+							//console.log("this is new sucka" ,place.reference)
 							addmyCampus(place);
 
 		});
