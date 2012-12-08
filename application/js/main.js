@@ -291,9 +291,9 @@ $(document).ready(function(){
 	
 	function makeAddedSchoolList(place){ //adding new school list which shows up on the top
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
-		
+		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
 				$("#schoolAddedModal").animate({opacity:"show"}, "slow", function(args){$("#schoolTestModal").delay(1000).fadeOut()})			
-
+				
 							
 							/*
  $("#deleteModel").hide("slow",function(){
@@ -312,7 +312,7 @@ $(document).ready(function(){
 	
 	
 	$('#closeSchoolModal').live('click', function(){
-		
+		$('#schoolTestModal').addClass("hide");
 		
 	})// end of change password option
 
