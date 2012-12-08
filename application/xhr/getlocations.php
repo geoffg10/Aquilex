@@ -2,7 +2,6 @@
 	require_once('../models/locationsModel.php');
 	
 	$locationsModel = new locationsModel();
-	$message = array();
 	
 	if($_POST){
 		if($_POST['google_ref_id']!=''){

@@ -104,10 +104,10 @@ $(document).ready(function(){
 			for (var i = 0; i < results.length; i++) {
 				createMarker(results[i]); //create the markers on the map
 				createListItem(results[i]); //create the viewable list on the page
-				var google_ref_id = results[i].reference;
+				var google_ref_id = results[i].id;
 				var what = "";
 				what = getLocations(results[i], google_ref_id);
-				console.log(what);
+			//	console.log(what);
 						}//end of for loop
 		}
 	}; //close callback
@@ -149,7 +149,10 @@ $(document).ready(function(){
 			type:'POST',
 			data:{
 				latitude: data.geometry.location.$a,
-				longitude: data.geometry.location.ab
+				longitude: data.geometry.location.ab,
+				name:data.name,
+				google_ref_id: data.reference,
+				added_by_id: 1
 			},
 			url: 'xhr/addlocation.php',
 			dataType: 'json',
@@ -158,6 +161,7 @@ $(document).ready(function(){
 			}
 		});
 	};
+	
 	
 	
 	
@@ -179,23 +183,24 @@ $(document).ready(function(){
 	};
 	
 	function getLocations(data, google_ref_id){ // performing ajax to check db with results then display results
-	
+		//console.log('in getlocations ',data);
 		$.ajax({
 			type:'POST',
 			data:{
-			google_ref_id: google_ref_id
+				google_ref_id: google_ref_id
 			},
 			url: 'xhr/getlocations.php',
 			dataType: 'json',
-			success:function(data) {
-				console.log(data);
+			success:function(successLocData) {
+				console.log(successLocData.result);
 				
-				if(data.result === 'no record')
+				if(successLocData.result == 'no record')
 				{
-					return "fun";
-					console.log("boobs")
+					//console.log("make the list");
+					makeList(data);
 				}else{
-					console.log("huge knockers")
+					//console.log("make added list");
+					makeAddedSchoolList(data);
 				}
 			},
 			error:function(error) {  
@@ -203,9 +208,35 @@ $(document).ready(function(){
 			}
 		});//end of ajax
 		
-		makeList(data);
+		
 	};// end of function
 
+
+
+	function addmyCampus(data){ // add location to DB, takes the place object
+		//console.log("addLocation ",data.geometry.location.$a);
+		$.ajax({
+			type:'POST',
+			data:{
+				latitude: data.geometry.location.$a,
+				longitude: data.geometry.location.ab,
+				name:data.name,
+				google_ref_id: data.id,
+				added_by_id: 1
+			},
+			url: 'xhr/addcampus.php',
+			dataType: 'json',
+			success:function(successData) {  
+				console.log(successData, "was added to database");
+				//console.log(data.reference);
+				if(successData.message=="location added")
+				{
+					
+				}
+				getLocations(data, data.id);
+			}
+		});
+	};
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -249,6 +280,23 @@ $(document).ready(function(){
 	
 	function makeList(place){ //adding new school list which shows up on the bottom 
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
+							//console.log(place.name);
+							//console.log(place.geometry);
+							//console.log("this object", place);
+							//console.log("this is new sucka" ,place.reference)
+							addmyCampus(place);
+							$(this).remove();
+		});
+	};	
+	
+	function makeAddedSchoolList(place){ //adding new school list which shows up on the bottom 
+		$('<li>'+place.name+'</li>').appendTo('#ourAddedList').click(function(e) {  
+							//console.log(place.name);
+							//console.log(place.geometry);
+							//console.log("this object", place);
+							//console.log("this is new sucka" ,place.reference)
+							//addmyCampus(place);
+
 		});
 	};	
 	

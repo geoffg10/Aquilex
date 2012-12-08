@@ -1,7 +1,8 @@
 var fbObj={};
 
 
-    FB.init({
+  /*
+  FB.init({
       oauth		 : true,
       appId      : '121346758027063', // App ID
       status     : true, // check login status
@@ -9,6 +10,7 @@ var fbObj={};
       xfbml      : true  // parse XFBML
     });
 
+*/
     // Additional init code here
 
 function storeinfo() {  
