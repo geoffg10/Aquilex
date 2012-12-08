@@ -5,8 +5,8 @@
 	$message = array();
 	
 	if($_POST){
-		$locationsModel->addLocation($_POST);
-		echo json_encode(array('message'=>'location added'));
+		$result = $locationsModel->addLocation($_POST, TRUE);
+		echo json_encode(array('message'=>'location added', 'result'=>$result));
 	}
 
 ?>

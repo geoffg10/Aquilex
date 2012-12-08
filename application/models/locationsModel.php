@@ -10,7 +10,7 @@
 		
 		
 		//returns the 
-		public function addCampus($data){  
+		private function addCampus($data){  
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
 			$sqlst = "insert into locations(name, longitude, latitude, campus_type_id, added_by_id, google_ref_id)values(:name, :longitude, :latitude, :campus_type_id, :added_by_id)";
 			$st = $db->prepare($sqlst);
@@ -30,12 +30,24 @@
 			$st = $db->prepare($sqlst);
 			$results = $st->execute(array(":google_ref_id"=>$data['google_ref_id']));
 			$resultData = $st->fetchAll(); //get all responses
-			if($st->rowCount() > 0){ //if the record exists than 
-				//there is a record
-				return $resultData;
+			if($internal){
+				if($st->rowCount() > 0){ //if the record exists than 
+					//there is a record
+					return 'record already exists';
+				}else{
+					$newResultData = $this->addCampus($data);
+					return $newResultData;
+				}
 			}else{
-				return 'no record';
+				if($st->rowCount() > 0){ //if the record exists than 
+					//there is a record
+					return $resultData;
+				}else{
+					return 'no record';
+				}
 			}
+			
+			
 		}//close get location
 		
 		// gets building by the campus_id
