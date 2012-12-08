@@ -162,26 +162,6 @@ $(document).ready(function(){
 		});
 	};
 	
-	function addmyCampus(data){ // add location to DB, takes the place object
-		//console.log("addLocation ",data.geometry.location.$a);
-		$.ajax({
-			type:'POST',
-			data:{
-				latitude: data.geometry.location.$a,
-				longitude: data.geometry.location.ab,
-				name:data.name,
-				google_ref_id: data.id,
-				added_by_id: 1
-			},
-			url: 'xhr/addcampus.php',
-			dataType: 'json',
-			success:function(successData) {  
-				console.log(successData, "was added to database");
-				//console.log(data.reference);
-				getLocations(data, data.id);
-			}
-		});
-	};
 	
 	
 	
@@ -216,11 +196,11 @@ $(document).ready(function(){
 				
 				if(successLocData.result == 'no record')
 				{
-					console.log("boobs");
+					//console.log("make the list");
 					makeList(data);
 				}else{
-					console.log("huge knockers");
-					
+					//console.log("make added list");
+					makeAddedSchoolList(data);
 				}
 			},
 			error:function(error) {  
@@ -231,6 +211,32 @@ $(document).ready(function(){
 		
 	};// end of function
 
+
+
+	function addmyCampus(data){ // add location to DB, takes the place object
+		//console.log("addLocation ",data.geometry.location.$a);
+		$.ajax({
+			type:'POST',
+			data:{
+				latitude: data.geometry.location.$a,
+				longitude: data.geometry.location.ab,
+				name:data.name,
+				google_ref_id: data.id,
+				added_by_id: 1
+			},
+			url: 'xhr/addcampus.php',
+			dataType: 'json',
+			success:function(successData) {  
+				console.log(successData, "was added to database");
+				//console.log(data.reference);
+				if(successData.message=="location added")
+				{
+					
+				}
+				getLocations(data, data.id);
+			}
+		});
+	};
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -279,6 +285,17 @@ $(document).ready(function(){
 							//console.log("this object", place);
 							//console.log("this is new sucka" ,place.reference)
 							addmyCampus(place);
+							$(this).remove();
+		});
+	};	
+	
+	function makeAddedSchoolList(place){ //adding new school list which shows up on the bottom 
+		$('<li>'+place.name+'</li>').appendTo('#ourAddedList').click(function(e) {  
+							//console.log(place.name);
+							//console.log(place.geometry);
+							//console.log("this object", place);
+							//console.log("this is new sucka" ,place.reference)
+							//addmyCampus(place);
 
 		});
 	};	
