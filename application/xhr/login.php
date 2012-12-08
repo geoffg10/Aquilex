@@ -13,10 +13,10 @@
 			$checkEmailResult = $loginModel->checkEmail($_POST);
 			echo json_encode(array('message'=>'email only', 'result'=>$checkEmailResult));
 		}else{
-			echo json_encode(array('message'=>'needs to at least pass var email');
+			echo json_encode(array('message'=>'needs to at least pass var email'));
 		}
 	}else{
-		echo json_encode(array('message'=>'use post');
+		echo json_encode(array('message'=>'use post'));
 	}
 	
 ?>
