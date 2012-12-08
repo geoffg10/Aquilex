@@ -1,15 +1,9 @@
 $(document).ready(function(){
-	
-	
-	console.log('this is running');
-<<<<<<< HEAD
-=======
+
 	$('input[name="email"]').focusout(function(e){
 	
 		console.log(e);
 	});
-	
->>>>>>> master
 	
 	
 	$('#login').submit(function(e) {
