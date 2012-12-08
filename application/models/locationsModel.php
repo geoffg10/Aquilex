@@ -8,6 +8,13 @@
 			$results = $st->execute(array(":longitude"=>$data['longitude'], ":latitude"=>$data['latitude']));
 		} //close add location
 		
+		public function addCampus($data){  
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "insert into locations(name, longitude, latitude, campus_type_id, added_by_id, google_ref_id)values(:name, :longitude, :latitude, :campus_type_id, :added_by_id)";
+			$st = $db->prepare($sqlst);
+			$results = $st->execute(array(":name"=>$data['name'],":longitude"=>$data['longitude'], ":latitude"=>$data['latitude'], ":campus_type_id"=>'1', ":added_by_id"=>$data['added_by_id']));
+		} //close add location
+		
 		// gets location by the google_ref_id
 		//returns the object with it's id, name, lat, long, google_ref_id, type
 		public function getLocation($data){ //expecting 
@@ -26,6 +33,8 @@
 				return 'no record found, double check to make sure you name the variable google_ref_id';
 			}
 		}
+		// gets building by the campus_id
+		//returns the object with it's id, name, lat, long, campus_id
 		public function getBuildings($data){
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
 			$sqlst = "SELECT b.id, b.campus_id, b.latitude, b.longitude, b.name
@@ -41,6 +50,8 @@
 				return 'no buildings found for this campus, be sure to name your variable campus_id';
 			}
 		}
+		// gets location by the building_id
+		//returns the object with it's id, name, lat, long, building_id, type
 		public function getRooms($data){
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
 			$sqlst = "SELECT r.id, r.building_id, r.latitude, r.longitude, r.name, rt.type
