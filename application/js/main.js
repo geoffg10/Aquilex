@@ -149,12 +149,34 @@ $(document).ready(function(){
 			type:'POST',
 			data:{
 				latitude: data.geometry.location.$a,
-				longitude: data.geometry.location.ab
+				longitude: data.geometry.location.ab,
+				name:data.name,
+				google_ref_id: data.reference,
+				added_by_id: 1
 			},
 			url: 'xhr/addlocation.php',
 			dataType: 'json',
 			success:function(data) {  
 				//console.log(data);
+			}
+		});
+	};
+	
+	function addmyCampus(data){ // add location to DB, takes the place object
+		//console.log("addLocation ",data.geometry.location.$a);
+		$.ajax({
+			type:'POST',
+			data:{
+				latitude: data.geometry.location.$a,
+				longitude: data.geometry.location.ab,
+				name:data.name,
+				google_ref_id: data.reference,
+				added_by_id: 1
+			},
+			url: 'xhr/addcampus.php',
+			dataType: 'json',
+			success:function(data) {  
+				console.log(data, "was added to database");
 			}
 		});
 	};
@@ -249,6 +271,11 @@ $(document).ready(function(){
 	
 	function makeList(place){ //adding new school list which shows up on the bottom 
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
+							console.log(place.name);
+							//console.log(place.geometry);
+							//console.log("this object", place);
+							addmyCampus(place);
+
 		});
 	};	
 	
