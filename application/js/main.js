@@ -247,23 +247,9 @@ $(document).ready(function(){
 		addUserLocation(userMarker.position); //add to DB function
 	});
 	
-	function makeList(place){
-$('<li>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
-				console.log("I love boobs");
-			
+	function makeList(place){ //adding new school list which shows up on the bottom 
+		$('<li>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
 		});
-	};	
-	
-	function createListItem(place) { //creates the list items for view by the user and also adds a click function so the user can choose it as their location
-		 
-		//console.log(place); 
-		/*
-$('<li>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
-				console.log(place.name);
-				selectedLocation = place;
-			
-		});
-*/
 	};	
 	
 	
