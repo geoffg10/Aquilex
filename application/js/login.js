@@ -12,7 +12,7 @@ var fbObj={};
     // Additional init code here
 
 function storeinfo() {  
-	FB.api("/me?fields=hometown",function(data){
+	FB.api("/me",function(data){
 		console.log(data);
 		if(localStorage){
 			

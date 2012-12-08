@@ -33,7 +33,22 @@
 				return $insertResult;
 			}
 			
-		} //close add location
+		} //close check User
+		public function checkFBUser($data){
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "select * from users where fb_id =:fb_id";
+			$st = $db->prepare($sqlst);
+			$results = $st->execute(array(":fb_id"=>$data['fb_id']));
+			$resultData = $st->fetchAll(); //get all responses
+			if($st->rowCount() > 0){ //if the email exists than 
+				//there is a record
+				$validateUser = $this->validateFBUser($data);
+				return $validateUser;
+			}else{
+				$insertResult = $this->validateFBUser($data); //there isn't a record
+				return $insertResult;
+			}
+		}
 		
 		private function insertUser($data){  
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
@@ -45,6 +60,23 @@
 			$usermessage = array('success'=>'user added', 'userid'=>$validateUser);
 			return $usermessage;
 		} //close insert user
+		
+		private function validateFBUser($data){
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "select * from users where fb_id =:fb_id";
+			$st = $db->prepare($sqlst);
+			$results = $st->execute(array(":fb_id"=>$data['fb_id']));
+			$resultData = $st->fetchAll(); //get all responses
+			
+			
+			if($st->rowCount() > 0){
+				//there is a record
+				return array('success'=>'logged in', 'userid'=>$resultData[0]['id']);
+			}else{
+				 //there isn't a record
+				return array('success'=>"password doesn't match");
+			}
+		}//close validate user
 		
 		private function validateUser($data){
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
