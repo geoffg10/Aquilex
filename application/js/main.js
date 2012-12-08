@@ -252,12 +252,7 @@ $(document).ready(function(){
 		});
 	};	
 	
-		$('#addSchooltoList').live('click', function(place){
-			
-			$()
-			console.log(this)
-			
-		});
+		
 	
 	
 });
