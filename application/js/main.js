@@ -248,9 +248,16 @@ $(document).ready(function(){
 	});
 	
 	function makeList(place){ //adding new school list which shows up on the bottom 
-		$('<li>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
+		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
 		});
 	};	
+	
+		$('#addSchooltoList').live('click', function(place){
+			
+			$()
+			console.log(this)
+			
+		});
 	
 	
 });
