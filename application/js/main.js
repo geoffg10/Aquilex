@@ -105,7 +105,9 @@ $(document).ready(function(){
 				createMarker(results[i]); //create the markers on the map
 				createListItem(results[i]); //create the viewable list on the page
 				var google_ref_id = results[i].reference;
-				getLocations(google_ref_id);
+				var what = "";
+				what = getLocations(results[i], google_ref_id);
+				console.log(what);
 						}//end of for loop
 		}
 	}; //close callback
@@ -176,7 +178,7 @@ $(document).ready(function(){
 		});
 	};
 	
-	function getLocations(google_ref_id){ // performing ajax to check db with results then display results
+	function getLocations(data, google_ref_id){ // performing ajax to check db with results then display results
 	
 		$.ajax({
 			type:'POST',
@@ -188,8 +190,9 @@ $(document).ready(function(){
 			success:function(data) {
 				console.log(data);
 				
-				if($(data.result).type === 'object')
+				if(data.result === 'no record')
 				{
+					return "fun";
 					console.log("boobs")
 				}else{
 					console.log("huge knockers")
@@ -199,6 +202,8 @@ $(document).ready(function(){
 				console.log("error ",error);
 			}
 		});//end of ajax
+		
+		makeList(data);
 	};// end of function
 
 
@@ -241,6 +246,25 @@ $(document).ready(function(){
 	$('#addLocation').click(function(e) {  //button to add location to DB
 		addUserLocation(userMarker.position); //add to DB function
 	});
+	
+	function makeList(place){
+$('<li>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
+				console.log("I love boobs");
+			
+		});
+	};	
+	
+	function createListItem(place) { //creates the list items for view by the user and also adds a click function so the user can choose it as their location
+		 
+		//console.log(place); 
+		/*
+$('<li>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
+				console.log(place.name);
+				selectedLocation = place;
+			
+		});
+*/
+	};	
 	
 	
 });
