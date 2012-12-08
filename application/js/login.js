@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	
 	
-	
+	console.log('this is running');
 	
 	
 	$('#login').submit(function(e) {

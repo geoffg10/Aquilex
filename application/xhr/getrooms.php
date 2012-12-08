@@ -9,11 +9,11 @@
 			$locations = $locationsModel->getRooms($_POST);
 			echo json_encode(array('message'=>'rooms', 'result'=>$locations));			
 		}else{
-			echo json_encode(array('message'=>'needs to have a building_id');
+			echo json_encode(array('message'=>'needs to have a building_id'));
 		}
 
 	}else{
-		echo json_encode(array('message'=>'use post');
+		echo json_encode(array('message'=>'use post'));
 
 	}
 

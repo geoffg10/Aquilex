@@ -8,11 +8,11 @@
 			$result = $locationsModel->addLocation($_POST, TRUE);
 			echo json_encode(array('message'=>'location added', 'result'=>$result));
 		}else{
-			echo json_encode(array('message'=>'something is wrong with your stuff');
+			echo json_encode(array('message'=>'something is wrong with your stuff'));
 		}
 		
 	}else{
-		echo json_encode(array('message'=>'use post');
+		echo json_encode(array('message'=>'use post'));
 	}
 
 ?>
