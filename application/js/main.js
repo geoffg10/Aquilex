@@ -177,27 +177,22 @@ $(document).ready(function(){
 	};
 	
 	function getLocations(google_ref_id){ // performing ajax to check db with results then display results
-				//console.log("addLocation ",data.geometry.location.$a);
-											//console.log(google_ref_id) 
-
-					$.ajax({
-						type:'POST',
-						data:{
-							latitude: google_ref_id
-						},
-							url: 'xhr/getlocations.php',
-							dataType: 'json',
-							success:function(data) {
-							alert(google_ref_id);
-							console.log(data) 
-						
-
-							},
-							error:function(error) {  
-								console.log("error ",error);
-							}
-						});//end of ajax
-					};// end of function
+	
+		$.ajax({
+			type:'POST',
+			data:{
+			google_ref_id: google_ref_id
+			},
+			url: 'xhr/getlocations.php',
+			dataType: 'json',
+			success:function(data) {
+				console.log(data);
+			},
+			error:function(error) {  
+				console.log("error ",error);
+			}
+		});//end of ajax
+	};// end of function
 
 
 /*
