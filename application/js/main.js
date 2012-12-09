@@ -21,6 +21,7 @@ $(document).ready(function(){
 	var map;
 	var userMarker;
 	var selectedLocation = {};
+	var campusId = {};
 	
 	
 	
@@ -192,7 +193,7 @@ $(document).ready(function(){
 			url: 'xhr/getlocations.php',
 			dataType: 'json',
 			success:function(successLocData) {
-				console.log(successLocData.result);
+				//console.log(successLocData.result);
 				
 				if(successLocData.result == 'no record')
 				{
@@ -240,30 +241,37 @@ $(document).ready(function(){
 	
 	
 	
-	function addNewBuilding(campusId, latitude, longitude, name, addedBy){ // add building to DB
-		//console.log("addLocation ",data.geometry.location.$a);
+	function addNewBuilding(name, latitude, longitude, campus_identify,addedBy){ // add building to DB
+		console.log("this function is running");
 		$.ajax({
 			type:'POST',
 			data:{
-				campus_id:campusid,
-				latitude: latitude,
-				longitude: longitude,
+				campus_id: 32,
+				latitude: 123123123,
+				longitude: 143241341234,
 				name: name,
-				added_by_id: addedBy
+				added_by_id: 1
+				
 			},
-			url: 'xhr/getbuildings.php',
+			url: 'xhr/addbuilding.php',
 			dataType: 'json',
 			success:function(successData) {  
 				console.log(successData, "was added to database");
 				//console.log(data.reference);
-				if(successData.message=="location added")
+				if(successData.error)
 				{
-					
+					console.log("something didnt work bro")
+				}else{
+					console.log("dude it worked, dont stress")
 				}
-				//getLocations(data, data.id);
+			},
+			error:function(errorData){
+				console.log(errorData);
 			}
 		});
 	};
+	
+	
 
 	
 	
@@ -382,9 +390,13 @@ $(document).ready(function(){
 // ADDING NEW BUILDING CLICK FUNCTION -->	
 	
 	$("#infoBoxBtn").live('click', function(){
-		var infoBoxI = $("#infoBoxInput").val(); // getting the values of the input field
-		console.log(infoBoxI);
-		addNewBuilding(infoBoxI);
+		var name = $("#infoBoxInput").val(); // getting the values of the input field
+		var latitude = pos.$ab; // getting the values of the input field
+		var longitude = pos.$a;
+		var campus_identify = 23;
+		//console.log("your point is at ",campus_identify);
+		
+		addNewBuilding(name, latitude, longitude, campus_identify);
 		
 	})
 		
