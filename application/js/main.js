@@ -212,7 +212,6 @@ $(document).ready(function(){
 					makeList(data);
 				}else{
 					//console.log("make added list");
-					makeAddedSchoolList(data);
 					makeAddedSchoolList(data, successLocData.result);
 				}
 			},
@@ -365,14 +364,12 @@ $(document).ready(function(){
 		});
 	};	
 	
-	function makeAddedSchoolList(place){ //adding new school list which shows up on the top
 	function makeAddedSchoolList(place, data){ //adding new school list which shows up on the top
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
 		
 		$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
 			if($("#chosenSchool").hasClass("hide")){
-				$("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
 				$("#chosenSchool").removeClass("hide");																	$("#schoolTestModal").delay(1000).fadeOut();
 			}else{
 				$("#chosenSchool").addClass("hide");
@@ -393,7 +390,6 @@ $(document).ready(function(){
 				getBuildings(data[0].id);
 		});
 		
-		//if($("#schoolTestModal"))	
 	};	
 	
 	//if schooltest Modal has a school in it
