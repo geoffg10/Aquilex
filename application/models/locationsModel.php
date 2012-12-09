@@ -46,7 +46,13 @@
 			
 			
 		}//close get location
-		
+		public function addBuilding($data){
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "INSERT INTO buildings (campus_id, latitude, longitude, name, added_by_id) VALUES(:campus_id, :latitude, :longitude, :name, :added_by_id)";
+			$st = $db->prepare($sqlst);
+			$results = $st->execute(array(":campus_id"=>$data['campus_id'], ":latitude"=>$data['latitude'], ":longitude"=>$data['longitude'], ":name"=>$data['name'], ":added_by_id"=>$data['added_by_id']));
+			return $results;
+		}
 		// gets building by the campus_id
 		//returns the object with it's id, name, lat, long, campus_id
 		public function getBuildings($data){

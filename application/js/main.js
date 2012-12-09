@@ -21,6 +21,7 @@ $(document).ready(function(){
 	var map;
 	var userMarker;
 	var selectedLocation = {};
+	var campusId = {};
 	
 	
 	
@@ -192,7 +193,7 @@ $(document).ready(function(){
 			url: 'xhr/getlocations.php',
 			dataType: 'json',
 			success:function(successLocData) {
-				console.log(successLocData.result);
+				//console.log(successLocData.result);
 				
 				if(successLocData.result == 'no record')
 				{
@@ -237,6 +238,49 @@ $(document).ready(function(){
 			}
 		});
 	};
+	
+	
+	
+	function addNewBuilding(name, latitude, longitude, campus_identify,addedBy){ // add building to DB
+		console.log("this function is running");
+		$.ajax({
+			type:'POST',
+			data:{
+				campus_id: 32,
+				latitude: 123123123,
+				longitude: 143241341234,
+				name: name,
+				added_by_id: 1
+				
+			},
+			url: 'xhr/addbuilding.php',
+			dataType: 'json',
+			success:function(successData) {  
+				console.log(successData, "was added to database");
+				//console.log(data.reference);
+				if(successData.error)
+				{
+					console.log("something didnt work bro")
+				}else{
+					console.log("dude it worked, dont stress")
+				}
+			},
+			error:function(errorData){
+				console.log(errorData);
+			}
+		});
+	};
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -293,32 +337,19 @@ $(document).ready(function(){
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
 				$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
-																				if($("#chosenSchool").hasClass("hide"))
-																					{
-																					    $("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
-																					}else{
-																						$("#chosenSchool").addClass("hide");
-																					}
-																				
-																				})			
-				
-				
-							
-							/*
- $("#deleteModel").hide("slow",function(){
-								$( "#accnt-settings" ).animate({
-									opacity: "show"
-									}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
-							});
-									$("#schoolTestModal").hide("slow");
-*/
+					if($("#chosenSchool").hasClass("hide"))
+						{
+						    $("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
+						}else{
+							$("#chosenSchool").addClass("hide");
+						}
+					
+					})			
 
-			
-
-		
 		
 	};	
 	
+// CLOSING SCHOOL MODAL -->
 	
 	$('#closeSchoolModal').live('click', function(){
 		$('#schoolTestModal').addClass("hide");
@@ -326,6 +357,48 @@ $(document).ready(function(){
 	})// end of change password option
 
 	
+// ADDING A NEW BUILDING-->	
+	
+	$('#navAddBuilding').live('click', function(){
+		userMarker = new google.maps.Marker({ //create current location marker on the map
+		
+            position: pos,
+            map: map,
+            title: 'drag me',
+            draggable: true,
+        });
+        console.log(pos)
+         infowindow = new google.maps.InfoWindow();  //create infowindow, this is called later to display the location details when clicked
+        
+        
+           	google.maps.event.addListener(userMarker, 'click', function() { //add click function to open a dialog to display the marker's details
+			
+		  	infowindow.setContent("<form><label>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
+		  	infowindow.open(map, this);
+		  	map.setZoom(17);
+		});
+		
+		
+        google.maps.event.addListener(userMarker, 'dragend', function() { 
+       	 // this is the drag function
+       	 console.log(pos);
+		});
+
+	});
+	
+	
+// ADDING NEW BUILDING CLICK FUNCTION -->	
+	
+	$("#infoBoxBtn").live('click', function(){
+		var name = $("#infoBoxInput").val(); // getting the values of the input field
+		var latitude = pos.$ab; // getting the values of the input field
+		var longitude = pos.$a;
+		var campus_identify = 23;
+		//console.log("your point is at ",campus_identify);
+		
+		addNewBuilding(name, latitude, longitude, campus_identify);
+		
+	})
 		
 	
 	
