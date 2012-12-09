@@ -376,7 +376,6 @@ $(document).ready(function(){
 			}
 		});
 		
-		if($("#schoolTestModal"))	
 		});	
 		
 		$('<li><a href="#">'+data[0].name+'</a></li>')//populates the fav dropdown and add click to zoom
