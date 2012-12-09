@@ -3,6 +3,22 @@ $(document).ready(function(){
 	var userObj = {};
 	var fbObj={};
 	
+	function checkLocalStorage(){
+		if(localStorage){
+			if(localStorage.fbObject || localStorage.userObj){
+				$('#dropDown-settings').removeAttr('style');
+				$('#dropDown-login').hide();
+			}else{
+				$('#dropDown-login').removeAttr('style');
+				$('#dropDown-settings').hide();
+			}
+		}
+	}
+	checkLocalStorage();
+	//$('#dropDown-settings').hide();
+	
+	
+	
 	FB.init({ //initializes the FB api
 		oauth		: true,
 		appId      : '121346758027063', // App ID
@@ -49,8 +65,10 @@ $(document).ready(function(){
 					userObj.id = response.result.userid;
 					//if there is local storage store both the userObj and the fbObj with the data
 					if(localStorage){
+						$('#aquilex-login').addClass("hide");
 						localStorage.userObj = JSON.stringify(userObj);
 						localStorage.fbObject = JSON.stringify(data);
+						checkLocalStorage();
 					}
 			    },error: function(errorResponse) {  
 				    //console.log(errorResponse);
@@ -107,14 +125,18 @@ $(document).ready(function(){
 					}else if(response.result.success == "user added"){
 						//user can been added
 						userObj.id = response.result.userid.userid;
+						$('#aquilex-login').addClass("hide");
 						if(localStorage){
 							localStorage.userObj = JSON.stringify(userObj);
+							checkLocalStorage();
 						}
 					}else if(response.result.success == "logged in"){
 						//user is logged in
 						userObj.id = response.result.userid;
+						$('#aquilex-login').addClass("hide");
 						if(localStorage){
 							localStorage.userObj = JSON.stringify(userObj);
+							checkLocalStorage();
 						}
 					}
 				}
