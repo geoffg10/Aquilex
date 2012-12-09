@@ -213,6 +213,7 @@ $(document).ready(function(){
 				}else{
 					//console.log("make added list");
 					makeAddedSchoolList(data);
+					makeAddedSchoolList(data, successLocData.result);
 				}
 			},
 			error:function(error) {  
@@ -283,6 +284,30 @@ $(document).ready(function(){
 	};
 	
 	
+	function getBuildings(data){ // performing ajax to get buildings from the selected College 
+
+		$.ajax({
+			type:'POST',
+			data:{
+				campus_id: data
+			},
+			url: 'xhr/getbuildings.php',
+			dataType: 'json',
+			success:function(successLocData) {
+				
+				for (var i = 0; i < successLocData.result.length; i++) {
+					console.log(successLocData.result[i].name);
+				}
+			},
+			error:function(error) {  
+				console.log("error ",error);
+			}
+		});//end of ajax
+		
+		
+	};// end of function
+	
+	
 
 	
 	
@@ -341,15 +366,31 @@ $(document).ready(function(){
 	};	
 	
 	function makeAddedSchoolList(place){ //adding new school list which shows up on the top
+	function makeAddedSchoolList(place, data){ //adding new school list which shows up on the top
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
 		
 		$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
 			if($("#chosenSchool").hasClass("hide")){
 				$("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
+				$("#chosenSchool").removeClass("hide");																	$("#schoolTestModal").delay(1000).fadeOut();
 			}else{
 				$("#chosenSchool").addClass("hide");
 			}
+		});
+		
+		if($("#schoolTestModal"))	
+		});	
+		
+		$('<li><a href="#">'+data[0].name+'</a></li>')//populates the fav dropdown and add click to zoom
+			.appendTo('.dropdown-menu')
+			.click(function(e) { 
+				map.setZoom(17);
+				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);												map.setCenter(pos);
+				console.log(data[0].id);
+				
+
+				getBuildings(data[0].id);
 		});
 		
 		//if($("#schoolTestModal"))	
