@@ -126,6 +126,7 @@ $(document).ready(function(){
 
 	function createMarker(place) { //creates markers on the map
 		var placeLoc = place.geometry.location;
+		console.log(placeLoc);
 		var marker = new google.maps.Marker({
 		  	map: map,
 		  	position: place.geometry.location
@@ -295,7 +296,26 @@ $(document).ready(function(){
 			success:function(successLocData) {
 				
 				for (var i = 0; i < successLocData.result.length; i++) {
-					console.log(successLocData.result[i].name);
+					
+					var building = successLocData.result[i]
+					var lalo = new google.maps.LatLng(building.latitude,building.longitude)
+					//this creates markers of building of the campus selected. Data comes from DB
+					var marker = new google.maps.Marker({
+					  	map: map,
+					  	position: lalo
+					 });
+					  	
+					google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the marker's details
+			
+				  	infowindow.setContent(building.name);
+				  	infowindow.open(map, this);
+				  	map.setZoom(20);
+				  	map.setCenter(lalo);
+				  	
+		});
+
+
+					
 				}
 			},
 			error:function(error) {  
@@ -380,7 +400,7 @@ $(document).ready(function(){
 	
 		
 		$('<li><a href="#">'+data[0].name+'</a></li>')//populates the fav dropdown and add click to zoom
-			.appendTo('.dropdown-menu')
+			.appendTo('#favorites')
 			.click(function(e) { 
 				map.setZoom(17);
 				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
