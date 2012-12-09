@@ -239,7 +239,7 @@ $(document).ready(function(){
 		});
 	};
 	
-	
+	// hard coded data, need help renee!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	function addNewBuilding(name, latitude, longitude, campus_identify,addedBy){ // add building to DB
 		console.log("this function is running");
