@@ -350,8 +350,20 @@ $(document).ready(function(){
 			}else{
 				$("#chosenSchool").addClass("hide");
 			}
-		});	
+		});
+		
+		if($("#schoolTestModal"))	
 	};	
+	
+	//if schooltest Modal has a school in it
+		// DO NOT SHOW UP
+	// if it doesnt have a school in it
+		//SHOW UP
+		
+	
+		
+		
+		
 	
 // CLOSING SCHOOL MODAL -->
 	
