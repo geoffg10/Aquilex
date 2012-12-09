@@ -292,7 +292,16 @@ $(document).ready(function(){
 	function makeAddedSchoolList(place){ //adding new school list which shows up on the top
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
-				$("#schoolAddedModal").animate({opacity:"show"}, "slow", function(args){$("#schoolTestModal").delay(1000).fadeOut()})			
+				$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
+																				if($("#chosenSchool").hasClass("hide"))
+																					{
+																					    $("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
+																					}else{
+																						$("#chosenSchool").addClass("hide");
+																					}
+																				
+																				})			
+				
 				
 							
 							/*
