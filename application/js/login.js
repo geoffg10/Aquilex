@@ -38,48 +38,53 @@ $(document).ready(function(){
     };
     
     function storeinfo() {  //this happens when the user clicks the sign in with FB option
-		FB.api("/me",function(data){
-			console.log(data);
-			fbObj = data; //set global fbObj to the data returned from FB
-			//login to the DB, this will check if the user exists
-			//if the user exists than the userid is returned, 
-			//it will register the user if they do not exist and will return the created userid
-			$.ajax({
-				type:'POST', 
-				url: 'xhr/fblogin.php', 
-				data:{
-					fb_id:			data.id,
-					fb_first_name:	data.first_name || '',
-					fb_middle_name:	data.middle_name || '',
-					fb_last_name:	data.last_name || '',
-					fb_gender:		data.gender || '',
-					fb_link:		data.link || '',
-					fb_locale:		data.locale || '',
-					fb_name:		data.name || '',
-					fb_timezone:	data.timezone || '',
-					fb_updated_time: data.updated_time || '',
-					fb_username: 	data.username || ''
-				}, 
-				dataType: 'json',
-				success: function(response) {
-					//set the userObj to hold the userid generated in the DB
-					userObj.id = response.result.userid;
-					//if there is local storage store both the userObj and the fbObj with the data
-					if(localStorage){
-						$('#aquilex-login').addClass("hide");
-						localStorage.userObj = JSON.stringify(userObj);
-						localStorage.fbObject = JSON.stringify(data);
-						checkLocalStorage();
-					}
-			    },error: function(errorResponse) {  
-				    //console.log(errorResponse);
-				    
-		    }});
-		    //this will get the user's fb profile image to use in the frontend if wanted
-		    getImage();
-			
-		});//close fblogin ajax call
-		
+		FB.login(function(response){
+			if(response.authResponse){
+				FB.api("/me",function(data){
+					console.log(data);
+					fbObj = data; //set global fbObj to the data returned from FB
+					//login to the DB, this will check if the user exists
+					//if the user exists than the userid is returned, 
+					//it will register the user if they do not exist and will return the created userid
+					$.ajax({
+						type:'POST', 
+						url: 'xhr/fblogin.php', 
+						data:{
+							fb_id:			data.id,
+							fb_first_name:	data.first_name || '',
+							fb_middle_name:	data.middle_name || '',
+							fb_last_name:	data.last_name || '',
+							fb_gender:		data.gender || '',
+							fb_link:		data.link || '',
+							fb_locale:		data.locale || '',
+							fb_name:		data.name || '',
+							fb_timezone:	data.timezone || '',
+							fb_updated_time: data.updated_time || '',
+							fb_username: 	data.username || ''
+						}, 
+						dataType: 'json',
+						success: function(response) {
+							//set the userObj to hold the userid generated in the DB
+							userObj.id = response.result.userid;
+							//if there is local storage store both the userObj and the fbObj with the data
+							if(localStorage){
+								$('#aquilex-login').addClass("hide");
+								localStorage.userObj = JSON.stringify(userObj);
+								localStorage.fbObject = JSON.stringify(data);
+								checkLocalStorage();
+							}
+					    },error: function(errorResponse) {  
+						    //console.log(errorResponse);
+						    
+				    }});
+				    //this will get the user's fb profile image to use in the frontend if wanted
+				    getImage();
+					
+				});//close fblogin ajax call
+		}else{
+				console.log('not authorized');
+			}
+		});
 				
 	}; //close storeinfo()
     
