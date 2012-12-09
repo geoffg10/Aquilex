@@ -153,7 +153,7 @@ $(document).ready(function(){
 				longitude: data.geometry.location.ab,
 				name:data.name,
 				google_ref_id: data.reference,
-				added_by_id: 1
+				added_by_id: JSON.parse(localStorage.userObj.id)
 			},
 			url: 'xhr/addlocation.php',
 			dataType: 'json',
