@@ -237,6 +237,42 @@ $(document).ready(function(){
 			}
 		});
 	};
+	
+	
+	
+	function addNewBuilding(campusId, latitude, longitude, name, addedBy){ // add building to DB
+		//console.log("addLocation ",data.geometry.location.$a);
+		$.ajax({
+			type:'POST',
+			data:{
+				campus_id:campusid,
+				latitude: latitude,
+				longitude: longitude,
+				name: name,
+				added_by_id: addedBy
+			},
+			url: 'xhr/getbuildings.php',
+			dataType: 'json',
+			success:function(successData) {  
+				console.log(successData, "was added to database");
+				//console.log(data.reference);
+				if(successData.message=="location added")
+				{
+					
+				}
+				//getLocations(data, data.id);
+			}
+		});
+	};
+
+	
+	
+	
+	
+	
+	
+	
+	
 
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
@@ -293,32 +329,19 @@ $(document).ready(function(){
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
 				$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
-																				if($("#chosenSchool").hasClass("hide"))
-																					{
-																					    $("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
-																					}else{
-																						$("#chosenSchool").addClass("hide");
-																					}
-																				
-																				})			
-				
-				
-							
-							/*
- $("#deleteModel").hide("slow",function(){
-								$( "#accnt-settings" ).animate({
-									opacity: "show"
-									}, "slow", function(args) { $("#accountDelted").fadeIn().delay(1000).fadeOut() } );
-							});
-									$("#schoolTestModal").hide("slow");
-*/
+					if($("#chosenSchool").hasClass("hide"))
+						{
+						    $("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
+						}else{
+							$("#chosenSchool").addClass("hide");
+						}
+					
+					})			
 
-			
-
-		
 		
 	};	
 	
+// CLOSING SCHOOL MODAL -->
 	
 	$('#closeSchoolModal').live('click', function(){
 		$('#schoolTestModal').addClass("hide");
@@ -326,6 +349,44 @@ $(document).ready(function(){
 	})// end of change password option
 
 	
+// ADDING A NEW BUILDING-->	
+	
+	$('#navAddBuilding').live('click', function(){
+		userMarker = new google.maps.Marker({ //create current location marker on the map
+		
+            position: pos,
+            map: map,
+            title: 'drag me',
+            draggable: true,
+        });
+        console.log(pos)
+         infowindow = new google.maps.InfoWindow();  //create infowindow, this is called later to display the location details when clicked
+        
+        
+           	google.maps.event.addListener(userMarker, 'click', function() { //add click function to open a dialog to display the marker's details
+			
+		  	infowindow.setContent("<form><label>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
+		  	infowindow.open(map, this);
+		  	map.setZoom(17);
+		});
+		
+		
+        google.maps.event.addListener(userMarker, 'dragend', function() { 
+       	 // this is the drag function
+       	 console.log(pos);
+		});
+
+	});
+	
+	
+// ADDING NEW BUILDING CLICK FUNCTION -->	
+	
+	$("#infoBoxBtn").live('click', function(){
+		var infoBoxI = $("#infoBoxInput").val(); // getting the values of the input field
+		console.log(infoBoxI);
+		addNewBuilding(infoBoxI);
+		
+	})
 		
 	
 	
