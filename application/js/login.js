@@ -1,8 +1,19 @@
+/* 
+	Author: Renee Blunt
+	Date: December 7, 2012
+	Project: MDD - Aquilex
+	Project co-auth: Geoffrey Ganga, Jarvis Jardin
+
+	The below code is used for logout and login
+	This inlcudes the fbapi for login
+
+*/
 $(document).ready(function(){
 	
 	var userObj = {};
 	var fbObj={};
 	
+	//checkLocalStorage will change the state of the user's navigation for login/logout, this can be called wherever a change is needed
 	function checkLocalStorage(){
 		if(localStorage){
 			if(localStorage.fbObject || localStorage.userObj){
@@ -14,9 +25,8 @@ $(document).ready(function(){
 			}
 		}
 	}
+	//runs check on load
 	checkLocalStorage();
-	//$('#dropDown-settings').hide();
-	
 	
 	
 	FB.init({ //initializes the FB api
@@ -28,6 +38,7 @@ $(document).ready(function(){
 	});
     
     //gets the user's fb profile picture
+    //this runs after the storinfo() upon a successful login
     function getImage() {  
 	    FB.api("/"+fbObj.username+"/picture", function(imgData){
 			fbObj.picture = imgData.data.url; //update the fbObj with the picture url
@@ -37,6 +48,11 @@ $(document).ready(function(){
 		});
     };
     
+    //storeinfo is called on a fblogin click
+    //this function will log the user in with FB 
+    //it checks to see if the user exists in the DB and if they do it returns the user's id
+    //if the user already exists it returns the user's id
+    // users FB data is added to the fbObject for localStorage
     function storeinfo() {  //this happens when the user clicks the sign in with FB option
 		FB.login(function(response){
 			if(response.authResponse){
@@ -88,6 +104,8 @@ $(document).ready(function(){
 				
 	}; //close storeinfo()
     
+    //checks the email when the input field loses focus
+    //can change the text when the email is found
 	$('input[name="email"]').focusout(function(e){
 	
 		console.log($(this).val());
@@ -110,29 +128,35 @@ $(document).ready(function(){
 		    }});
 	});
 	
+	//login with facebook
 	$('#fbLogin').click(function(e) {  
 		//login with FB
 		storeinfo();
 	});
 	
-	$().click(function(e) {  
+	
+	//logs user out
+	$('#logout').click(function(e) {  
 		if(localStorage){
-			if(localStorage.fbObj){
+			if(localStorage.fbObject){
 				FB.logout(function(response){
-					console.log("you've logged out "+response);
+					console.log("you've logged out ",response);
 				});
 			}
+			localStorage.clear();
+			checkLocalStorage();
 		}
 	});
-	
+	//normal login
 	$('#login').submit(function(e) {
+		
 		$.ajax({
 			type:'POST', 
 			url: 'xhr/login.php', 
 			data:$(this).serialize(), 
 			dataType: 'json',
 			success: function(response) {
-				console.log(response);
+				//console.log(response);
 				if(response.message=="email only"){
 					console.log('just email');
 				}else if(response.message=="connected"){
