@@ -380,18 +380,20 @@ $(document).ready(function(){
 	function makeList(place){ //adding new school list which shows up on the bottom 
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {
 			addmyCampus(place);
-			$(this).remove();
+			$(this).remove();// will remove the li that you clicked on
 		});
 	};	
 	
 	function makeAddedSchoolList(place, data){ //adding new school list which shows up on the top
-		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
+		$('<li>'+place.name+'<span id="schoolAddedModal" class="text-success aquilex-block">School has been added</span></li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
 		
 		$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
 			if($("#chosenSchool").hasClass("hide")){
 				$("#chosenSchool").removeClass("hide");
-				$("#schoolTestModal").delay(1000).fadeOut();
+				$("#schoolTestModal").fadeOut('slow', function() {  
+					//$("#schoolAddedModal").remove();
+				});
 			}else{
 				$("#chosenSchool").addClass("hide");
 			}

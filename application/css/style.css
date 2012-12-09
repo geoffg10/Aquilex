@@ -150,3 +150,7 @@ legend.aquilex-cpwTitle{
 	margin-left: 7%;
 	text-decoration: underline;
 }
+
+.aquilex-block{
+	display: block;
+}
