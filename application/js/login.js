@@ -115,6 +115,16 @@ $(document).ready(function(){
 		storeinfo();
 	});
 	
+	$().click(function(e) {  
+		if(localStorage){
+			if(localStorage.fbObj){
+				FB.logout(function(response){
+					console.log("you've logged out "+response);
+				});
+			}
+		}
+	});
+	
 	$('#login').submit(function(e) {
 		$.ajax({
 			type:'POST', 
