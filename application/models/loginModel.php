@@ -42,10 +42,9 @@
 			$resultData = $st->fetchAll(); //get all responses
 			if($st->rowCount() > 0){ //if the email exists than 
 				//there is a record
-				$validateUser = $this->validateFBUser($data);
-				return $validateUser;
+				return array('success'=>'logged in', 'userid'=>$resultData[0]['id']);
 			}else{
-				$insertResult = $this->validateFBUser($data); //there isn't a record
+				$insertResult = $this->insertFBUser($data); //there isn't a record
 				return $insertResult;
 			}
 		}
@@ -61,6 +60,16 @@
 			return $usermessage;
 		} //close insert user
 		
+		private function insertFBUser($data){  
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "insert into users(fb_id, fb_first_name, fb_middle_name, fb_last_name, fb_gender, fb_link, fb_locale, fb_name, fb_timezone, fb_updated_time, fb_username)values(:fb_id, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_gender, :fb_link, :fb_locale, :fb_name, :fb_timezone, :fb_updated_time, :fb_username)";
+			$st = $db->prepare($sqlst);
+			$results = $st->execute(array(":fb_id"=>$data['fb_id'], ":fb_first_name"=>$data['fb_first_name'], ":fb_middle_name"=>$data['fb_middle_name'], ":fb_last_name"=>$data['fb_last_name'], ":fb_gender"=>$data['fb_gender'], ":fb_link"=>$data['fb_link'], ":fb_locale"=>$data['fb_locale'], ":fb_name"=>$data['fb_name'], ":fb_timezone"=>$data['fb_timezone'], ":fb_updated_time"=>$data['fb_updated_time'], ":fb_username"=>$data['fb_username']));
+			
+			$id = $this->validateFBUser($data);
+			return $id;
+		} //close insertFB user
+		
 		private function validateFBUser($data){
 			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
 			$sqlst = "select * from users where fb_id =:fb_id";
@@ -74,7 +83,7 @@
 				return array('success'=>'logged in', 'userid'=>$resultData[0]['id']);
 			}else{
 				 //there isn't a record
-				return array('success'=>"password doesn't match");
+				return array('success'=>"not found");
 			}
 		}//close validate user
 		

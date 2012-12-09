@@ -5,7 +5,7 @@
 	
 	
 	if($_POST){
-		if($_POST['email']!='' && $_POST['password']!=''){
+		if($_POST['email']!='' && isset($_POST['password'])){
 			$_POST['password'] = sha1($_POST['password']);
 			$loginResult = $loginModel->checkUser($_POST);
 			echo json_encode(array('message'=>'connected', 'result'=>$loginResult));
