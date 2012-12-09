@@ -17,9 +17,9 @@ $(document).ready(function(){
 	
 	var map;
 	var infowindow;
-	var pos;
+	var pos; //this is the users location that is displayed on google maps
 	var map;
-	var userMarker;
+	var userMarker;  //this is the visual location/marker of the user
 	var selectedLocation = {};
 	var campusId = {};
 	
@@ -38,6 +38,8 @@ $(document).ready(function(){
 	
 	//initialize() is the first function fired, it is called on a domlistener for window load
 	//it loads the map first based off of the users IP
+	/*===================================================================================================== ##1.1 runs initialize on load
+	*/
 	function initialize() { 
 	
         pos = new google.maps.LatLng(geoIPLat, geoIPLong); //create map position
@@ -59,6 +61,8 @@ $(document).ready(function(){
         google.maps.event.addListener(userMarker, 'dragend', function() { 
         	
 		});
+			/*===================================================================================================== ##2 getUniversities runs after initialize on load
+	*/
 			getUniversities();
 
       }; //close initialize
@@ -75,6 +79,8 @@ $(document).ready(function(){
 	
 	
 	//initialize();
+	/*===================================================================================================== ##1 runs initialize on load
+	*/
 	google.maps.event.addDomListener(window, 'load', initialize);
 	
 	
@@ -85,7 +91,8 @@ $(document).ready(function(){
 
 
 
-	
+	/*===================================================================================================== ##2.1 getUniversities runs after initialize on load
+	*/
 	function getUniversities() {  //gets universities in users location
 		
         var request = {
@@ -95,21 +102,25 @@ $(document).ready(function(){
 	      };
 	      
 	    var service = new google.maps.places.PlacesService(map);  //create a google places service
+	    /*===================================================================================================== ##2.2 callback runs after getUniversities on load
+	*/
 	    service.nearbySearch(request, callback);  //first parm is the request object, then runs the function with the results
 
 	}; //close getUniversities
-	    
+	 
+	   /*===================================================================================================== ##2.2.1 callback runs after getUniversities on load
+	*/   
 	function callback(results, status) {  //first param is the results json object from the getUniversities query, the second param is the status
 		
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
 			for (var i = 0; i < results.length; i++) {
+				var google_ref_id = results[i].id;
+				
 				createMarker(results[i]); //create the markers on the map
 				createListItem(results[i]); //create the viewable list on the page
-				var google_ref_id = results[i].id;
-				var what = "";
-				what = getLocations(results[i], google_ref_id);
-			//	console.log(what);
-						}//end of for loop
+				getLocations(results[i], google_ref_id);
+			
+			}//end of for loop
 		}
 	}; //close callback
 
@@ -323,30 +334,23 @@ $(document).ready(function(){
 	});
 	
 	function makeList(place){ //adding new school list which shows up on the bottom 
-		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {  
-							//console.log(place.name);
-							//console.log(place.geometry);
-							//console.log("this object", place);
-							//console.log("this is new sucka" ,place.reference)
-							addmyCampus(place);
-							$(this).remove();
+		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {
+			addmyCampus(place);
+			$(this).remove();
 		});
 	};	
 	
 	function makeAddedSchoolList(place){ //adding new school list which shows up on the top
 		$('<li>'+place.name+'</li>').fadeIn().appendTo('#ourAddedList');
 		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
-				$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
-					if($("#chosenSchool").hasClass("hide"))
-						{
-						    $("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
-						}else{
-							$("#chosenSchool").addClass("hide");
-						}
-					
-					})			
-
 		
+		$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
+			if($("#chosenSchool").hasClass("hide")){
+				$("#chosenSchool").removeClass("hide");																														        $("#schoolTestModal").delay(1000).fadeOut();
+			}else{
+				$("#chosenSchool").addClass("hide");
+			}
+		});	
 	};	
 	
 // CLOSING SCHOOL MODAL -->

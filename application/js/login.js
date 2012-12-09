@@ -39,6 +39,7 @@ $(document).ready(function(){
     
     function storeinfo() {  //this happens when the user clicks the sign in with FB option
 		FB.api("/me",function(data){
+			console.log(data);
 			fbObj = data; //set global fbObj to the data returned from FB
 			//login to the DB, this will check if the user exists
 			//if the user exists than the userid is returned, 
