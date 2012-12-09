@@ -370,7 +370,8 @@ $(document).ready(function(){
 		
 		$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
 			if($("#chosenSchool").hasClass("hide")){
-				$("#chosenSchool").removeClass("hide");																	$("#schoolTestModal").delay(1000).fadeOut();
+				$("#chosenSchool").removeClass("hide");
+				$("#schoolTestModal").delay(1000).fadeOut();
 			}else{
 				$("#chosenSchool").addClass("hide");
 			}
@@ -382,14 +383,15 @@ $(document).ready(function(){
 			.appendTo('.dropdown-menu')
 			.click(function(e) { 
 				map.setZoom(17);
-				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);												map.setCenter(pos);
+				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+				map.setCenter(pos);
 				console.log(data[0].id);
 				
 
 				getBuildings(data[0].id);
 		});
 		
-	};	
+		
 	
 	//if schooltest Modal has a school in it
 		// DO NOT SHOW UP
