@@ -352,7 +352,7 @@ $(document).ready(function(){
 			}
 		});
 		
-		if($("#schoolTestModal"))	
+		//if($("#schoolTestModal"))	
 	};	
 	
 	//if schooltest Modal has a school in it
