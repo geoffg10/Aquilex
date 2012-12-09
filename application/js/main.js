@@ -377,7 +377,7 @@ $(document).ready(function(){
 			}
 		});
 		
-		});	
+	
 		
 		$('<li><a href="#">'+data[0].name+'</a></li>')//populates the fav dropdown and add click to zoom
 			.appendTo('.dropdown-menu')
@@ -391,7 +391,7 @@ $(document).ready(function(){
 				getBuildings(data[0].id);
 		});
 		
-		
+	};	
 	
 	//if schooltest Modal has a school in it
 		// DO NOT SHOW UP
