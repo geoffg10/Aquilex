@@ -376,7 +376,6 @@ $(document).ready(function(){
 	$('#addLocation').click(function(e) {  //button to add location to DB
 		addUserLocation(userMarker.position); //add to DB function
 	});
-	
 	function makeList(place){ //adding new school list which shows up on the bottom 
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {
 			addmyCampus(place);
@@ -385,6 +384,7 @@ $(document).ready(function(){
 	};	
 	
 	function makeAddedSchoolList(place, data){ //adding new school list which shows up on the top
+	
 		$('<li>'+place.name+'<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
 			"slow", function() {  
 					$("#schoolAddedMSG").fadeOut(
@@ -400,9 +400,8 @@ $(document).ready(function(){
 				$("#chosenSchool").addClass("hide");
 			}
 
-		$('<li><a href="#">'+data[0].name+'</a></li>')//populates the fav dropdown and add click to zoom
-			.appendTo('#favorites')
-			.click(function(e) { 
+//populates the fav dropdown and add click to zoom
+		$('<li><a href="#">'+data[0].name+'</a></li>').appendTo('#favorites').click(function(e) { 
 				map.setZoom(17);
 				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
 				map.setCenter(pos);
@@ -417,33 +416,34 @@ $(document).ready(function(){
 	//adding location to local storage
 	
 	function addLocationLocalStorage(data){
-		localStorage.chosenCampus = JSON.stringify(data);
-		$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');
-
+		if(localStorage){
+				localStorage.chosenCampus = JSON.stringify(data);
+		}
+		$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');	
 	}
 	
-	// end of adding location to local storage
 	
-	//if schooltest Modal has a school in it
-		// DO NOT SHOW UP
-	// if it doesnt have a school in it
-		//SHOW UP
-		
-	
-	function modalCheck(){
-		var stuff = $('#yourchosenSchool').children().length;
-		//var stuff = document.getElementById('yourchosenSchool').hasChildNodes();
-			console.log(stuff);
-		/*
-if(stuff.length == 0){
-			console.log('none');
+// if there is a school in the local storage, then the modal shouldnt show up
+	//if there no school is in the local storage then the modal should show up
+	function createSelectedLocation() {  
+		if(localStorage){
+			if(localStorage.chosenCampus){
+				var data = JSON.parse(localStorage.chosenCampus);
+				
+				$('<p>'+data[0].name+'</p>').empty().appendTo('#yourchosenSchool');
+			}else{
+				$("#schoolModal").removeClass("hide");
+			}
+		}else{
+			//show modal
+				$("#schoolModal").removeClass("hide");
+				//console.log()
 		}
-*/
-			
-	}	
-	modalCheck();
-		
+	};
+		// end of adding location to local storage
 	
+		createSelectedLocation();
+
 // CLOSING SCHOOL MODAL -->
 	
 	$('#closeSchoolModal').live('click', function(){
