@@ -432,8 +432,7 @@ $(document).ready(function(){
 	};	
 	
 //adding location to local storage
-	/*
-function addLocationLocalStorage(data){
+	function addLocationLocalStorage(data){
 		if(localStorage){
 			//if local storage contains the chosen campus, then stringify
 				localStorage.chosenCampus = JSON.stringify(data);
@@ -441,7 +440,6 @@ function addLocationLocalStorage(data){
 						$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');	
 		}
 	}
-*/
 	
 	
 // if there is a school in the local storage, then the modal shouldnt show up
@@ -475,7 +473,7 @@ function addLocationLocalStorage(data){
 	$('#closeSchoolModal').live('click', function(){
 		$('#schoolTestModal').addClass("hide");
 		
-	})// end of change password option
+	})
 
 	
 // ADDING A NEW BUILDING-->	
