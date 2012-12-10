@@ -385,22 +385,21 @@ $(document).ready(function(){
 	};	
 	
 	function makeAddedSchoolList(place, data){ //adding new school list which shows up on the top
-		$('<li>'+place.name+'<span id="schoolAddedModal" class="text-success aquilex-block">School has been added</span></li>').fadeIn().appendTo('#ourAddedList');
-		$('<p>'+place.name+'</p>').appendTo('#yourchosenSchool');
-		
-		$("#schoolAddedModal").animate({opacity:"show"}, "fast", function(args){
-			if($("#chosenSchool").hasClass("hide")){
+		$('<li>'+place.name+'<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
+			"slow", function() {  
+					$("#schoolAddedMSG").fadeOut(
+						'slow', function(){
+							$("#schoolModal").fadeOut('slow');
+						}).remove();
+			}).appendTo('#ourAddedList');
+			addLocationLocalStorage(data);
+		if($("#chosenSchool").hasClass("hide")){
 				$("#chosenSchool").removeClass("hide");
-				$("#schoolTestModal").fadeOut('slow', function() {  
-					//$("#schoolAddedModal").remove();
-				});
+				
 			}else{
 				$("#chosenSchool").addClass("hide");
 			}
-		});
-		
-	
-		
+
 		$('<li><a href="#">'+data[0].name+'</a></li>')//populates the fav dropdown and add click to zoom
 			.appendTo('#favorites')
 			.click(function(e) { 
@@ -415,14 +414,34 @@ $(document).ready(function(){
 		
 	};	
 	
+	//adding location to local storage
+	
+	function addLocationLocalStorage(data){
+		localStorage.chosenCampus = JSON.stringify(data);
+		$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');
+
+	}
+	
+	// end of adding location to local storage
+	
 	//if schooltest Modal has a school in it
 		// DO NOT SHOW UP
 	// if it doesnt have a school in it
 		//SHOW UP
 		
 	
-		
-		
+	function modalCheck(){
+		var stuff = $('#yourchosenSchool').children().length;
+		//var stuff = document.getElementById('yourchosenSchool').hasChildNodes();
+			console.log(stuff);
+		/*
+if(stuff.length == 0){
+			console.log('none');
+		}
+*/
+			
+	}	
+	modalCheck();
 		
 	
 // CLOSING SCHOOL MODAL -->
