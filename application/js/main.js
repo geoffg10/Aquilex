@@ -332,7 +332,7 @@ $(document).ready(function(){
 			
 				for(var i=0;i<response.result.length;i++){
 					
-					//console.log(response.result[i].name);
+					console.log(response.result[i].name);
 				}
 			},
 			error:function(error) {  
