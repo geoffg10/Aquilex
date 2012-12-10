@@ -27,7 +27,7 @@ $(document).ready(function(){
 	
 	
 /*	The below variables are just for an initial map location 
-	we're doing this so that the user isn;t prompted to share IP on inital page load
+	we're doing this so that the user isn't prompted to share IP on inital page load
 	until they've decided they want to use the application
 	*lat and long based off of user's ip using the maxmind geoip js 
 	*methods are listed here http://dev.maxmind.com/geoip/javascript
@@ -63,7 +63,7 @@ $(document).ready(function(){
 		});
 			/*===================================================================================================== ##2 getUniversities runs after initialize on load
 	*/
-			getUniversities();
+			getUniversities();// calls the function get university
 
       }; //close initialize
 	
@@ -117,7 +117,6 @@ $(document).ready(function(){
 				var google_ref_id = results[i].id;
 				
 				createMarker(results[i]); //create the markers on the map
-				createListItem(results[i]); //create the viewable list on the page
 				getLocations(results[i], google_ref_id);
 			
 			}//end of for loop
@@ -139,16 +138,7 @@ $(document).ready(function(){
 		});
 	}; //close createMarker
 	
-	function createListItem(place) { //creates the list items for view by the user and also adds a click function so the user can choose it as their location
-		 
-		//console.log(place); 
-		$('<li>'+place.name+'</li>').appendTo('#schools').click(function(e) {  
-				console.log(place.name);
-				selectedLocation = place;
-			
-		});
-	};	
-
+// this function mark buildings  and is going to be called later in an ajax call
 	function buildingMarker(data){
 		var marker = new google.maps.Marker({
 		 	map: map,
@@ -241,7 +231,6 @@ $(document).ready(function(){
 
 
 	function addmyCampus(data){ // add location to DB, takes the place object
-		//console.log("addLocation ",data.geometry.location.$a);
 		$.ajax({
 			type:'POST',
 			data:{
@@ -254,7 +243,7 @@ $(document).ready(function(){
 			url: 'xhr/addcampus.php',
 			dataType: 'json',
 			success:function(successData) {  
-				console.log(successData, "was added to database");
+				//console.log(successData, "was added to database");
 				//console.log(data.reference);
 				if(successData.message=="location added")
 				{
@@ -268,7 +257,7 @@ $(document).ready(function(){
 	// hard coded data, need help renee!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	function addNewBuilding(name, latitude, longitude, campus_identify,addedBy){ // add building to DB
-		console.log("this function is running");
+		//console.log("this function is running");
 		$.ajax({
 			type:'POST',
 			data:{
@@ -282,7 +271,7 @@ $(document).ready(function(){
 			url: 'xhr/addbuilding.php',
 			dataType: 'json',
 			success:function(successData) {  
-				console.log(successData, "was added to database");
+				//console.log(successData, "was added to database");
 				//console.log(data.reference);
 				if(successData.error)
 				{
@@ -321,7 +310,7 @@ $(document).ready(function(){
 				};	
 			},
 			error:function(error) {  
-				console.log("error ",error);
+				//console.log("error ",error);
 			}
 		});//end of ajax
 		
@@ -343,7 +332,7 @@ $(document).ready(function(){
 			
 				for(var i=0;i<response.result.length;i++){
 					
-					console.log(response.result[i].name);
+					//console.log(response.result[i].name);
 				}
 			},
 			error:function(error) {  
@@ -388,34 +377,40 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$('#showSchools').click(function(e) {  //display list of schools
-		$('#schools').empty();
-		getUniversities();
-		
-	});
-	
-	$('#addSchool').click(function(e) {  //button to add location to DB
-		addLocation(selectedLocation); //add to DB function
-	});
+
 	$('#addLocation').click(function(e) {  //button to add location to DB
 		addUserLocation(userMarker.position); //add to DB function
-	});
-	function makeList(place){ //adding new school list which shows up on the bottom 
+	}); 
+	
+	
+// Modal is populated with schools from google that are in your location and put at the bottom of the modal.	
+	function makeList(place){ 
+		// this makes an List of all the schools and addes them to the ul called Test list
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {
+			// calling the ajax function when the button is clicked 
+				//the ajax function will send the school to the database
 			addmyCampus(place);
-			$(this).remove();// will remove the li that you clicked on
+			// after the school you chose has been clicked and added to the database, it is then removed from the list of schools
+			$(this).remove();
 		});
 	};	
 	
-	function makeAddedSchoolList(place, data){ //adding new school list which shows up on the top
-	
+// Top part of the "add your school" modal
+	// this will show the school you have chosen then will cause the modal to disspear
+	function makeAddedSchoolList(place, data){ 
+		// this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
+			// the message saying "school has been added" will slowly fade in
 		$('<li>'+place.name+'<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
 			"slow", function() {  
+				// the "school has been added" will then fade out
 					$("#schoolAddedMSG").fadeOut(
 						'slow', function(){
+						// the "add your school" modal will then fade out and be removed from the DOM
 							$("#schoolModal").fadeOut('slow');
 						}).remove();
+				// the school that you chose will then be added to ul "our added list" which is the top part of the " add your school" modal.		
 			}).appendTo('#ourAddedList');
+			// calling the local storage function
 			addLocationLocalStorage(data);
 		if($("#chosenSchool").hasClass("hide")){
 				$("#chosenSchool").removeClass("hide");
@@ -436,14 +431,17 @@ $(document).ready(function(){
 		
 	};	
 	
-	//adding location to local storage
-	
-	function addLocationLocalStorage(data){
+//adding location to local storage
+	/*
+function addLocationLocalStorage(data){
 		if(localStorage){
+			//if local storage contains the chosen campus, then stringify
 				localStorage.chosenCampus = JSON.stringify(data);
+					// then puts the name of the school inside the "your chosen school" that is the blue box on the top of the page
+						$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');	
 		}
-		$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');	
 	}
+*/
 	
 	
 // if there is a school in the local storage, then the modal shouldnt show up
@@ -462,10 +460,15 @@ $(document).ready(function(){
 				$("#schoolModal").removeClass("hide");
 				//console.log()
 		}
-	};
-		// end of adding location to local storage
+	};		// end of adding location to local storage
 	
-		createSelectedLocation();
+	
+	
+	createSelectedLocation();
+		
+		
+		
+		
 
 // CLOSING SCHOOL MODAL -->
 	
@@ -499,7 +502,7 @@ $(document).ready(function(){
 		
         google.maps.event.addListener(userMarker, 'dragend', function() { 
        	 // this is the drag function
-       	 console.log(pos);
+       	 //console.log(pos);
 		});
 
 	});
