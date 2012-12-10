@@ -17,6 +17,12 @@ $(document).ready(function(){
 	function checkLocalStorage(){
 		if(localStorage){
 			if(localStorage.fbObject || localStorage.userObj){
+				if(localStorage.fbObject){
+					userObj = JSON.parse(localStorage.userObj);
+					fbObj = JSON.parse(localStorage.fbObject);
+				}else{
+					userObj = JSON.parse(localStorage.userObj);
+				}
 				$('#dropDown-settings').removeAttr('style');
 				$('#dropDown-login').hide();
 			}else{
@@ -156,15 +162,15 @@ $(document).ready(function(){
 			data:$(this).serialize(), 
 			dataType: 'json',
 			success: function(response) {
-				//console.log(response);
-				if(response.message=="email only"){
-					console.log('just email');
-				}else if(response.message=="connected"){
+				console.log('the root response ',response);
+				
+				
+				if(response.message=="connected"){
 					if(response.result.success == "password doesn't match"){
 						//do stuff when the password doesn't match
 					}else if(response.result.success == "user added"){
 						//user can been added
-						userObj.id = response.result.userid.userid;
+						userObj.id = response.result.userid;
 						$('#aquilex-login').addClass("hide");
 						if(localStorage){
 							localStorage.userObj = JSON.stringify(userObj);
@@ -179,6 +185,8 @@ $(document).ready(function(){
 							checkLocalStorage();
 						}
 					}
+				}else if(response.message=="email only"){
+					console.log('just email');
 				}
 		    },error: function(data) {  
 			    console.log(data);
@@ -186,4 +194,23 @@ $(document).ready(function(){
 		    console.log(userObj);
 		return false;
 	 }); //close submit login
+	 
+	 $('#changepass').submit(function(e){
+		 console.log(userObj.id);
+		 $.ajax({
+			type:'POST', 
+			url: 'xhr/updatepass.php', 
+			data:{
+				oldpass: $('input[name=oldpass]').val(),
+				newpass: $('input[name=newpass]').val(),
+				id: userObj.id
+			}, 
+			dataType: 'json',
+			success: function(response) {
+				console.log(response);
+		    },error: function(data) {  
+			    console.log(data);
+		    }});
+		    return false;
+	 });
 });

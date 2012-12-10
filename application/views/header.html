@@ -79,7 +79,7 @@
 					<input class="input-block-level" name="password" type="password" class="password" placeholder="Password" />
 					
 					<input id="fbLogin" class="btn btn-success " type="button" value="Sign in with facebook" />
-					<input class="btn btn-success" type="submit" value="Log In" />
+					<input class="btn btn-success" type="submit" value="Change Pass" />
 					
 					<section class="error">
 		
@@ -99,10 +99,53 @@
             <section id="accnt-settings" class="hide">
 	        	<ul class="nav nav-tabs nav-stacked">
 	              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
-	              <li id="dPass"><a href="#">hghaghahlglha</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
+	              <li id="dPass"><a href="#">DELETE ACCOUNT</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
 	            </ul>
       			<p id="settingsBack"><a href="#">close</a></p>
 	       </section>	
+
+ <!-- 	   // CHANGE PASSWORD -->  
+ 		<section id="chngpw" class="hide">
+        	<section id="aq-form-changepass" class="alert alert-success">
+			<form id="changepass" class="form-signin loginForm">
+				<legend class="aquilex-cpwTitle">Change your password</legend>
+					<input class="input-block-level" type="password" id="oldPassword" name="oldpass" placeholder="Old Password">
+        			<input class="input-block-level" type="password" id="inputPassword" name="newpass" placeholder="New Password">
+					<input class="btn btn-success" id="pwBtn" type="submit" value="Log In" />
+					
+					<section class="error">
+		
+					</section>
+					
+					<p class="forgotPW"><a href="#">forgot password?</a></p>
+					<p class="cancelLogin"><a id="cancelchangepw" class="btn btn-danger muted" href="#">cancel</a></p>
+
+			  </form>
+        	</section>
+		</section><!-- end of login -->
+         
+<!-- 	   // SIGN UP THANK YOU MODAL -->         
+        <section id="active-account" class="hide">
+        	<section class="alert alert-success">
+        		<p> Success! Thanks for signing up! Please check your inbox for your verification email.</p>
+			    <p>Love,</p>
+				<p>-AQUILEX </p>        
+			</section>
+        </section>
+        
+        
+        
+<!-- 	   // DELETE ACCOUNT MODAL -->
+        <section  id="deleteModel"class="alert fade in hide">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+	            <h4 class="alert-heading">Delete Account</h4>
+	            <p>Are you sure you want to delete your account?</p>
+	            <p>
+	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
+	            </p>
+        </section>        
+        
+
 	       
 <!-- 	   // SEARCH BAR -->	       
          <section class="input-append aquilex-searchBar clearfix">
@@ -122,44 +165,6 @@
         <section >
 -->
      
- <!-- 	   // CHANGE PASSWORD -->       
-         <section class="hide" id="chngpw">
-         	<form class="form-horizontal">
-        		<legend class="aquilex-cpwTitle">Change your password</legend>
-        			<section class="control-group">
-        				<section class="controls aquilex-pwchange">
-        					<input type="password" id="inputPassword" placeholder="New Password">
-        				</section>
-        			</section>
-        			<section class="controls">
-        				<button  id="pwBtn" type="submit" class="btn">Submit</button>
-        			</section>
-          			<p id="cancelchangepw" class="aquilex-cancel"><a href="#">cancel</a></p>
-  			</form>
-         </section>
-         
-         
-<!-- 	   // SIGN UP THANK YOU MODAL -->         
-        <section id="active-account" class="hide">
-        	<section class="alert alert-success">
-        		<p> Success! Thanks for signing up! Please check your inbox for your varification email.</p>
-			    <p>Love,</p>
-				<p>-AQUILEX </p>        
-			</section>
-        </section>
-        
-        
-        
-<!-- 	   // DELETE ACCOUNT MODAL -->
-        <section  id="deleteModel"class="alert fade in hide">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-	            <h4 class="alert-heading">Delete Account</h4>
-	            <p>Are you sure you want to delete your account?</p>
-	            <p>
-	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
-	            </p>
-        </section>        
-        
         
      <!--
    // SCHOOL MODAL -->       

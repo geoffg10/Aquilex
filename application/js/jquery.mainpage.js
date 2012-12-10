@@ -29,7 +29,7 @@ Author: Geoffrey Ganga
 //when the user clicks on the account settings option from the drop down menu
 	// show the account settings options
 	
-	$('#accSet').live('click', function(){
+	$('#accSet').on('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
 		$('#accnt-settings').slideDown('slow', function() {
@@ -54,7 +54,7 @@ $( "#accnt-settings" ).animate({
 	//when the user clicks on the change password
 		// show the change password form
 	
-		$('#cPass').live('click', function(){
+		$('#cPass').on('click', function(){
 		if($('#chngpw').hasClass("hide"))
 		{
 /* 			$('#chngpw').removeClass("hide") */
@@ -81,7 +81,7 @@ $( "#accnt-settings" ).animate({
 	//when the user clicks on the cancel buton
 		// hide the change password form
 			//goes back to the account settings menu
-		$('#cancelchangepw').live('click', function(){
+		$('#cancelchangepw').on('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
 		
@@ -113,7 +113,7 @@ $('#accnt-settings').removeClass("hide")
 	//if user clicks delete account
 		//alert comes up to delete
 	
-	$('#dPass').live('click', function(){
+	$('#dPass').on('click', function(){
 		if($('#deleteModel').hasClass("hide"))
 		{
 		
@@ -146,7 +146,7 @@ $('#accnt-settings').removeClass("hide")
 		//sends them back to account settings
 	
 	
-	$('#no-delete').live('click', function(){
+	$('#no-delete').on('click', function(){
 		if($('#accnt-settings').hasClass("hide"))
 		{
 		
@@ -174,7 +174,7 @@ $('#accnt-settings').removeClass("hide")
 			//displays a message saying the account has been delted
 	
 	
-	$('#yes-delete').live('click', function(){
+	$('#yes-delete').on('click', function(){
 		if($('#accountDelted').hasClass("hide"))
 		{
 		
@@ -211,7 +211,7 @@ $('#accnt-settings').removeClass("hide")
 	//when the user clicks close on the account settings menu
 		//hide the account settings menu
 	
-	$('#settingsBack').live('click', function(){
+	$('#settingsBack').on('click', function(){
 	$('#accnt-settings').slideUp('slow', function() {
 	
     // Animation complete.
@@ -226,7 +226,7 @@ $("#accnt-settings").hide("slow",function(){
 	})// end of closing account settings
 
 
-	$('#pwBtn').live('click', function(){
+	$('#').on('click', function(){
 		$("#chngpw").hide("slow",function(){
 					$("#active-account").fadeIn().delay(2000).fadeOut();
 
@@ -239,7 +239,7 @@ $("#accnt-settings").hide("slow",function(){
 /* login form display */
 
 
-$('#log-me-in').live('click', function(){
+$('#log-me-in').on('click', function(){
 		if($('#aquilex-login').hasClass("hide"))
 		{
 			$('#aquilex-login').removeClass("hide")
@@ -252,7 +252,7 @@ $('#log-me-in').live('click', function(){
 	
 	
 // CANCEL THE LOGIN 	
-$('#cancel-login').live('click', function(){
+$('#cancel-login').on('click', function(){
 		if($('#aquilex-login').hasClass("hide"))
 		{
 			$('#aquilex-login').removeClass("hide")
