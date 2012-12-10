@@ -387,6 +387,7 @@ $(document).ready(function(){
 	function makeList(place){ 
 		// this makes an List of all the schools and addes them to the ul called Test list
 		$('<li><p class="btn btn-success" id="addSchooltoList">add</p>'+place.name+'</li>').appendTo('#testList').click(function(e) {
+		
 			// calling the ajax function when the button is clicked 
 				//the ajax function will send the school to the database
 			addmyCampus(place);
@@ -480,7 +481,6 @@ $(document).ready(function(){
 	
 	$('#navAddBuilding').live('click', function(){
 		userMarker = new google.maps.Marker({ //create current location marker on the map
-		
             position: pos,
             map: map,
             title: 'drag me',
