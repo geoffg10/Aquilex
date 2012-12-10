@@ -126,7 +126,6 @@ $(document).ready(function(){
 
 	function createMarker(place) { //creates markers on the map
 		var placeLoc = place.geometry.location;
-		console.log(placeLoc);
 		var marker = new google.maps.Marker({
 		  	map: map,
 		  	position: place.geometry.location
@@ -150,6 +149,21 @@ $(document).ready(function(){
 		});
 	};	
 
+	function buildingMarker(data){
+		var marker = new google.maps.Marker({
+		 	map: map,
+		 	position: data.latlng
+		})
+		
+		google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the marker's details
+			
+			getRooms(data.fulldata.id);
+		  	infowindow.setContent(data.fulldata.name);
+		  	infowindow.open(map, this);
+		  	map.setZoom(20);
+		  	map.setCenter(data.latlng);
+		});
+	}
 	
 	
 /*
@@ -293,30 +307,18 @@ $(document).ready(function(){
 			},
 			url: 'xhr/getbuildings.php',
 			dataType: 'json',
-			success:function(successLocData) {
+			success:function(response) {
 				
-				for (var i = 0; i < successLocData.result.length; i++) {
+				for (var i = 0; i < response.result.length; i++) {
 					
-					var building = successLocData.result[i]
-					var lalo = new google.maps.LatLng(building.latitude,building.longitude)
-					//this creates markers of building of the campus selected. Data comes from DB
-					var marker = new google.maps.Marker({
-					  	map: map,
-					  	position: lalo
-					 });
-					  	
-					google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the marker's details
-			
-				  	infowindow.setContent(building.name);
-				  	infowindow.open(map, this);
-				  	map.setZoom(20);
-				  	map.setCenter(lalo);
-				  	
-		});
-
-
+					var building = response.result[i];
+					var location = new google.maps.LatLng(building.latitude,building.longitude);
 					
-				}
+					var sendData = {'fulldata':building,'latlng':location};
+					
+					buildingMarker(sendData);
+
+				};	
 			},
 			error:function(error) {  
 				console.log("error ",error);
@@ -328,7 +330,29 @@ $(document).ready(function(){
 	
 	
 
-	
+	function getRooms(data){ // performing ajax to get Rooms from the selected Buildings 
+
+		$.ajax({
+			type:'POST',
+			data:{
+				building_id: data
+			},
+			url: 'xhr/getrooms.php',
+			dataType: 'json',
+			success:function(response) {
+			
+				for(var i=0;i<response.result.length;i++){
+					
+					console.log(response.result[i].name);
+				}
+			},
+			error:function(error) {  
+				console.log("error ",error);
+			}
+		});//end of ajax
+		
+		
+	};// end of function
 	
 	
 	
@@ -405,7 +429,6 @@ $(document).ready(function(){
 				map.setZoom(17);
 				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
 				map.setCenter(pos);
-				console.log(data[0].id);
 				
 
 				getBuildings(data[0].id);
