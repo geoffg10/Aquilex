@@ -196,7 +196,6 @@ $(document).ready(function(){
 	 }); //close submit login
 	 
 	 $('#changepass').submit(function(e){
-		 console.log(userObj.id);
 		 $.ajax({
 			type:'POST', 
 			url: 'xhr/updatepass.php', 
@@ -208,6 +207,12 @@ $(document).ready(function(){
 			dataType: 'json',
 			success: function(response) {
 				console.log(response);
+				if(response.result == "wrong password"){
+					$("#changepass .control-group").addClass('error alert alert-error').find('span').removeClass('hide');
+				}
+				if(response.result == "password updated"){
+					
+				}
 		    },error: function(data) {  
 			    console.log(data);
 		    }});

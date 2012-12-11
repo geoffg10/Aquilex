@@ -28,6 +28,7 @@
 
 .forgotPW{
 	text-decoration: underline;
+	margin-top: 20px;
 }
 .navbar-inner.dark-header{
 	min-height: 52px;
@@ -142,7 +143,7 @@ input.span2.aquilex-span{
 margin-left: 5%;
 }
 legend.aquilex-cpwTitle{
-	padding-left: 5%;	
+	
 }
 
 .aquilex-cancel{
