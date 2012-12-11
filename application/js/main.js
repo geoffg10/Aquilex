@@ -21,14 +21,14 @@ $(document).ready(function(){
 	var userMarker;  //this is the visual location/marker of the user
 	var selectedLocation = {};
 	var campus = {};
-<<<<<<< HEAD
+
 	var campusId = {};
 	var schoolArray = [];
 	var buildingArray = [];
 	var roomWindow;
-=======
+
 	var userJSONObj = {};
->>>>>>> fixing add building
+
 	
 	if(localStorage){
 		if(localStorage.userObj){
