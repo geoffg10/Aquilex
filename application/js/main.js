@@ -411,7 +411,6 @@ $(document).ready(function () {
 
     /*
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
-<<<<<<< HEAD
 */
 
     $('#useGPS').click(function (e) { //enables the use of GPS and moved the user's marker to there location 
@@ -746,7 +745,7 @@ $(document).ready(function () {
 	$('#navAddBuilding').live('click', function(){
 		ADDBUILDINGMarker = new google.maps.Marker({ //create current location marker on the map
             position: pos,
->>>>>>> semi clean up as i go
+
             map: map,
             title: 'drag me',
             draggable: true,
