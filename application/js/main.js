@@ -11,7 +11,6 @@
 
 
 $(document).ready(function(){
-	console.log('asdlkfjas');
 	var userLat = '',
 	userLong = '';
 	
@@ -22,6 +21,10 @@ $(document).ready(function(){
 	var userMarker;  //this is the visual location/marker of the user
 	var selectedLocation = {};
 	var campus = {};
+	var campusId = {};
+	var schoolArray = [];
+	var buildingArray = [];
+	var roomWindow;
 	
 	
 	
@@ -57,12 +60,25 @@ $(document).ready(function(){
             draggable: true
         });
         infowindow = new google.maps.InfoWindow();  //create infowindow, this is called later to display the location details when clicked
+         
+        google.maps.event.addListener(map,'zoom_changed',function(){
+	       
+	       	if(map.getZoom() == 16){
+		       	clearMarkers('building');
+		       	getCampuses()
+	       	}
+	       	console.log('zoom:', map.getZoom()); 
+        }); 
         
+
         google.maps.event.addListener(userMarker, 'dragend', function() { 
+        	console.log('draggy',userMarker.getPosition());
         	
 		});
+		
 			/*===================================================================================================== ##2 getUniversities runs after initialize on load
-	*/
+	*/		
+			getCampuses();
 			getUniversities();// calls the function get university
 
       }; //close initialize
@@ -116,65 +132,107 @@ $(document).ready(function(){
 			for (var i = 0; i < results.length; i++) {
 				var google_ref_id = results[i].id;
 				
-				createMarker(results[i]); //create the markers on the map
+				//createMarker({'name':results[i].name,'latlng':results[i].geometry.location});
 				getLocations(results[i], google_ref_id);
 			
 			}//end of for loop
 		}
 	}; //close callback
 
-	function createMarker(place) { //creates markers on the map
-		var placeLoc = place.geometry.location;
-		var marker = new google.maps.Marker({
-		  	map: map,
-		  	position: place.geometry.location
-		});
-		
-		google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the marker's details
+
+
+	function createMarker(name,latlng,id,type) { //creates markers on the map
+	
 			
-		  	infowindow.setContent(place.name);
-		  	infowindow.open(map, this);
-		  	map.setZoom(17);
-		});
+		 if(type == 'school'){
+		 	
+		 	clearMarkers('building');
+		 	
+		 	var schoolMarker = new google.maps.Marker({
+		  		map: map,
+		  		position: latlng
+		  	});
+		  		 
+			google.maps.event.addListener(schoolMarker, 'click', function() { //add click function to open a dialog to display the 			marker's details
+			//	console.log('school:',name);
+			  	infowindow.setContent(name);
+			  	infowindow.open(map, this);
+			  	map.setZoom(17);
+				
+			  	getBuildings(id);
+	
+			});
+			
+			schoolArray.push(schoolMarker);
+			
+			
+			
+		}else if(type == 'building'){
+		
+			clearMarkers('school');
+		
+			var buildingMarker = new google.maps.Marker({
+		  		map: map,
+		  		position: latlng
+		  	});
+		
+			
+			
+			google.maps.event.addListener(buildingMarker, 'click', function() { //add click function to open a dialog to display the 			marker's details
+				
+				console.log('building:',name);
+			  	infowindow.setContent(name);
+			  	infowindow.open(map, this);
+			  	map.setZoom(20);
+				getRooms(id);
+	
+			});
+			
+			buildingArray.push(buildingMarker);
+
+		}
+	
 	}; //close createMarker
 	
-// this function mark buildings  and is going to be called later in an ajax call
-	function buildingMarker(data){
-		var marker = new google.maps.Marker({
-		 	map: map,
-		 	position: data.latlng
-		})
-		
-		google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the marker's details
-			
-			getRooms(data.fulldata.id);
-		  	infowindow.setContent(data.fulldata.name);
-		  	infowindow.open(map, this);
-		  	map.setZoom(20);
-		  	map.setCenter(data.latlng);
-		});
-	}
 	
+	function clearMarkers(whichOne) {
+		  if(whichOne == 'school'){
+		  	  if (schoolArray) {
+			  		for (i in schoolArray) {
+				 	 	schoolArray[i].setMap(null);
+				  	};
+
+			  }
+		  }else if(whichOne == 'building'){
+		  
+			  if (buildingArray) {
+			      for (i in buildingArray) {
+			      	buildingArray[i].setMap(null);
+			      }
+		   
+			   }
+		  }
+	 }
 	
 /*
 	//////////////////////////////////////////////////////////////////////////////////////  AJAX
 */	
 	
-	function addLocation(data){ // add location to DB, takes the place object
-		console.log("addLocation ",data.geometry.location.$a);
+	function getCampuses(){ // add location to DB, takes the place object
 		$.ajax({
-			type:'POST',
-			data:{
-				latitude: data.geometry.location.$a,
-				longitude: data.geometry.location.ab,
-				name:data.name,
-				google_ref_id: data.reference,
-				added_by_id: JSON.parse(localStorage.userObj.id)
-			},
-			url: 'xhr/addlocation.php',
+			type:'get',				
+			url: 'xhr/getCampuses.php',
 			dataType: 'json',
-			success:function(data) {  
-				//console.log(data);
+			success:function(response) {  
+				for(var i=0;i<response.result.length;i++){
+					
+					var ltlg = new google.maps.LatLng(response.result[i].latitude,response.result[i].longitude)
+					
+					createMarker(response.result[i].name,ltlg,response.result[i].id,'school');
+				}
+			},
+			error:function(error){
+				console.log('error',error);
 			}
 		});
 	};
@@ -303,14 +361,9 @@ $(document).ready(function(){
 			success:function(response) {
 				
 				for (var i = 0; i < response.result.length; i++) {
-					
-					var building = response.result[i];
-					var location = new google.maps.LatLng(building.latitude,building.longitude);
-					
-					var sendData = {'fulldata':building,'latlng':location};
-					
-					buildingMarker(sendData);
-
+										
+					var ltlg = new google.maps.LatLng(response.result[i].latitude,response.result[i].longitude);
+					createMarker(response.result[i].name,ltlg,response.result[i].id,'building');
 				};	
 			},
 			error:function(error) {  
