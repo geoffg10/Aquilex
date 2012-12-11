@@ -79,12 +79,17 @@ img{
 .container .logo-main{
 	width: 50%;
 }
-
-input.span2.searchBar{
-	width:81%;
-	margin-top: -8%;
+.input-append.aquilex-searchbox{
+	width: 90%;
 }
-
+.span2.searchBar{
+	width:100%;
+	height: 30px;
+}
+.btn.aquilex-searchbtn{
+	padding-top: 7px;
+	padding-bottom: 6px;
+}
 
 ul.downdwn-mobile-effect {
   position: absolute;
@@ -112,7 +117,7 @@ ul.downdwn-mobile-effect {
  -moz-background-clip: padding;
   background-clip: padding-box;
 }
-div.aquilex-searchBar{
+.aquilex-searchBar{
 	margin:0;
 	width: 100%;
 }
@@ -154,4 +159,8 @@ legend.aquilex-cpwTitle{
 
 .aquilex-block{
 	display: block;
+}
+#map_container{
+	width: 90%;
+	height: 70%;
 }

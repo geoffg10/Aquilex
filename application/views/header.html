@@ -142,11 +142,27 @@
         
 
 	       
-<!-- 	   // SEARCH BAR -->	       
-         <section class="input-append aquilex-searchBar clearfix">
-			  <input class="span2 aquilex-span" id="appendedInputButton" placeholder="search for school..." type="text">
-			  <button class="btn" type="button"><i class="icon-search"></i></button>
+<!-- 	   // SEARCH BAR -->	
+	<section class="input-prepend">
+		<section class="btn-group">
+		    <button class="btn">
+		      Full Sail
+		      <span class="badge badge-inverse">X</span>
+		    </button>
+		    <button class="btn">
+		    	Room Name
+		    	<span class="badge badge-inverse">X</span>
+		    </button>
+		  </section>
+	</section>       
+
+		<section class="input-append aquilex-searchbox">
+		  <input class="span2 searchBar" type="text">
+		  <section class="btn-group">
+		    <button class="btn aquilex-searchbtn"><i class="icon-search"></i></button>
+		  </section>
 		</section>
+		
         
 <!-- 	   // YOUR SCHOOL SELECTED -->        
         <section id="chosenSchool" class="alert alert-info hide">
