@@ -51,7 +51,8 @@
 			$sqlst = "INSERT INTO buildings (campus_id, latitude, longitude, name, added_by_id) VALUES(:campus_id, :latitude, :longitude, :name, :added_by_id)";
 			$st = $db->prepare($sqlst);
 			$results = $st->execute(array(":campus_id"=>$data['campus_id'], ":latitude"=>$data['latitude'], ":longitude"=>$data['longitude'], ":name"=>$data['name'], ":added_by_id"=>$data['added_by_id']));
-			return $results;
+			$id = $db->lastInsertId();
+			return array('building_id'=>$id);
 		}
 		// gets building by the campus_id
 		//returns the object with it's id, name, lat, long, campus_id
@@ -63,6 +64,7 @@
 			$st = $db->prepare($sqlst);
 			$results = $st->execute(array(":campus_id"=>$data['campus_id']));
 			$resultData = $st->fetchAll(); //get all responses
+			
 			if($st->rowCount() > 0){ //if the record exists than 
 				//there is a record
 				return $resultData;

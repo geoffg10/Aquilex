@@ -21,7 +21,7 @@ $(document).ready(function(){
 	var map;
 	var userMarker;  //this is the visual location/marker of the user
 	var selectedLocation = {};
-	var campusId = {};
+	var campus = {};
 	
 	
 	
@@ -260,22 +260,22 @@ $(document).ready(function(){
 	
 	// hard coded data, need help renee!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
-	function addNewBuilding(name, latitude, longitude, campus_identify,addedBy){ // add building to DB
+	function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy){ // add building to DB
 		//console.log("this function is running");
 		$.ajax({
 			type:'POST',
 			data:{
-				campus_id: 32,
-				latitude: 123123123,
-				longitude: 143241341234,
-				name: name,
-				added_by_id: 1
+				campus_id: campus_identify,
+				latitude: newBuildinglatitude,
+				longitude: newBuildinglongitude,
+				name: newBuildingName,
+				added_by_id: addedBy
 				
 			},
 			url: 'xhr/addbuilding.php',
 			dataType: 'json',
 			success:function(successData) {  
-				//console.log(successData, "was added to database");
+				console.log(successData, "was added to database");
 				//console.log(data.reference);
 				if(successData.error)
 				{
@@ -464,11 +464,13 @@ $(document).ready(function(){
 //adding location to local storage
 	function addLocationLocalStorage(dataDB){
 		if(localStorage){
+
 			//if local storage contains the chosen campus, then stringify
 				localStorage.chosenCampus = JSON.stringify(dataDB);
 					// then puts the name of the school inside the "your chosen school" that is the blue box on the top of the page
 						$('<p>'+dataDB.name+'</p>').appendTo('#yourchosenSchool');	
 		}
+		campus = dataDB;
 	}
 	
 	
@@ -479,8 +481,8 @@ $(document).ready(function(){
 		if(localStorage){
 			if(localStorage.chosenCampus){
 				var data = JSON.parse(localStorage.chosenCampus);
-				
-				$('<p>'+data[0].name+'</p>').empty().appendTo('#yourchosenSchool');
+				//console.log(localStorage.chosenCampus);
+				$('<p>'+localStorage.chosenCampus.name+'</p>').empty().appendTo('#yourchosenSchool');
 			}else{
 				$("#schoolModal").removeClass("hide");
 				console.log("inside 456 createdSelectedLocation");
@@ -542,13 +544,16 @@ $(document).ready(function(){
 // ADDING NEW BUILDING CLICK FUNCTION -->	
 	
 	$("#infoBoxBtn").live('click', function(){
-		var name = $("#infoBoxInput").val(); // getting the values of the input field
-		var latitude = pos.$ab; // getting the values of the input field
-		var longitude = pos.$a;
-		var campus_identify = 23;
-		//console.log("your point is at ",campus_identify);
+		var campusobject = JSON.parse(localStorage.chosenCampus);
+		var user = JSON.parse(localStorage.userObj);
+		var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
+		var newBuildinglatitude = campusobject[0].latitude; // getting the values of the input field
+		var newBuildinglongitude = campusobject[0].longitude;
+		var newBuildingCampus_identify = campusobject[0].id;
+		var addedBy = JSON.parse(user.id);
+		console.log(campusobject[0].latitude);
 		
-		addNewBuilding(name, latitude, longitude, campus_identify);
+		addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify,addedBy);
 		
 	})
 		
