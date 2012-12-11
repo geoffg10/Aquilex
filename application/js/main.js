@@ -21,12 +21,20 @@ $(document).ready(function(){
 	var userMarker;  //this is the visual location/marker of the user
 	var selectedLocation = {};
 	var campus = {};
+<<<<<<< HEAD
 	var campusId = {};
 	var schoolArray = [];
 	var buildingArray = [];
 	var roomWindow;
+=======
+	var userJSONObj = {};
+>>>>>>> fixing add building
 	
-	
+	if(localStorage){
+		if(localStorage.userObj){
+			userJSONObj = JSON.parse(localStorage.userObj);
+		}
+	}
 	
 	
 /*	The below variables are just for an initial map location 
@@ -340,6 +348,10 @@ $(document).ready(function(){
 					console.log("something didnt work bro")
 				}else{
 					console.log("dude it worked, dont stress")
+					$('#newBuildingsName').html(newBuildingName);
+					$('#infoBoxInput').addClass('disabled');
+					$('#infoBoxBtn').addClass('hide');
+					
 				}
 			},
 			error:function(errorData){
@@ -580,7 +592,7 @@ $(document).ready(function(){
         
            	google.maps.event.addListener(userMarker, 'click', function() { //add click function to open a dialog to display the marker's details
 			
-		  	infowindow.setContent("<form><label>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
+		  	infowindow.setContent("<form><label id='newBuildingsName'>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
 		  	infowindow.open(map, this);
 		  	map.setZoom(17);
 		});
@@ -604,10 +616,9 @@ $(document).ready(function(){
 		var newBuildinglongitude = campusobject[0].longitude;
 		var newBuildingCampus_identify = campusobject[0].id;
 		var addedBy = JSON.parse(user.id);
-		console.log(campusobject[0].latitude);
+		//console.log(campusobject[0].latitude);
 		
 		addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify,addedBy);
-		
 	})
 		
 	
