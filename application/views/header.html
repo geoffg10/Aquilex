@@ -28,14 +28,14 @@
 	        		<section class="container">
 <!-- 	   // LOGO -->
 
-	        		<a class="brand aquilex-logo" href="#"><img src="img/smallerlogo1.png" /></a>
+	        		<a class="brand aquilex-logo" href="#"><img src="img/smallerlogo1.png" alt="Aquilex" /></a>
 
 	  <!-- // DROP DOWN NAV -->
 	        		<ul class="nav nav-right pull-right">
 	        			<li class="dropdown star">
 <!-- 	   // FAVORITES DROP DOWN -->
 
-	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/sized_star.png"/></a>
+	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/sized_star.png" alt="favorites"/></a>
 
 	        				<ul class="dropdown-menu nav-tabs nav-stacked " id='favorites'>
 	        				</ul>
@@ -45,9 +45,9 @@
 	        			<li class="dropdown cog">
 
 		        			
-	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png"/></a>
+	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png" alt="settings"/></a>
 	        			    
-							<ul  id="dropDown-settings"class="dropdown-menu nav-tabs nav-stacked">
+							<ul  id="dropDown-settings" class="dropdown-menu nav-tabs nav-stacked">
 								
 								<li><a id="accSet" href="#" data-toggle="dropdown">ACCOUNT SETTINGS</a></li>
 								<li><a id="logout" href="#">LOGOUT</a></li>
@@ -70,23 +70,19 @@
         
         <section id="aquilex-login" class="login hide">
         	<section id="aq-form-login" class="alert alert-success">
-			<form id="login" class="form-signin" class="loginForm">
+			<form id="login" class="form-signin loginForm">
 		
 			
-					<input class="input-block-level" name="email" type="email" class="email" placeholder="Email"  />
+					<input class="input-block-level email" name="email" type="email" placeholder="Email" required="required"  />
 					
-					
-					<input class="input-block-level" name="password" type="password" class="password" placeholder="Password" />
-					
-					<input id="fbLogin" class="btn btn-success " type="button" value="Sign in with facebook" />
-					<input class="btn btn-success" type="submit" value="Change Pass" />
-					
-					<section class="error">
-		
+					<section class="control-group">
+						<input class="input-block-level password" name="password" type="text" placeholder="Password" required="required" />
+						<span class="help-inline hide">invalid password</span>
 					</section>
-					
+					<input class="btn btn-success" type="submit" value="Log in" />
+					<input id="fbLogin" class="btn btn-primary " type="button" value="Sign in with facebook" />
 					<p class="forgotPW"><a href="#">forgot password?</a></p>
-					<p class="cancelLogin"><a id="cancel-login" class="btn btn-danger muted" href="#">cancel</a></p>
+					<p class="cancelLogin pull-right"><a id="cancel-login" class="btn btn-danger muted" href="#">cancel</a></p>
 
 			  </form>
         	</section>
@@ -108,10 +104,11 @@
  		<section id="chngpw" class="hide">
         	<section id="aq-form-changepass" class="alert alert-success">
 			<form id="changepass" class="form-signin loginForm">
+			<fieldset>
 				<legend class="aquilex-cpwTitle">Change your password</legend>
 					<input class="input-block-level" type="password" id="oldPassword" name="oldpass" placeholder="Old Password">
         			<input class="input-block-level" type="password" id="inputPassword" name="newpass" placeholder="New Password">
-					<input class="btn btn-success" id="pwBtn" type="submit" value="Log In" />
+					<input class="btn btn-success" id="pwBtn" type="submit" value="Change Password" />
 					
 					<section class="error">
 		
@@ -119,7 +116,7 @@
 					
 					<p class="forgotPW"><a href="#">forgot password?</a></p>
 					<p class="cancelLogin"><a id="cancelchangepw" class="btn btn-danger muted" href="#">cancel</a></p>
-
+			</fieldset>
 			  </form>
         	</section>
 		</section><!-- end of login -->
@@ -136,7 +133,7 @@
         
         
 <!-- 	   // DELETE ACCOUNT MODAL -->
-        <section  id="deleteModel"class="alert fade in hide">
+        <section  id="deleteModel" class="alert fade in hide">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
 	            <h4 class="alert-heading">Delete Account</h4>
 	            <p>Are you sure you want to delete your account?</p>
@@ -154,7 +151,7 @@
 		</section>
         
 <!-- 	   // YOUR SCHOOL SELECTED -->        
-        <section id="chosenSchool"class="alert alert-info hide">
+        <section id="chosenSchool" class="alert alert-info hide">
         	<p id="yourchosenSchool" class="yourSchool"></p>
   		</section>
         <!--
@@ -188,7 +185,7 @@
 	       </section>
 	        
 		    <section  id="datastuff" class="modal-body">
-				<ul  class=" adding_schools-list"id="testList">
+				<ul  class=" adding_schools-list" id="testList">
 				</ul>
 		    </section>
 		    
