@@ -470,18 +470,21 @@ $(document).ready(function () {
             addLocationLocalStorage(dataDB);
         });;
 
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) {
+        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) 		{
+        	
             map.setZoom(17);
-            pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+            pos = new google.maps.LatLng(dataDB[0].latitude, dataDB[0].longitude);
             map.setCenter(pos);
-
+            console.log(dataDB[0]);
 
             getBuildings(dataDB[0].id);
         });
 
     };
-    //
-    function makeAddedSchool(place, dataDB) {
+    
+    
+    // THIS DOES NOTHING AT THE MOMENT
+   function makeAddedSchool(place, dataDB) {
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
         
         // the message saying "school has been added" will slowly fade in
@@ -509,21 +512,21 @@ $(document).ready(function () {
         //populates the fav dropdown and click to zoom
        
         console.log(dataDB[0].name);
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+       $('<li><a href="#">' + dataDB[0].name + '</a></li>')
         	.appendTo('#favorites')
         	.click(function(){
 	        	
 	        	 console.log('nothing?');
-	        	 map.setZoom(17);
-	        	 pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
-	        	 map.setCenter(pos);
+	        	// map.setZoom(17);
+	        	// pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+	        	// map.setCenter(pos);
             
-	        	 getBuildings(dataDB[0].id);
+	        	// getBuildings(dataDB[0].id);
 
 
         	});
 	       
-
+        
 	              
 
     };
@@ -552,12 +555,10 @@ $(document).ready(function () {
                 $('<p>' + localStorage.chosenCampus.name + '</p>').empty().appendTo('#yourchosenSchool');
             } else {
                 $("#schoolModal").removeClass("hide");
-                console.log("inside 456 createdSelectedLocation");
             }
         } else {
             //show modal
             $("#schoolModal").removeClass("hide");
-            console.log("inside 460 createdSelectedLocation");
 
             //console.log()
         }
