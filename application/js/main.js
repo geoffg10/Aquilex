@@ -22,7 +22,6 @@ $(document).ready(function () {
     var campusId = {};
     var schoolArray = [];
     var buildingArray = [];
-    var roomWindow;
     var userJSONObj = {};
 
 
@@ -44,7 +43,7 @@ $(document).ready(function () {
 
     //initialize() is the first function fired, it is called on a domlistener for window load
     //it loads the map first based off of the users IP
-    /*===================================================================================================== ##1.1 runs initialize on load
+    /*===================================================================================================== ##1.1 -runs initialize on load
      */
     function initialize() {
 
@@ -450,6 +449,7 @@ $(document).ready(function () {
 
             // calling the ajax function when the button is clicked 
             //the ajax function will send the school to the database
+           
             addmyCampus(place);
             // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
             $(this).remove();
@@ -481,10 +481,11 @@ $(document).ready(function () {
 
     };
     //
-    function makeAddedSchoolList(place, dataDB) {
+    function makeAddedSchool(place, dataDB) {
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
+        
         // the message saying "school has been added" will slowly fade in
-        $('<li>' + place.name + '<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
+       $('<li>' + place.name + '<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
             "slow", function () {
             // the "school has been added" will then fade out
             $("#schoolAddedMSG").fadeOut(
@@ -505,13 +506,25 @@ $(document).ready(function () {
             $("#chosenSchool").addClass("hide");
         }
 
-        //populates the fav dropdown and add click to zoom
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) {
+        //populates the fav dropdown and click to zoom
+       
+        console.log(dataDB[0].name);
+        $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+        	.appendTo('#favorites')
+        	.click(function(){
+	        	
+	        	 console.log('nothing?');
+	        	 map.setZoom(17);
+	        	 pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+	        	 map.setCenter(pos);
+            
+	        	 getBuildings(dataDB[0].id);
 
 
+        	});
+	       
 
-            getBuildings(dataDB[0].id);
-        });
+	              
 
     };
 
