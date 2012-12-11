@@ -75,7 +75,6 @@ $(document).ready(function(){
 		       	clearMarkers('building');
 		       	getCampuses()
 	       	}
-	       	console.log('zoom:', map.getZoom()); 
         }); 
         
 
@@ -149,77 +148,65 @@ $(document).ready(function(){
 
 
 
-	function createMarker(name,latlng,id,type) { //creates markers on the map
+	function createMarker(name,latlng,id,type,zoom) { //creates markers on the map
 	
-			
-		 if(type == 'school'){
-		 	
-		 	clearMarkers('building');
-		 	
-		 	var schoolMarker = new google.maps.Marker({
-		  		map: map,
-		  		position: latlng
-		  	});
-		  		 
-			google.maps.event.addListener(schoolMarker, 'click', function() { //add click function to open a dialog to display the 			marker's details
+		
+		var marker = new google.maps.Marker({
+			map: map,
+			position: latlng
+		});
+		
+		google.maps.event.addListener(marker, 'click', function() { //add click function to open a dialog to display the 			marker's details
 			//	console.log('school:',name);
-			  	infowindow.setContent(name);
-			  	infowindow.open(map, this);
-			  	map.setZoom(17);
-				
-			  	getBuildings(id);
-	
-			});
-			
-			schoolArray.push(schoolMarker);
-			
-			
-			
-		}else if(type == 'building'){
-		
-			clearMarkers('school');
-		
-			var buildingMarker = new google.maps.Marker({
-		  		map: map,
-		  		position: latlng
-		  	});
-		
-			
-			
-			google.maps.event.addListener(buildingMarker, 'click', function() { //add click function to open a dialog to display the 			marker's details
-				
-				console.log('building:',name);
-			  	infowindow.setContent(name);
-			  	infowindow.open(map, this);
-			  	map.setZoom(20);
-				getRooms(id);
-	
-			});
-			
-			buildingArray.push(buildingMarker);
+			if(type == 'school'){
+				getBuildings(id);
 
+			}else if(type == 'building'){
+				getRooms(id);
+
+			}
+			infowindow.setContent(name);
+			infowindow.open(map, this);
+			map.setZoom(zoom);
+			
+			
+			
+		});
+		
+		if(type == 'school'){
+			clearMarkers('building');
+			schoolArray.push(marker);
+		}else if(type == 'building'){
+			clearMarkers('school');
+			buildingArray.push(marker);
+		
 		}
-	
+		
+		
 	}; //close createMarker
 	
 	
 	function clearMarkers(whichOne) {
-		  if(whichOne == 'school'){
+		if(whichOne == 'school'){
 		  	  if (schoolArray) {
 			  		for (i in schoolArray) {
 				 	 	schoolArray[i].setMap(null);
 				  	};
+				  	
+				  	schoolArray.length = 0;
+				  	
 
 			  }
-		  }else if(whichOne == 'building'){
+		 }else if(whichOne == 'building'){
 		  
 			  if (buildingArray) {
 			      for (i in buildingArray) {
 			      	buildingArray[i].setMap(null);
 			      }
+			      buildingArray.length = 0;
 		   
 			   }
-		  }
+        }
 	 }
 	
 /*
@@ -236,7 +223,7 @@ $(document).ready(function(){
 					
 					var ltlg = new google.maps.LatLng(response.result[i].latitude,response.result[i].longitude)
 					
-					createMarker(response.result[i].name,ltlg,response.result[i].id,'school');
+					createMarker(response.result[i].name,ltlg,response.result[i].id,'school',17);
 				}
 			},
 			error:function(error){
@@ -369,15 +356,17 @@ $(document).ready(function(){
 			url: 'xhr/getbuildings.php',
 			dataType: 'json',
 			success:function(response) {
-				
-				for (var i = 0; i < response.result.length; i++) {
+				if(response.result != "no record"){
+					for (var i = 0; i < response.result.length; i++) {
 										
-					var ltlg = new google.maps.LatLng(response.result[i].latitude,response.result[i].longitude);
-					createMarker(response.result[i].name,ltlg,response.result[i].id,'building');
-				};	
+						var ltlg = new google.maps.LatLng(response.result[i].latitude,response.result[i].longitude);
+						createMarker(response.result[i].name,ltlg,response.result[i].id,'building',20);
+					};
+				}
+					
 			},
 			error:function(error) {  
-				//console.log("error ",error);
+				console.log("error ",error);
 			}
 		});//end of ajax
 		
@@ -387,7 +376,7 @@ $(document).ready(function(){
 	
 
 	function getRooms(data){ // performing ajax to get Rooms from the selected Buildings 
-
+		console.log(data);
 		$.ajax({
 			type:'POST',
 			data:{
@@ -397,10 +386,16 @@ $(document).ready(function(){
 			dataType: 'json',
 			success:function(response) {
 			
+			if(response.message = "rooms"){
 				for(var i=0;i<response.result.length;i++){
-					
 					console.log(response.result[i].name);
 				}
+			}else{
+				console.log('NO ROOMS');
+			}
+				
+									
+
 			},
 			error:function(error) {  
 				console.log("error ",error);
