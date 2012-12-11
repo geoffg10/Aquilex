@@ -199,7 +199,10 @@ $(document).ready(function(){
 		});
 	};
 	
-	function getLocations(data, google_ref_id){ // performing ajax to check db with results then display results
+//	
+	function getLocations(place, google_ref_id){ // performing ajax to check db with results then display results
+	//takes two params, one is the google place and the second is the id of the google place
+	//successLocDB is the location from the DB
 		//console.log('in getlocations ',data);
 		$.ajax({
 			type:'POST',
@@ -208,16 +211,17 @@ $(document).ready(function(){
 			},
 			url: 'xhr/getlocations.php',
 			dataType: 'json',
-			success:function(successLocData) {
+			success:function(successLocDB) {
 				//console.log(successLocData.result);
 				
-				if(successLocData.result == 'no record')
+				if(successLocDB.result == 'no record')
 				{
 					//console.log("make the list");
-					makeList(data);
+					makeList(place);
 				}else{
 					//console.log("make added list");
-					makeAddedSchoolList(data, successLocData.result);
+					
+					schoolsFromDB(place, successLocDB.result);
 				}
 			},
 			error:function(error) {  
@@ -247,7 +251,7 @@ $(document).ready(function(){
 				//console.log(data.reference);
 				if(successData.message=="location added")
 				{
-					
+					//should be calling this is your location
 				}
 				getLocations(data, data.id);
 			}
@@ -398,7 +402,30 @@ $(document).ready(function(){
 	
 // Top part of the "add your school" modal
 	// this will show the school you have chosen then will cause the modal to disspear
-	function makeAddedSchoolList(place, data){ 
+	function schoolsFromDB(place, dataDB){ 
+		// this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
+			// the message saying "school has been added" will slowly fade in
+		$('<li>'+place.name+'</li>').appendTo('#ourAddedList').click(function(e) { 
+				map.setZoom(17);
+				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+				map.setCenter(pos);
+				getBuildings(dataDB[0].id);
+				$("#schoolModal").fadeOut('slow');
+				addLocationLocalStorage(dataDB);
+		});;
+		
+		$('<li><a href="#">'+dataDB[0].name+'</a></li>').appendTo('#favorites').click(function(e) { 
+				map.setZoom(17);
+				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+				map.setCenter(pos);
+				
+
+				getBuildings(dataDB[0].id);
+		});
+		
+	};	
+//
+	function makeAddedSchoolList(place, dataDB){ 
 		// this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
 			// the message saying "school has been added" will slowly fade in
 		$('<li>'+place.name+'<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
@@ -408,11 +435,13 @@ $(document).ready(function(){
 						'slow', function(){
 						// the "add your school" modal will then fade out and be removed from the DOM
 							$("#schoolModal").fadeOut('slow');
+											console.log("inside 411 makeAddedSchoolList");
+
 						}).remove();
 				// the school that you chose will then be added to ul "our added list" which is the top part of the " add your school" modal.		
 			}).appendTo('#ourAddedList');
 			// calling the local storage function
-			addLocationLocalStorage(data);
+			addLocationLocalStorage(dataDB);
 		if($("#chosenSchool").hasClass("hide")){
 				$("#chosenSchool").removeClass("hide");
 				
@@ -421,31 +450,32 @@ $(document).ready(function(){
 			}
 
 //populates the fav dropdown and add click to zoom
-		$('<li><a href="#">'+data[0].name+'</a></li>').appendTo('#favorites').click(function(e) { 
+		$('<li><a href="#">'+dataDB[0].name+'</a></li>').appendTo('#favorites').click(function(e) { 
 				map.setZoom(17);
 				pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
 				map.setCenter(pos);
 				
 
-				getBuildings(data[0].id);
+				getBuildings(dataDB[0].id);
 		});
 		
 	};	
 	
 //adding location to local storage
-	function addLocationLocalStorage(data){
+	function addLocationLocalStorage(dataDB){
 		if(localStorage){
 			//if local storage contains the chosen campus, then stringify
-				localStorage.chosenCampus = JSON.stringify(data);
+				localStorage.chosenCampus = JSON.stringify(dataDB);
 					// then puts the name of the school inside the "your chosen school" that is the blue box on the top of the page
-						$('<p>'+data[0].name+'</p>').appendTo('#yourchosenSchool');	
+						$('<p>'+dataDB.name+'</p>').appendTo('#yourchosenSchool');	
 		}
 	}
 	
 	
 // if there is a school in the local storage, then the modal shouldnt show up
 	//if there no school is in the local storage then the modal should show up
-	function createSelectedLocation() {  
+	function createSelectedLocation() { 
+		 
 		if(localStorage){
 			if(localStorage.chosenCampus){
 				var data = JSON.parse(localStorage.chosenCampus);
@@ -453,10 +483,13 @@ $(document).ready(function(){
 				$('<p>'+data[0].name+'</p>').empty().appendTo('#yourchosenSchool');
 			}else{
 				$("#schoolModal").removeClass("hide");
+				console.log("inside 456 createdSelectedLocation");
 			}
 		}else{
 			//show modal
 				$("#schoolModal").removeClass("hide");
+								console.log("inside 460 createdSelectedLocation");
+
 				//console.log()
 		}
 	};		// end of adding location to local storage
