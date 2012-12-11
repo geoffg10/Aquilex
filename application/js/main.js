@@ -324,7 +324,6 @@ $(document).ready(function(){
 		});
 	};
 	
-	// hard coded data, need help renee!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy){ // add building to DB
 		//console.log("this function is running");
@@ -348,9 +347,8 @@ $(document).ready(function(){
 					console.log("something didnt work bro")
 				}else{
 					console.log("dude it worked, dont stress")
-					$('#newBuildingsName').html(newBuildingName);
-					$('#infoBoxInput').addClass('disabled');
-					$('#infoBoxBtn').addClass('hide');
+					//$('#infoBoxBtn').addClass
+					infowindow.getContent(newBuildingName);
 					
 				}
 			},
@@ -580,7 +578,7 @@ $(document).ready(function(){
 // ADDING A NEW BUILDING-->	
 	
 	$('#navAddBuilding').live('click', function(){
-		userMarker = new google.maps.Marker({ //create current location marker on the map
+		ADDBUILDINGMarker = new google.maps.Marker({ //create current location marker on the map
             position: pos,
             map: map,
             title: 'drag me',
@@ -590,7 +588,7 @@ $(document).ready(function(){
          infowindow = new google.maps.InfoWindow();  //create infowindow, this is called later to display the location details when clicked
         
         
-           	google.maps.event.addListener(userMarker, 'click', function() { //add click function to open a dialog to display the marker's details
+           	google.maps.event.addListener(ADDBUILDINGMarker, 'click', function() { //add click function to open a dialog to display the marker's details
 			
 		  	infowindow.setContent("<form><label id='newBuildingsName'>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
 		  	infowindow.open(map, this);
@@ -598,9 +596,9 @@ $(document).ready(function(){
 		});
 		
 		
-        google.maps.event.addListener(userMarker, 'dragend', function() { 
+        google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function() { 
        	 // this is the drag function
-       	 //console.log(pos);
+       	
 		});
 
 	});
@@ -609,14 +607,18 @@ $(document).ready(function(){
 // ADDING NEW BUILDING CLICK FUNCTION -->	
 	
 	$("#infoBoxBtn").live('click', function(){
+	        google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function() { 
+       	  var dragLng = ADDBUILDINGMarker.getPosition().ab;
+       	 var dragLat = ADDBUILDINGMarker.getPosition().$a;
+		});
 		var campusobject = JSON.parse(localStorage.chosenCampus);
-		var user = JSON.parse(localStorage.userObj);
+		var user = JSON.parse(localStorage.userObj); // parsing the user object in order to call the .id
 		var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
-		var newBuildinglatitude = campusobject[0].latitude; // getting the values of the input field
-		var newBuildinglongitude = campusobject[0].longitude;
-		var newBuildingCampus_identify = campusobject[0].id;
+		var newBuildinglatitude = ADDBUILDINGMarker.getPosition().$a; // getting the latitude value from the local storage
+		var newBuildinglongitude = ADDBUILDINGMarker.getPosition().ab;// getting the longitude value from the local storage
+		var newBuildingCampus_identify = campusobject[0].id;// getting the campus id from the local storage
 		var addedBy = JSON.parse(user.id);
-		//console.log(campusobject[0].latitude);
+		console.log(newBuildinglatitude);
 		
 		addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify,addedBy);
 	})
