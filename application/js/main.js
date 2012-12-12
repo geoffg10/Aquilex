@@ -454,7 +454,6 @@ $(document).ready(function () {
               
      function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
-<<<<<<< HEAD
         $('#addBtnBlue').click(function (e) { 
 	            	$('#testList').removeClass('hide');
 	         
