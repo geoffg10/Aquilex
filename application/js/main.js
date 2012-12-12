@@ -470,7 +470,6 @@ $(document).ready(function () {
     };
     
     
-=======
        
          var isHidden = true;
          
@@ -497,7 +496,6 @@ $(document).ready(function () {
            
         });// end of the addBtnBlue click function
     };// end of makeList
->>>>>>> Modal
 
     // Top part of the "add your school" modal
     // this will show the school you have chosen then will cause the modal to disspear
@@ -669,13 +667,10 @@ $(document).ready(function () {
     
 
 
-<<<<<<< HEAD
     $('#showAllSchools').on('click',function(){
     	$("#schoolModal").removeClass('hide');
     	
     });
-=======
->>>>>>> Modal
 
 
 });
