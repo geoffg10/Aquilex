@@ -17,13 +17,12 @@ $(document).ready(function () {
     var pos; //this is the users location that is displayed on google maps
     var map;
     var userMarker; //this is the visual location/marker of the user
-    var selectedLocation;
+    var selectedLocation = {};
     var campus = {};
     var campusId = {};
     var schoolArray = [];
     var buildingArray = [];
     var userJSONObj = {};
-  
 
 
     if (localStorage) {
@@ -56,34 +55,20 @@ $(document).ready(function () {
         };
 
         map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions); //create a map and place it in its container with initial options
-        
-        var image = new google.maps.MarkerImage(
-		  'http://www.google.com/intl/en_us/mapfiles/ms/micons/blue-dot.png',
-		  new google.maps.Size(32,32),
-		  new google.maps.Point(0,0),
-		  new google.maps.Point(16,32)
-		);
-       
         userMarker = new google.maps.Marker({ //create current location marker on the map
-           	icon: image,
             position: pos,
             map: map,
             title: 'You are here',
-            draggable: true,
+            draggable: true
         });
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
 
         google.maps.event.addListener(map, 'zoom_changed', function () {
 
-
-           if(map.getZoom() == 17){
-	           getCampuses();	
-
-           }else if(map.getZoom() == 16) {
-	            clearMarkers('building');
-	            getCampuses();	
-
-	       }
+            if (map.getZoom() == 16) {
+                clearMarkers('building');
+                getCampuses()
+            }
         });
 
 
@@ -157,41 +142,25 @@ $(document).ready(function () {
 
 
 
-    function createMarker(name, latlng, id, type, zoom, content) { //creates markers on the map
+    function createMarker(name, latlng, id, type, zoom) { //creates markers on the map
 
-	    if(type=='school'){
-	    	var icon='img/mapIcons/university-icon.png';
-	    }else{
-	    	var icon='img/mapIcons/building-icon.png'; 
-	    };
 
-	    var image = new google.maps.MarkerImage(
-	      icon,
-		  new google.maps.Size(32,37),
-		  new google.maps.Point(0,0),
-		  new google.maps.Point(16,37)
-		);
-	    
+
         var marker = new google.maps.Marker({
             map: map,
-            position: latlng,
-            icon:image
-            
+            position: latlng
         });
 
         google.maps.event.addListener(marker, 'click', function () { //add click function to open a dialog to display the 			marker's details
             //	console.log('school:',name);
             if (type == 'school') {
                 getBuildings(id);
-                infowindow.setContent('<h3>'+name+'</h3>');
-                console.log('CHOOSEN SCHOOL',name);
-
 
             } else if (type == 'building') {
-
-	            infowindow.setContent('<h4>'+name+'</h4>'+content);
+                getRooms(name, id);
 
             }
+            infowindow.setContent(name);
             infowindow.open(map, this);
             map.setZoom(zoom);
 
@@ -205,7 +174,7 @@ $(document).ready(function () {
 
         } else if (type == 'building') {
 
-          	clearMarkers('school');
+            clearMarkers('school');
             buildingArray.push(marker);
 
         }
@@ -294,8 +263,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (successLocDB) {
                 //console.log(successLocData.result);
-
+                
                 if (successLocDB.result == 'no record') {
+             
+                
                     //console.log("make the list");
                     makeList(place);
                 } else {
@@ -327,6 +298,10 @@ $(document).ready(function () {
             url: 'xhr/addcampus.php',
             dataType: 'json',
             success: function (successData) {
+           
+           
+            
+
                 //console.log(successData, "was added to database");
                 //console.log(data.reference);
                 if (successData.message == "location added") {
@@ -384,18 +359,11 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response.result != "no record") {
-                   
-                   
                     for (var i = 0; i < response.result.length; i++) {
 
-	                    
                         var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude);
-                        
-                        getRooms(response.result[i].name, response.result[i].id, ltlg);
-
-                       // createMarker(response.result[i].name, ltlg, response.result[i].id, 'building', 20);
+                        createMarker(response.result[i].name, ltlg, response.result[i].id, 'building', 20);
                     };
-
                 }
 
             },
@@ -409,7 +377,7 @@ $(document).ready(function () {
 
 
 
-    function getRooms(name, id,ltlg) { // performing ajax to get Rooms from the selected Buildings 
+    function getRooms(name, id) { // performing ajax to get Rooms from the selected Buildings 
         $.ajax({
             type: 'POST',
             data: {
@@ -419,27 +387,20 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
 
+                console.log("Rooms for", name + ':');
 
                 if (response.message = "rooms") {
-                  	
-                   	var html = '<ul>';
-	                
                     for (var i = 0; i < response.result.length; i++) {
+                        console.log("	", response.result[i].name);
                     
-
-                       var li ="<li>"+response.result[i].name+"</li>";
-                       
-                     	html += li
-                       	
-                     	 
                     }
-                    html += '</ul>';
-                    createMarker(name, ltlg,id, 'building', 20,html);
-                    
+
                 } else {
                     console.log('NO ROOMS');
                 }
-         
+
+
+
             },
             error: function (error) {
                 console.log("error ", error);
@@ -493,6 +454,7 @@ $(document).ready(function () {
               
      function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
+<<<<<<< HEAD
         $('#addBtnBlue').click(function (e) { 
 	            	$('#testList').removeClass('hide');
 	         
@@ -508,6 +470,34 @@ $(document).ready(function () {
     };
     
     
+=======
+       
+         var isHidden = true;
+         
+        $('#addBtnBlue').click(function (e) { 
+        	if(isHidden){
+	        	$('#testList').removeClass('hide');
+	        	$('#addBtnBlue').html('hide list')
+	        	isHidden = false;
+        	 }else{
+        	 	
+        	 	$('#testList').addClass('hide');
+        	 	$('#addBtnBlue').html('Add School')
+
+	            
+            }
+	         
+	            	$('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList').click(function (e) {            // calling the ajax function when the button is clicked 
+            //the ajax function will send the school to the database
+          
+           			 addmyCampus(place);
+          		  // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
+         	   $(this).remove();
+            });//end of the placeNames click
+           
+        });// end of the addBtnBlue click function
+    };// end of makeList
+>>>>>>> Modal
 
     // Top part of the "add your school" modal
     // this will show the school you have chosen then will cause the modal to disspear
@@ -519,26 +509,22 @@ $(document).ready(function () {
             pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
             map.setCenter(pos);
             getBuildings(dataDB[0].id);
-            $("#schoolModal").addClass('hide');
+            $("#schoolModal").fadeOut('slow');
             addLocationLocalStorage(dataDB);
         });;
 
-        //populates the fav dropdown and click to zoom into school
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>')
-        .prependTo('#favorites').click(function (e) 		{
-        	
+        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) {
             map.setZoom(17);
-            pos = new google.maps.LatLng(dataDB[0].latitude, dataDB[0].longitude);
+            pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
             map.setCenter(pos);
+
 
             getBuildings(dataDB[0].id);
         });
 
     };
-    
-    
-    // THIS DOES NOTHING AT THE MOMENT
-   function makeAddedSchool(place, dataDB) {
+    //
+    function makeAddedSchool(place, dataDB) {
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
         
         // the message saying "school has been added" will slowly fade in
@@ -548,7 +534,7 @@ $(document).ready(function () {
             $("#schoolAddedMSG").fadeOut(
                 'slow', function () {
                 // the "add your school" modal will then fade out and be removed from the DOM
-                $("#schoolModal").addClass('hide');
+                $("#schoolModal").fadeOut('slow');
                 console.log("inside 411 makeAddedSchoolList");
 
             }).remove();
@@ -563,19 +549,26 @@ $(document).ready(function () {
             $("#chosenSchool").addClass("hide");
         }
 
-
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+        //populates the fav dropdown and click to zoom
+       
+        console.log(dataDB[0].name);
+      /*  $('<li><a href="#">' + dataDB[0].name + '</a></li>')
         	.appendTo('#favorites')
         	.click(function(){
 	        	
 	        	 console.log('nothing?');
-	        	 map.setZoom(17);
-	        	 pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
-	        	 map.setCenter(pos);
+	        	// map.setZoom(17);
+	        	// pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+	        	// map.setCenter(pos);
             
-	        	 getBuildings(dataDB[0].id);
+	        	// getBuildings(dataDB[0].id);
 
-        	});            
+
+        	});
+	       
+        */
+	              
+
     };
 
     //adding location to local storage
@@ -585,12 +578,7 @@ $(document).ready(function () {
             //if local storage contains the chosen campus, then stringify
             localStorage.chosenCampus = JSON.stringify(dataDB);
             // then puts the name of the school inside the "your chosen school" that is the blue box on the top of the page
-            $('<p>' + dataDB[0].name + '</p>').appendTo('#yourchosenSchool');
-           
-            map.setZoom(17);
-            pos = new google.maps.LatLng(dataDB[0].latitude, dataDB[0].longitude);
-            map.setCenter(pos);
-
+            $('<p>' + dataDB.name + '</p>').appendTo('#yourchosenSchool');
         }
         campus = dataDB;
     }
@@ -623,7 +611,6 @@ $(document).ready(function () {
 
 
 
-
     // CLOSING SCHOOL MODAL -->
 
     $('#closeSchoolModal').on('click', function () {
@@ -636,10 +623,10 @@ $(document).ready(function () {
 
     $('#navAddBuilding').on('click', function () {
         ADDBUILDINGMarker = new google.maps.Marker({ //create current location marker on the map
-            position: map.get,
+            position: pos,
             map: map,
             title: 'drag me',
-            draggable: true,
+            draggable: true
         });
         console.log(pos)
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
@@ -679,12 +666,16 @@ $(document).ready(function () {
 
         addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
+    
 
 
+<<<<<<< HEAD
     $('#showAllSchools').on('click',function(){
     	$("#schoolModal").removeClass('hide');
     	
     });
+=======
+>>>>>>> Modal
 
 
 });
