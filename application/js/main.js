@@ -41,28 +41,38 @@ $(document).ready(function () {
     var geoIPLat = geoip_latitude(),
         geoIPLong = geoip_longitude();
 
-    //initialize() is the first function fired, it is called on a domlistener for window load
-    //it loads the map first based off of the users IP
-    /*===================================================================================================== ##1.1 -runs initialize on load
+   
+        /*===================================================================================================== ##1.1 -runs initialize on load
      */
+    
+    // initialize() is the first function fired, it is called on a domlistener for window load. it loads the map first based off of the users IP */
+
     function initialize() {
 
-        pos = new google.maps.LatLng(geoIPLat, geoIPLong); //create map position
+	    //create map position	
+        pos = new google.maps.LatLng(geoIPLat, geoIPLong); 
+        
         var mapOptions = {
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             zoom: 15,
             center: pos
         };
 
-        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions); //create a map and place it in its container with initial options
-        userMarker = new google.maps.Marker({ //create current location marker on the map
+        //create a map and place it in its container with initial options
+        map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);  
+              
+        //create current location marker on the map
+        userMarker = new google.maps.Marker({ 
             position: pos,
             map: map,
             title: 'You are here',
             draggable: true
         });
-        infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
-
+        
+        //create infowindow, this is called later to display the location details when clicked
+        infowindow = new google.maps.InfoWindow(); 
+        
+        //event listener for if the zoom is changed. 1st param is the map that the listener is attached too
         google.maps.event.addListener(map, 'zoom_changed', function () {
 
             if (map.getZoom() == 16) {
@@ -71,20 +81,26 @@ $(document).ready(function () {
             }
         });
 
-
+        //event listener for when the pin is moved. 1st param is the pin that the listener is attached too
         google.maps.event.addListener(userMarker, 'dragend', function () {
-            console.log('draggy', userMarker.getPosition());
+            
+            console.log('UserPin dragged to:', userMarker.getPosition());
 
         });
 
         /*===================================================================================================== ##2 getUniversities runs after initialize on load
          */
+       
+        //function call that gets data from the DB. Response is the the different schools
         getCampuses();
-        getUniversities(); // calls the function get university
+        //fucntion call thats gets universities from google
+        getUniversities(); 
 
     }; //close initialize
 
-    function handleNoGeolocation(errorFlag) { //this is fired when geolocation is accessed by user and there is a fail, it accepts a boolean
+
+    //this is fired when geolocation is accessed by user and there is a fail, it accepts a boolean
+    function handleNoGeolocation(errorFlag) { 
         if (errorFlag) {
             var content = 'Error: The Geolocation service failed.';
         } else {
@@ -98,11 +114,12 @@ $(document).ready(function () {
     //initialize();
     /*===================================================================================================== ##1 runs initialize on load
      */
+   
+   //loads map on the initalize function
     google.maps.event.addDomListener(window, 'load', initialize);
 
 
-
-    /*
+ /*
 	//////////////////////////////////////////////////////////////////////////////////////  user generated calls
 */
 
@@ -110,7 +127,9 @@ $(document).ready(function () {
 
     /*===================================================================================================== ##2.1 getUniversities runs after initialize on load
      */
-    function getUniversities() { //gets universities in users location
+     
+    //gets universities from google near the user's location 
+    function getUniversities() {
 
         var request = {
             location: pos,
@@ -127,7 +146,9 @@ $(document).ready(function () {
 
     /*===================================================================================================== ##2.2.1 callback runs after getUniversities on load
      */
-    function callback(results, status) { //first param is the results json object from the getUniversities query, the second param is the status
+     
+    //first param is the results json object from the getUniversities query, the second param is the status 
+    function callback(results, status) { 
 
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
@@ -140,18 +161,38 @@ $(document).ready(function () {
     }; //close callback
 
 
+    //creates markers on the map (name of the name location, LatLng[latitude,longitude,id of location,type of location, zoom amount for click]
+    function createMarker(name, latlng, id, type, zoom) { 
 
-    function createMarker(name, latlng, id, type, zoom) { //creates markers on the map
+		// If statement to give the different types of pins, different icons. Sets var to different paths depending on type.
+	 	if(type=='school'){
+		 	var icon = 'img/mapIcons/university-icon.png';
+	 	}else if(type=='building'){
+		 	var icon = 'img/mapIcons/building-icon.png';
+
+	 	}
+	 
+	 	//setting up properties for custom pins
+	    var image = new google.maps.MarkerImage(
+	      icon,											//this var is a string for the path of a custom pin.
+		  new google.maps.Size(32,37),
+		  new google.maps.Point(0,0),
+		  new google.maps.Point(16,37)
+		);
 
 
-
-        var marker = new google.maps.Marker({
-            map: map,
-            position: latlng
+	   //creates map marker
+       	var marker = new google.maps.Marker({
+            map: map, //global variable for the map
+            position: latlng, // variable for latitude and longitude
+            icon:image
         });
-
+        
+        //click event listener for marker
         google.maps.event.addListener(marker, 'click', function () { //add click function to open a dialog to display the 			marker's details
             //	console.log('school:',name);
+            
+            // If statement to give the different types of pins, different functionality
             if (type == 'school') {
                 getBuildings(id);
 
@@ -159,6 +200,7 @@ $(document).ready(function () {
                 getRooms(name, id);
 
             }
+            
             infowindow.setContent(name);
             infowindow.open(map, this);
             map.setZoom(zoom);
@@ -166,12 +208,17 @@ $(document).ready(function () {
 
 
         });
-
+        
+        // If statement to give the different types of pins, different functionality
         if (type == 'school') {
+            
+            //calls clearMarkers() function
             clearMarkers('building');
+            
+            //pushes markers into an array for clearMarkers() function
             schoolArray.push(marker);
 
-        } else if (type == 'building') {
+        } else if(type == 'building') {
 
             clearMarkers('school');
             buildingArray.push(marker);
@@ -461,6 +508,8 @@ $(document).ready(function () {
                 $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>' + place.name + '</li>').appendTo('#testList')
                     .click(function (e) { // calling the ajax function when the button is clicked 
                     //the ajax function will send the school to the database
+                   
+                    getLocations(place, place.id);
 
                     addmyCampus(place);
                     // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
