@@ -454,11 +454,9 @@ $(document).ready(function () {
 
     function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
-        <<
-        << << < HEAD === === =
+        
         var isHidden = true;
 
-        >>> >>> > more modal fixing
         $('#addBtnBlue').click(function (e) {
             if (isHidden) {
                 $('#testList').removeClass('hide');
@@ -499,7 +497,7 @@ $(document).ready(function () {
             addLocationLocalStorage(dataDB);
         });;
 
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) {
+        $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
             map.setZoom(17);
             pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
             map.setCenter(pos);
