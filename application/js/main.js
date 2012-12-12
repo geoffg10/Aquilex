@@ -142,25 +142,41 @@ $(document).ready(function () {
 
 
 
-    function createMarker(name, latlng, id, type, zoom) { //creates markers on the map
+    function createMarker(name, latlng, id, type, zoom,content) { //creates markers on the map
 
 
+	    if(type=='school'){
+		    
+		    var icon = 'img/mapIcons/university-icon.png';
+	    }else if(type=='building'){
+		    var icon = 'img/mapIcons/building-icon.png';
+		    
+	    }
+	    
+	    var image = new google.maps.MarkerImage(
+	      icon,
+		    new google.maps.Size(32,37),
+		    new google.maps.Point(0,0),
+		    new google.maps.Point(16,37)
+		);
+	    
 
         var marker = new google.maps.Marker({
             map: map,
-            position: latlng
+            position: latlng,
+            icon: image
         });
 
         google.maps.event.addListener(marker, 'click', function () { //add click function to open a dialog to display the 			marker's details
             //	console.log('school:',name);
             if (type == 'school') {
                 getBuildings(id);
+                infowindow.setContent(name);
+
 
             } else if (type == 'building') {
-                getRooms(name, id);
-
+	             infowindow.setContent('<h4>'+name+'</h4>'+content);
             }
-            infowindow.setContent(name);
             infowindow.open(map, this);
             map.setZoom(zoom);
 
@@ -361,11 +377,18 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 if (response.result != "no record") {
+                   
+                   
                     for (var i = 0; i < response.result.length; i++) {
 
+	                    
                         var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude);
-                        createMarker(response.result[i].name, ltlg, response.result[i].id, 'building', 20);
+                        
+                        getRooms(response.result[i].name, response.result[i].id, ltlg);
+
+                       // createMarker(response.result[i].name, ltlg, response.result[i].id, 'building', 20);
                     };
+
                 }
 
             },
@@ -379,7 +402,7 @@ $(document).ready(function () {
 
 
 
-    function getRooms(name, id) { // performing ajax to get Rooms from the selected Buildings 
+    function getRooms(name, id,ltlg) { // performing ajax to get Rooms from the selected Buildings 
         $.ajax({
             type: 'POST',
             data: {
@@ -389,14 +412,22 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
 
-                console.log("Rooms for", name + ':');
 
                 if (response.message = "rooms") {
+                    var html = "<ul class='roomList'>";
+	                
                     for (var i = 0; i < response.result.length; i++) {
-                        console.log("	", response.result[i].name);
+                    
 
+                       var li ="<li class='roomName'>"+response.result[i].name+"</li>";
+                       
+                     	html += li;
                     }
-
+                    
+                    html += '</ul>';
+                    
+                    createMarker(name, ltlg ,id, 'building', 20,html);   
+                    	
                 } else {
                     console.log('NO ROOMS');
                 }
@@ -501,7 +532,7 @@ $(document).ready(function () {
             addLocationLocalStorage(dataDB);
         });;
 
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) {
+        $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
             map.setZoom(17);
             pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
             map.setCenter(pos);
@@ -538,7 +569,6 @@ $(document).ready(function () {
 
         //populates the fav dropdown and click to zoom
 
-        console.log('coming from db',dataDB[0].name);
      /*
     $('<li><a href="#">' + dataDB[0].name + '</a></li>')
         	.appendTo('#favorites')
