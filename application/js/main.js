@@ -490,18 +490,24 @@ $(document).ready(function () {
 
 
     // Modal is populated with schools from google that are in your location and put at the bottom of the modal.	
-    function makeList(place) {
+              
+     function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
-        $('<li><p class="btn btn-success" id="addSchooltoList">add</p>' + place.name + '</li>').appendTo('#testList').click(function (e) {
-
-            // calling the ajax function when the button is clicked 
-            //the ajax function will send the school to the database
-           
-            addmyCampus(place);
-            // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
-            $(this).remove();
-        });
+        $('#addBtnBlue').click(function (e) { 
+	            	$('#testList').removeClass('hide');
+	         
+	        $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList').click(function (e) {            // calling the ajax function when the button is clicked 
+	            //the ajax function will send the school to the database
+	          
+	            addmyCampus(place);
+	            // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
+	            $(this).remove();
+	        });
+        })
+    
     };
+    
+    
 
     // Top part of the "add your school" modal
     // this will show the school you have chosen then will cause the modal to disspear
@@ -621,7 +627,7 @@ $(document).ready(function () {
     // CLOSING SCHOOL MODAL -->
 
     $('#closeSchoolModal').on('click', function () {
-        $('#schoolTestModal').addClass("hide");
+        $('#schoolModal').addClass("hide");
 
     })
 
@@ -676,7 +682,6 @@ $(document).ready(function () {
 
 
     $('#showAllSchools').on('click',function(){
-    	console.log('show');
     	$("#schoolModal").removeClass('hide');
     	
     });
