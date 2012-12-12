@@ -189,7 +189,7 @@ $(document).ready(function () {
         });
         
         //click event listener for marker
-        google.maps.event.addListener(marker, 'click', function () { //add click function to open a dialog to display the 			marker's details
+        google.maps.event.addListener(marker, 'click', function () { //add click function to open a dialog to display the marker's details
             //	console.log('school:',name);
             
             // If statement to give the different types of pins, different functionality
@@ -203,7 +203,7 @@ $(document).ready(function () {
             
             infowindow.setContent(name);
             infowindow.open(map, this);
-            map.setZoom(zoom);
+            map.setZoom(zoom); //zoom is a variable passed into createMarker() function
 
 
 
@@ -212,15 +212,18 @@ $(document).ready(function () {
         // If statement to give the different types of pins, different functionality
         if (type == 'school') {
             
-            //calls clearMarkers() function
+            //calls clearMarkers() function. pass what type of marker
             clearMarkers('building');
             
             //pushes markers into an array for clearMarkers() function
             schoolArray.push(marker);
 
         } else if(type == 'building') {
-
+           
+            //calls clearMarkers() function. pass what type of marker
             clearMarkers('school');
+           
+            //pushes markers into an array for clearMarkers() function
             buildingArray.push(marker);
 
         }
@@ -228,9 +231,9 @@ $(document).ready(function () {
 
     }; //close createMarker
 
-
-    function clearMarkers(whichOne) {
-        if (whichOne == 'school') {
+    //Function that clears/deletes existing markers form the map. Param: (what type of marker to clear)
+    function clearMarkers(type) {
+        if (type == 'school') {
             if (schoolArray) {
                 for (i in schoolArray) {
                     schoolArray[i].setMap(null);
@@ -240,7 +243,7 @@ $(document).ready(function () {
 
 
             }
-        } else if (whichOne == 'building') {
+        } else if (type == 'building') {
 
             if (buildingArray) {
                 for (i in buildingArray) {
@@ -256,16 +259,20 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////////////////////////////  AJAX
 */
 
-    function getCampuses() { // add location to DB, takes the place object
-        $.ajax({
+	//function to get different schools from the DB
+    function getCampuses() { 
+            $.ajax({
             type: 'get',
             url: 'xhr/getCampuses.php',
             dataType: 'json',
             success: function (response) {
+            	//response is an array of objects that are the different schools
                 for (var i = 0; i < response.result.length; i++) {
-
+	                
+	                // sets var ltlg using google's LatLng() function. params: (latitude,longitude)
                     var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude)
-
+                    
+                    //calls the createMarker() function. params:(name of marker, latlng of marker, id of marker, type of marker, Zoom distance for click) 	
                     createMarker(response.result[i].name, ltlg, response.result[i].id, 'school', 17);
                 }
             },
@@ -277,10 +284,9 @@ $(document).ready(function () {
 
 
 
-
-    function addUserLocation(data) { // add location to DB, takes the place object
-        //console.log("addLocation ",data.geometry.location.$a);
-        //console.log(data);
+    // add location to DB, takes the place object
+    function addUserLocation(data) { 
+        
         $.ajax({
             type: 'POST',
             data: {
@@ -295,11 +301,9 @@ $(document).ready(function () {
         });
     };
 
-    //	
-    function getLocations(place, google_ref_id) { // performing ajax to check db with results then display results
-        //takes two params, one is the google place and the second is the id of the google place
-        //successLocDB is the location from the DB
-        //console.log('in getlocations ',data);
+    // performing ajax to check db with results then display results	
+    //takes two params, one is the google place and the second is the id of the google place
+    function getLocations(place, google_ref_id) { 
         $.ajax({
             type: 'POST',
             data: {
@@ -308,13 +312,15 @@ $(document).ready(function () {
             url: 'xhr/getlocations.php',
             dataType: 'json',
             success: function (successLocDB) {
+	            //successLocDB is the location from the DB
 
                 if (successLocDB.result == 'no record') {
 
-
+	               	//calls makeList() function. params:(place object);
                     makeList(place);
                 } else {
-
+	                
+	                //call schoolsFromDB() function. params:(place object, location from the DB)
                     schoolsFromDB(place, successLocDB.result);
                 }
             },
@@ -327,8 +333,8 @@ $(document).ready(function () {
     }; // end of function
 
 
-
-    function addmyCampus(data) { // add location to DB, takes the place object
+    // add location to DB, takes the place object
+    function addmyCampus(data) { 
         $.ajax({
             type: 'POST',
             data: {
@@ -342,11 +348,6 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (successData) {
 
-
-
-
-                //console.log(successData, "was added to database");
-                //console.log(data.reference);
                 if (successData.message == "location added") {
                     //should be calling this is your location
                 }
@@ -355,9 +356,8 @@ $(document).ready(function () {
         });
     };
 
-
-    function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy) { // add building to DB
-        //console.log("this function is running");
+    // add building to DB.params:(name of building,lat of building,long of building, campus id, which user added it)
+    function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy) { 
         $.ajax({
             type: 'POST',
             data: {
