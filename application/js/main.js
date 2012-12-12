@@ -75,10 +75,15 @@ $(document).ready(function () {
 
         google.maps.event.addListener(map, 'zoom_changed', function () {
 
-            if (map.getZoom() == 16) {
-                clearMarkers('building');
-                getCampuses()
-            }
+
+           if(map.getZoom() == 17){
+	           getCampuses();	
+
+           }else if(map.getZoom() == 16) {
+	            clearMarkers('building');
+	            getCampuses();	
+
+	       }
         });
 
 
@@ -154,11 +159,17 @@ $(document).ready(function () {
 
     function createMarker(name, latlng, id, type, zoom, content) { //creates markers on the map
 
+	    if(type=='school'){
+	    	var icon='img/mapIcons/university-icon.png';
+	    }else{
+	    	var icon='img/mapIcons/building-icon.png'; 
+	    };
+
 	    var image = new google.maps.MarkerImage(
-	    'http://mapicons.nicolasmollet.com/wp-content/uploads/mapicons/shape-default/color-2576d9/shapecolor-color/shadow-1/border-dark/symbolstyle-white/symbolshadowstyle-dark/gradient-no/university.png',
-		  new google.maps.Size(32,32),
+	      icon,
+		  new google.maps.Size(32,37),
 		  new google.maps.Point(0,0),
-		  new google.maps.Point(16,32)
+		  new google.maps.Point(16,37)
 		);
 	    
         var marker = new google.maps.Marker({
@@ -194,7 +205,7 @@ $(document).ready(function () {
 
         } else if (type == 'building') {
 
-            clearMarkers('school');
+          	clearMarkers('school');
             buildingArray.push(marker);
 
         }
@@ -502,12 +513,13 @@ $(document).ready(function () {
             pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
             map.setCenter(pos);
             getBuildings(dataDB[0].id);
-            $("#schoolModal").fadeOut('slow');
+            $("#schoolModal").addClass('hide');
             addLocationLocalStorage(dataDB);
         });;
 
         //populates the fav dropdown and click to zoom into school
-        $('<li><a href="#">' + dataDB[0].name + '</a></li>').appendTo('#favorites').click(function (e) 		{
+        $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+        .prependTo('#favorites').click(function (e) 		{
         	
             map.setZoom(17);
             pos = new google.maps.LatLng(dataDB[0].latitude, dataDB[0].longitude);
@@ -530,7 +542,7 @@ $(document).ready(function () {
             $("#schoolAddedMSG").fadeOut(
                 'slow', function () {
                 // the "add your school" modal will then fade out and be removed from the DOM
-                $("#schoolModal").fadeOut('slow');
+                $("#schoolModal").addClass('hide');
                 console.log("inside 411 makeAddedSchoolList");
 
             }).remove();
@@ -568,7 +580,6 @@ $(document).ready(function () {
             localStorage.chosenCampus = JSON.stringify(dataDB);
             // then puts the name of the school inside the "your chosen school" that is the blue box on the top of the page
             $('<p>' + dataDB[0].name + '</p>').appendTo('#yourchosenSchool');
-            console.log('CHOOSEN SCHOOL',dataDB[0].name);
            
             map.setZoom(17);
             pos = new google.maps.LatLng(dataDB[0].latitude, dataDB[0].longitude);
@@ -663,6 +674,12 @@ $(document).ready(function () {
         addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
 
+
+    $('#showAllSchools').on('click',function(){
+    	console.log('show');
+    	$("#schoolModal").removeClass('hide');
+    	
+    });
 
 
 });
