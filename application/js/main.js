@@ -294,8 +294,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (successLocDB) {
                 //console.log(successLocData.result);
-
+                
                 if (successLocDB.result == 'no record') {
+             
+                
                     //console.log("make the list");
                     makeList(place);
                 } else {
@@ -327,6 +329,10 @@ $(document).ready(function () {
             url: 'xhr/addcampus.php',
             dataType: 'json',
             success: function (successData) {
+           
+           
+            
+
                 //console.log(successData, "was added to database");
                 //console.log(data.reference);
                 if (successData.message == "location added") {
@@ -425,6 +431,7 @@ $(document).ready(function () {
                    	var html = '<ul>';
 	                
                     for (var i = 0; i < response.result.length; i++) {
+
                     
 
                        var li ="<li>"+response.result[i].name+"</li>";
@@ -436,6 +443,12 @@ $(document).ready(function () {
                     html += '</ul>';
                     createMarker(name, ltlg,id, 'building', 20,html);
                     
+
+                        console.log("	", response.result[i].name);
+                    
+                    }
+
+
                 } else {
                     console.log('NO ROOMS');
                 }
@@ -492,15 +505,17 @@ $(document).ready(function () {
     // Modal is populated with schools from google that are in your location and put at the bottom of the modal.	
     function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
-        $('<li><p class="btn btn-success" id="addSchooltoList">add</p>' + place.name + '</li>').appendTo('#testList').click(function (e) {
-
-            // calling the ajax function when the button is clicked 
+        $('#addBtnBlue').click(function (e) { 
+	            	$('#testList').removeClass('hide');
+	         
+        $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList').click(function (e) {            // calling the ajax function when the button is clicked 
             //the ajax function will send the school to the database
-           
+          
             addmyCampus(place);
             // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
             $(this).remove();
         });
+    });
     };
 
     // Top part of the "add your school" modal
@@ -558,18 +573,34 @@ $(document).ready(function () {
         }
 
 
+
         $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+
+        //populates the fav dropdown and click to zoom
+       
+        console.log(dataDB[0].name);
+      /*  $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+
         	.appendTo('#favorites')
         	.click(function(){
 	        	
 	        	 console.log('nothing?');
-	        	 map.setZoom(17);
-	        	 pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
-	        	 map.setCenter(pos);
+	        	// map.setZoom(17);
+	        	// pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+	        	// map.setCenter(pos);
             
-	        	 getBuildings(dataDB[0].id);
+	        	// getBuildings(dataDB[0].id);
+
 
         	});            
+
+
+        	});
+	       
+        */
+	              
+
+
     };
 
     //adding location to local storage
@@ -617,11 +648,10 @@ $(document).ready(function () {
 
 
 
-
     // CLOSING SCHOOL MODAL -->
 
     $('#closeSchoolModal').on('click', function () {
-        $('#schoolTestModal').addClass("hide");
+        $('#schoolModal').addClass("hide");
 
     })
 
@@ -630,10 +660,14 @@ $(document).ready(function () {
 
     $('#navAddBuilding').on('click', function () {
         ADDBUILDINGMarker = new google.maps.Marker({ //create current location marker on the map
+
             position: map.get,
+
+            position: pos,
+
             map: map,
             title: 'drag me',
-            draggable: true,
+            draggable: true
         });
         console.log(pos)
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
@@ -673,6 +707,8 @@ $(document).ready(function () {
 
         addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
+    
+
 
 
     $('#showAllSchools').on('click',function(){
