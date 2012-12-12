@@ -133,7 +133,6 @@ $(document).ready(function () {
             for (var i = 0; i < results.length; i++) {
                 var google_ref_id = results[i].id;
 
-                //createMarker({'name':results[i].name,'latlng':results[i].geometry.location});
                 getLocations(results[i], google_ref_id);
 
             } //end of for loop
@@ -206,7 +205,7 @@ $(document).ready(function () {
         }
     }
 
-    /*
+/*
 	//////////////////////////////////////////////////////////////////////////////////////  AJAX
 */
 
@@ -262,15 +261,12 @@ $(document).ready(function () {
             url: 'xhr/getlocations.php',
             dataType: 'json',
             success: function (successLocDB) {
-                //console.log(successLocData.result);
 
                 if (successLocDB.result == 'no record') {
 
 
-                    //console.log("make the list");
                     makeList(place);
                 } else {
-                    //console.log("make added list");
 
                     schoolsFromDB(place, successLocDB.result);
                 }
@@ -536,22 +532,7 @@ $(document).ready(function () {
         //populates the fav dropdown and click to zoom
 
         console.log(dataDB[0].name);
-        /*  $('<li><a href="#">' + dataDB[0].name + '</a></li>')
-        	.appendTo('#favorites')
-        	.click(function(){
-	        	
-	        	 console.log('nothing?');
-	        	// map.setZoom(17);
-	        	// pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
-	        	// map.setCenter(pos);
-            
-	        	// getBuildings(dataDB[0].id);
-
-
-        	});
-	       
-        */
-
+        
 
     };
 
