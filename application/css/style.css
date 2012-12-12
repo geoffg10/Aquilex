@@ -1,3 +1,31 @@
+/*
+hey chris, im using a new best practice
+instead of using text-indent im using font size 0
+*/
+
+
+
+/*------------------------- global styles ---------------------------*/
+
+
+.hide{
+	display:none;
+}
+
+.aquilex-block{
+	display: block;
+}
+
+img{
+	max-width: 100%;
+	height: auto;
+}
+
+/*-----------------------  end of global styles---------------------*/
+
+
+
+/*------------------------- buttons ---------------------------*/
 .aqui-btn-green{
 	color: white;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -12,14 +40,14 @@
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0044cc', GradientType=0);
 	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);	
 }
-.loginLogo{
-	text-align: center;
-		
+
+.aquilex-cancel{
+	margin-top: -5%;
+	margin-left: 7%;
+	text-decoration: underline;
 }
-.loginLogo span{
-	display: inline-block;
-	text-indent: -99999px;
-}
+
+/*------------------------- end of buttons ---------------------------*/
 
 .loginInstruct{
 	text-align: center;
@@ -29,6 +57,8 @@
 	text-decoration: underline;
 	margin-top: 20px;
 }
+
+/*------------------------- nav bar ---------------------------*/
 .navbar-inner.dark-header{
 	min-height: 52px;
 	background: #eeeeee; /* Old browsers */
@@ -39,6 +69,30 @@
 	background: -ms-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
+
+.navbar.aquilex-nav{
+	margin-bottom: 0;
+	
+}
+
+
+/*------------------------- nav bar ---------------------------*/
+
+
+
+
+
+/*------------------------- logo and header ---------------------------*/
+
+
+.Logo span{
+	display: inline-block;
+	font-size: 0;
+}
+
+.container .logo-main{
+	width: 50%;
 }
 
 .header{
@@ -52,15 +106,13 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#a3a3a3',GradientType=0 ); /* IE6-9 */
 	border: 1px solid black;
 }
-.Logo span{
-	display: inline-block;
-	text-indent: -99999px;
-}
-.muted span{
-	display: inline-block;
-	text-indent: -99999px;
-}
 
+
+/*--------------------end of logo ---------------------------*/
+
+
+
+/*--------------------icons ---------------------------*/
 
 .cog-icon, .star-icon{
 	display: inline-block;
@@ -71,24 +123,13 @@
 	
 	
 }
-img{
-	max-width: 100%;
-	height: auto;
-}
-.container .logo-main{
-	width: 50%;
-}
-.input-append.aquilex-searchbox{
-	width: 90%;
-}
-.span2.searchBar{
-	width:100%;
-	height: 30px;
-}
-.btn.aquilex-searchbtn{
-	padding-top: 7px;
-	padding-bottom: 6px;
-}
+
+/*-------------------- end of icons ---------------------------*/
+
+
+
+
+
 
 ul.downdwn-mobile-effect {
   position: absolute;
@@ -116,50 +157,65 @@ ul.downdwn-mobile-effect {
  -moz-background-clip: padding;
   background-clip: padding-box;
 }
+
+/*------------------------- search bar ---------------------------*/
+
 .aquilex-searchBar{
 	margin:0;
 	width: 100%;
 }
+.span2.searchBar{
+	width:100%;
+	height: 30px;
+}
+.btn.aquilex-searchbtn{
+	padding-top: 7px;
+	padding-bottom: 6px;
+}
+
+.input-append.aquilex-searchbox{
+	width: 90%;
+}
+
+
+/*------------------------- end of search bar ---------------------------*/
+
+
+/*------------------------- map ---------------------------*/
+
 .map{
 	height:361px;
 	background-color: green;
 }
+
+#map_container{
+	width: 90%;
+	height: 70%;
+}
+
+/*-------------------------  end of map ---------------------------*/
+
+
+
+
+/*-------------------------  login and form items ---------------------------*/
+
+.form-horizontal .controls.aquilex-pwchange {
+margin-left: 5%;
+}
+
 input.span2.aquilex-span{
 	width: 83%;
 }
-.adSpace{
-	
-}
 
-.navbar.aquilex-nav{
-	margin-bottom: 0;
-	
-}
 
 .accnt-settings{
 	display: none;
 }
 
-.hide{
-	display:none;
-}
-.form-horizontal .controls.aquilex-pwchange {
-margin-left: 5%;
-}
-legend.aquilex-cpwTitle{
-	
-}
 
-.aquilex-cancel{
-	margin-top: -5%;
-	margin-left: 7%;
-	text-decoration: underline;
-}
 
-.aquilex-block{
-	display: block;
-}
-#map_container{
-	width: 90%;
-	height: 70%;
-}
+
+
+
+
