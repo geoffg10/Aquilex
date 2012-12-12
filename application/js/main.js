@@ -454,30 +454,25 @@ $(document).ready(function () {
               
      function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
+<<<<<<< HEAD
+=======
+                 var isHidden = true;
+
+>>>>>>> more modal fixing
         $('#addBtnBlue').click(function (e) { 
-	            	$('#testList').removeClass('hide');
-	         
-	        $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList').click(function (e) {            // calling the ajax function when the button is clicked 
+	        if(isHidden){
+	        	$('#testList').removeClass('hide');
+	        	$('#addBtnBlue').html('hide list')
+	        	isHidden = false;	         
+	        	$('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList')
+	        	.click(function (e){            // calling the ajax function when the button is clicked 
 	            //the ajax function will send the school to the database
 	          
 	            addmyCampus(place);
 	            // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
 	            $(this).remove();
 	        });
-        })
-    
-    };
-    
-    
-       
-         var isHidden = true;
-         
-        $('#addBtnBlue').click(function (e) { 
-        	if(isHidden){
-	        	$('#testList').removeClass('hide');
-	        	$('#addBtnBlue').html('hide list')
-	        	isHidden = false;
-        	 }else{
+	        }else{
         	 	
         	 	$('#testList').addClass('hide');
         	 	$('#addBtnBlue').html('Add School')
@@ -485,16 +480,10 @@ $(document).ready(function () {
 	            
             }
 	         
-	            	$('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList').click(function (e) {            // calling the ajax function when the button is clicked 
-            //the ajax function will send the school to the database
-          
-           			 addmyCampus(place);
-          		  // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
-         	   $(this).remove();
-            });//end of the placeNames click
-           
-        });// end of the addBtnBlue click function
-    };// end of makeList
+
+        })
+    
+    };
 
     // Top part of the "add your school" modal
     // this will show the school you have chosen then will cause the modal to disspear
