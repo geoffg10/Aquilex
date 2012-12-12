@@ -263,10 +263,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (successLocDB) {
                 //console.log(successLocData.result);
-                
+
                 if (successLocDB.result == 'no record') {
-             
-                
+
+
                     //console.log("make the list");
                     makeList(place);
                 } else {
@@ -298,9 +298,9 @@ $(document).ready(function () {
             url: 'xhr/addcampus.php',
             dataType: 'json',
             success: function (successData) {
-           
-           
-            
+
+
+
 
                 //console.log(successData, "was added to database");
                 //console.log(data.reference);
@@ -392,7 +392,7 @@ $(document).ready(function () {
                 if (response.message = "rooms") {
                     for (var i = 0; i < response.result.length; i++) {
                         console.log("	", response.result[i].name);
-                    
+
                     }
 
                 } else {
@@ -451,38 +451,38 @@ $(document).ready(function () {
 
 
     // Modal is populated with schools from google that are in your location and put at the bottom of the modal.	
-              
-     function makeList(place) {
+
+    function makeList(place) {
         // this makes an List of all the schools and addes them to the ul called Test list
-<<<<<<< HEAD
-=======
-                 var isHidden = true;
+        <<
+        << << < HEAD === === =
+        var isHidden = true;
 
->>>>>>> more modal fixing
-        $('#addBtnBlue').click(function (e) { 
-	        if(isHidden){
-	        	$('#testList').removeClass('hide');
-	        	$('#addBtnBlue').html('hide list')
-	        	isHidden = false;	         
-	        	$('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>'+place.name+ '</li>').appendTo('#testList')
-	        	.click(function (e){            // calling the ajax function when the button is clicked 
-	            //the ajax function will send the school to the database
-	          
-	            addmyCampus(place);
-	            // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
-	            $(this).remove();
-	        });
-	        }else{
-        	 	
-        	 	$('#testList').addClass('hide');
-        	 	$('#addBtnBlue').html('Add School')
+        >>> >>> > more modal fixing
+        $('#addBtnBlue').click(function (e) {
+            if (isHidden) {
+                $('#testList').removeClass('hide');
+                $('#addBtnBlue').html('hide list')
+                isHidden = false;
+                $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>' + place.name + '</li>').appendTo('#testList')
+                    .click(function (e) { // calling the ajax function when the button is clicked 
+                    //the ajax function will send the school to the database
 
-	            
+                    addmyCampus(place);
+                    // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
+                    $(this).remove();
+                });
+            } else {
+
+                $('#testList').addClass('hide');
+                $('#addBtnBlue').html('Add School')
+
+
             }
-	         
+
 
         })
-    
+
     };
 
     // Top part of the "add your school" modal
@@ -512,9 +512,9 @@ $(document).ready(function () {
     //
     function makeAddedSchool(place, dataDB) {
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
-        
+
         // the message saying "school has been added" will slowly fade in
-       $('<li>' + place.name + '<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
+        $('<li>' + place.name + '<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
             "slow", function () {
             // the "school has been added" will then fade out
             $("#schoolAddedMSG").fadeOut(
@@ -536,9 +536,9 @@ $(document).ready(function () {
         }
 
         //populates the fav dropdown and click to zoom
-       
+
         console.log(dataDB[0].name);
-      /*  $('<li><a href="#">' + dataDB[0].name + '</a></li>')
+        /*  $('<li><a href="#">' + dataDB[0].name + '</a></li>')
         	.appendTo('#favorites')
         	.click(function(){
 	        	
@@ -553,7 +553,7 @@ $(document).ready(function () {
         	});
 	       
         */
-	              
+
 
     };
 
@@ -597,7 +597,7 @@ $(document).ready(function () {
 
 
 
-    // CLOSING SCHOOL MODAL -->
+//////----------------------------------------------------- CLOSING SCHOOL MODAL -------------------------------//////
 
     $('#closeSchoolModal').on('click', function () {
         $('#schoolModal').addClass("hide");
@@ -652,12 +652,12 @@ $(document).ready(function () {
 
         addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
-    
 
 
-    $('#showAllSchools').on('click',function(){
-    	$("#schoolModal").removeClass('hide');
-    	
+
+    $('#showAllSchools').on('click', function () {
+        $("#schoolModal").removeClass('hide');
+
     });
 
 
