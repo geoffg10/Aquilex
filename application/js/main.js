@@ -110,8 +110,9 @@ $(document).ready(function () {
 
     /*===================================================================================================== ##2.1 getUniversities runs after initialize on load
      */
-    function getUniversities() { //gets universities in users location
-
+    
+    //gets universities within users location using the Google API
+    function getUniversities() { 
         var request = {
             location: pos,
             radius: 9000, //this is in meters, its about 5 miles
@@ -119,15 +120,15 @@ $(document).ready(function () {
         };
 
         var service = new google.maps.places.PlacesService(map); //create a google places service
-        /*===================================================================================================== ##2.2 callback runs after getUniversities on load
+        /*===================================================================================================== ##2.2 getUniversityCallback runs after getUniversities on load
          */
-        service.nearbySearch(request, callback); //first parm is the request object, then runs the function with the results
+        service.nearbySearch(request, getUniversityCallback); //first parm is the request object, then runs the function with the results
 
     }; //close getUniversities
 
-    /*===================================================================================================== ##2.2.1 callback runs after getUniversities on load
+    /*===================================================================================================== ##2.2.1 getUniversityCallback runs after getUniversities on load
      */
-    function callback(results, status) { //first param is the results json object from the getUniversities query, the second param is the status
+    function getUniversityCallback(results, status) { //first param is the results json object from the getUniversities query, the second param is the status
 
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
@@ -138,13 +139,13 @@ $(document).ready(function () {
 
             } //end of for loop
         }
-    }; //close callback
+    }; //close getUniversityCallback
 
 
+    //creates markers on the map. params(name of marker, Lat/Long of marker, id of information, type of marker, zoom distance, infowindow content
+    function createMarker(name, latlng, id, type, zoom,content) { 
 
-    function createMarker(name, latlng, id, type, zoom,content) { //creates markers on the map
-
-
+	    // if statement to set 'icon' variable depending on the type 
 	    if(type=='school'){
 		    
 		    var icon = 'img/mapIcons/university-icon.png';
@@ -153,6 +154,7 @@ $(document).ready(function () {
 		    
 	    }
 	    
+	    //Google.Map API call to make an image for making custom markers
 	    var image = new google.maps.MarkerImage(
 	      icon,
 		    new google.maps.Size(32,37),
@@ -160,15 +162,17 @@ $(document).ready(function () {
 		    new google.maps.Point(16,37)
 		);
 	    
-
+		//create marker
         var marker = new google.maps.Marker({
             map: map,
             position: latlng,
             icon: image
         });
 
-        google.maps.event.addListener(marker, 'click', function () { //add click function to open a dialog to display the 			marker's details
-            //	console.log('school:',name);
+        // click event listener for marker. params(where its attached to, type of event, function)
+        google.maps.event.addListener(marker, 'click', function () { 
+	        
+	        //if statement to give the different types of markers, different functionality
             if (type == 'school') {
                 getBuildings(id);
                 infowindow.setContent(name);
@@ -177,21 +181,24 @@ $(document).ready(function () {
             } else if (type == 'building') {
 	             infowindow.setContent('<h4>'+name+'</h4>'+content);
             }
+            
             infowindow.open(map, this);
             map.setZoom(zoom);
 
 
 
         });
-
+        
+        //if statement to give the different markers, different functionality
         if (type == 'school') {
-            clearMarkers('building');
-            schoolArray.push(marker);
+            clearMarkers('building'); // calls clearMarkers() function. param(type of marker to remove)
+            schoolArray.push(marker); //pushes to an array for clearMarkers() function
 
         } else if (type == 'building') {
 
-            clearMarkers('school');
-            buildingArray.push(marker);
+            clearMarkers('school');// calls clearMarkers() function. param(type of marker to remove)
+            buildingArray.push(marker);//pushes to an array for clearMarkers() function
+
 
         }
 
@@ -199,10 +206,11 @@ $(document).ready(function () {
     }; //close createMarker
 
 
+    //Clears markers from the map.params(type of marker to remove)
     function clearMarkers(whichOne) {
         if (whichOne == 'school') {
             if (schoolArray) {
-                for (i in schoolArray) {
+                for (i in schoolArray) {            //array is populated with the marker from the createMarker() function.
                     schoolArray[i].setMap(null);
                 };
 
@@ -317,7 +325,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (successData) {
 
-
+	            
 
 
                 //console.log(successData, "was added to database");
@@ -497,6 +505,7 @@ $(document).ready(function () {
                 $('#addBtnBlue').html('hide list')
                 //making it hidden again
                 isHidden = false;
+               
                 $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>' + place.name + '</li>').appendTo('#schoolsPlusList')
                     .click(function (e) { // calling the ajax function when the button is clicked 
                     //the ajax function will send the school to the database
