@@ -128,7 +128,8 @@ $(document).ready(function () {
 
     /*===================================================================================================== ##2.1 getUniversities runs after initialize on load
      */
-    
+ //////----------------------------------------------------- GET UNIVERSITIES  -------------------------------//////
+   
     //gets universities within users location using the Google API
     function getUniversities() { 
         var request = {
@@ -146,6 +147,10 @@ $(document).ready(function () {
 
     /*===================================================================================================== ##2.2.1 getUniversityCallback runs after getUniversities on load
      */
+     
+     
+//////----------------------------------------------------- GET UNIVERSITIES ( CALL BACK )  -------------------------------//////
+     
     function getUniversityCallback(results, status) { //first param is the results json object from the getUniversities query, the second param is the status
 
         if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -159,6 +164,7 @@ $(document).ready(function () {
         }
     }; //close getUniversityCallback
 
+//////----------------------------------------------------- CREATING MARKERS  -------------------------------//////
 
     //creates markers on the map. params(name of marker, Lat/Long of marker, id of information, type of marker, zoom distance, infowindow content
     function createMarker(name, latlng, id, type, zoom,content) { 
@@ -236,6 +242,7 @@ $(document).ready(function () {
 
     }; //close createMarker
 
+//////----------------------------------------------------- CLEAR MARKERS  -------------------------------//////
 
     //Clears markers from the map.params(type of marker to remove)
     function clearMarkers(whichOne) {
@@ -264,6 +271,7 @@ $(document).ready(function () {
     /*
 	//////////////////////////////////////////////////////////////////////////////////////  AJAX
 */
+//////----------------------------------------------------- GET CAMPUSES  -------------------------------//////
 
     function getCampuses() { // add location to DB, takes the place object
         $.ajax({
@@ -286,6 +294,7 @@ $(document).ready(function () {
 
 
 
+//////----------------------------------------------------- ADD USER LOCATIONS -------------------------------//////
 
     function addUserLocation(data) { // add location to DB, takes the place object
         //console.log("addLocation ",data.geometry.location.$a);
@@ -303,8 +312,8 @@ $(document).ready(function () {
             }
         });
     };
+//////----------------------------------------------------- GET LOCATIONS  -------------------------------//////
 
-    //	
     function getLocations(place, google_ref_id) { // performing ajax to check db with results then display results
         //takes two params, one is the google place and the second is the id of the google place
         //successLocDB is the location from the DB
@@ -341,6 +350,7 @@ $(document).ready(function () {
     }; // end of function
 
 
+//////----------------------------------------------------- ADD NEW CAMPUS  -------------------------------//////
 
     function addmyCampus(data) { // add location to DB, takes the place object
         $.ajax({
@@ -369,6 +379,7 @@ $(document).ready(function () {
         });
     };
 
+//////----------------------------------------------------- ADD NEW BUILDING  -------------------------------//////
 
     function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy) { // add building to DB
         //console.log("this function is running");
@@ -402,6 +413,7 @@ $(document).ready(function () {
         });
     };
 
+//////----------------------------------------------------- GET BUILDINGS   -------------------------------//////
 
     function getBuildings(data) { // performing ajax to get buildings from the selected College 
         clearMarkers('building');
@@ -440,6 +452,7 @@ $(document).ready(function () {
     }; // end of function
 
 
+//////----------------------------------------------------- GET ROOMS  -------------------------------//////
 
     function getRooms(name, id,ltlg) { // performing ajax to get Rooms from the selected Buildings 
         $.ajax({
@@ -490,6 +503,10 @@ $(document).ready(function () {
 	//////////////////////////////////////////////////////////////////////////////////////  Click Events
 */
 
+
+
+//////----------------------------------------------------- GPS -------------------------------//////
+
     $('#useGPS').click(function (e) { //enables the use of GPS and moved the user's marker to there location 
 
         if (navigator.geolocation) { //if geolocation is possible for user
@@ -518,6 +535,7 @@ $(document).ready(function () {
         addUserLocation(userMarker.position); //add to DB function
     });
 
+//////----------------------------------------------------- LIST OF CAMPUS FROM GOOGLE -------------------------------//////
 
     // Modal is populated with schools from google that are in your location and put at the bottom of the modal.	
 
@@ -557,6 +575,7 @@ $(document).ready(function () {
     };// end of makeList
 
 
+//////----------------------------------------------------- LIST OF CAMPUS FROM DATABASE -------------------------------//////
 
     // Top part of the "add your school" modal
     // this will show the school you have chosen then will cause the modal to disspear
@@ -586,7 +605,8 @@ $(document).ready(function () {
         });
 
     };
-    //
+//////----------------------------------------------------- LIST OF CAMPUS THAT YOU CHOOSE -------------------------------//////
+
     function makeAddedSchool(place, dataDB) {
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
         // the message saying "school has been added" will slowly fade in
@@ -612,27 +632,10 @@ $(document).ready(function () {
         }
 
         //populates the fav dropdown and click to zoom
-
-     /*
-    $('<li><a href="#">' + dataDB[0].name + '</a></li>')
-        	.appendTo('#favorites')
-        	.click(function(){
-	        	
-	        	 console.log('nothing?');
-	        	// map.setZoom(17);
-	        	// pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
-	        	// map.setCenter(pos);
-            
-	        	// getBuildings(dataDB[0].id);
-
-
-        	});
-	       
-       
-*/
-
-
     };// end of makeAddedSchools
+    
+    
+//////----------------------------------------------------- ADDING CAMPUS TO LOCAL STORAGE -------------------------------//////
 
     //adding location to local storage
     function addLocationLocalStorage(dataDB) {
@@ -645,6 +648,7 @@ $(document).ready(function () {
         campus = dataDB;
     }
 
+//////----------------------------------------------------- ADDING NEW BUILDING CLICK FUNCTION -------------------------------//////
 
     // if there is a school in the local storage, then the modal shouldnt show up
     //if there no school is in the local storage then the modal should show up
@@ -735,6 +739,7 @@ $(document).ready(function () {
         //addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
 
+//////----------------------------------------------------- SHOW ALL SCHOOLS CLICK -------------------------------//////
 
 // clicking the show all schools link from the drop down menu
 // clicking this makes the school modal show 
@@ -742,19 +747,21 @@ $(document).ready(function () {
         $("#schoolModal").removeClass('hide');
 
     });
+//////----------------------------------------------------- SHOW ADD ROOM CLICK -------------------------------//////
 
     $('#showAddRoomBtn').on('click',function(){
 	    
 	   console.log('show room button!'); 
     });
     
+//////----------------------------------------------------- SCHOOL BREADCRUMBS -------------------------------//////
     
     $('#schoolCrumb').on('click', function(){
 	    
 	    $('#schoolCrumb').addClass('hide');
 	    $('#buildingCrumb').addClass('hide');
 	    map.setZoom(16);
-    });    
+    });//END OF SCHOOL CRUMBS
     
     $('#buildingCrumb').on('click', function(){     
     
@@ -762,6 +769,6 @@ $(document).ready(function () {
     	map.setZoom(17);
 
     	
-    });   	
+    });// END OF BUILDING CRUMBS   	
 
 });
