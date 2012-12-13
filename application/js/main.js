@@ -149,6 +149,9 @@ $(document).ready(function () {
 	    if(type=='school'){
 		    
 		    var icon = 'img/mapIcons/university-icon.png';
+		   
+		    
+
 	    }else if(type=='building'){
 		    var icon = 'img/mapIcons/building-icon.png';
 		    
@@ -174,12 +177,22 @@ $(document).ready(function () {
 	        
 	        //if statement to give the different types of markers, different functionality
             if (type == 'school') {
+               
+               	
+               $('#schoolCrumb').removeClass('hide').html(name);               	
+	           
+                
                 getBuildings(id);
                 infowindow.setContent(name);
 
 
             } else if (type == 'building') {
-	             infowindow.setContent('<h4>'+name+'</h4>'+content);
+            	
+            	$('#buildingCrumb').removeClass('hide').html(name);
+            	
+            	infowindow.setContent('<h4>'+name+'</h4>'+content+"<form class='hide' id='addRoomForm'><input id='addRoomInput' type='text' placeholder='Room Name'><button id='addRoomBtn' class='btn'> Add Room </button></form>"+"<button id='showAddRoomBtn' class='btn'>+</button>");
+            	
+            	
             }
             
             infowindow.open(map, this);
@@ -542,11 +555,15 @@ $(document).ready(function () {
         });;
 
         $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
+           
+           	$('#schoolCrumb').removeClass('hide').html(dataDB[0].name);               	
+
+           	
             map.setZoom(17);
-            pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+            pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
             map.setCenter(pos);
 
-
+            console.log('dropdown click')
             getBuildings(dataDB[0].id);
         });
 
@@ -675,6 +692,7 @@ $(document).ready(function () {
 //////----------------------------------------------------- ADDING NEW BUILDING CLICK FUNCTION -------------------------------//////
 
     $("#infoBoxBtn").on('click', function () {
+       
         google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function () {
             var dragLng = ADDBUILDINGMarker.getPosition().ab;
             var dragLat = ADDBUILDINGMarker.getPosition().$a;
@@ -686,9 +704,9 @@ $(document).ready(function () {
         var newBuildinglongitude = ADDBUILDINGMarker.getPosition().ab; // getting the longitude value from the local storage
         var newBuildingCampus_identify = campusobject[0].id; // getting the campus id from the local storage
         var addedBy = JSON.parse(user.id);
-        console.log(newBuildinglatitude);
+        console.log(newBuildingCampus_identify);
 
-        addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
+        //addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
 
 
@@ -699,5 +717,25 @@ $(document).ready(function () {
 
     });
 
+    $('#showAddRoomBtn').on('click',function(){
+	    
+	   console.log('show room button!'); 
+    });
+    
+    
+    $('#schoolCrumb').on('click', function(){
+	    
+	    $('#schoolCrumb').addClass('hide');
+	    $('#buildingCrumb').addClass('hide');
+	    map.setZoom(16);
+    });    
+    
+    $('#buildingCrumb').on('click', function(){     
+    
+    	$('#buildingCrumb').addClass('hide');
+    	map.setZoom(17);
+
+    	
+    });   	
 
 });
