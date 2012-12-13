@@ -5,8 +5,12 @@
 	//the url that was called
 	$url = $_SERVER["REQUEST_URI"];
 	
-	// remove ending slash
-	$url = substr($url, 1);
+	//split on the quetion mark if there is one
+	//removes the get variable
+	$url = preg_split("/[?]/", $url);
+	
+	//remove ending slash
+	$url = substr($url[0], 1);
 	
 	//put into an array all the pieces
 	$url = explode("/", $url);

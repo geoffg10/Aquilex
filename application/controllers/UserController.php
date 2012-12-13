@@ -18,8 +18,9 @@ Class UserController{
       */
 
 	public function fblogin(){
-		if($_POST){
-			if($_POST['fb_id']){
+		if(isset($_POST)){
+			// check to make sure that the variable being used is fb_id and that it is not empty
+			if(isset($_POST['fb_id']) && $_POST['fb_id'] != ""){
 				//check to see if the FB user exists in the user's table
 				$checkFBUserResult = $this->userModel->checkFBUser($_POST);
 				
@@ -43,5 +44,28 @@ Class UserController{
 			echo json_encode(array('message'=>'use post'));
 		}
 	}
+	/**
+      * searchEmail method is a wildcard search for email adresses that start with the user input 
+      * 
+      * uses $_POST
+      * expecting ['email']
+      *
+      * @return array of emails in the users table
+      */
+	public function searchEmail(){
+		if(isset($_POST)){
+			if(isset($_POST['email']) && $_POST['email'] !=''){
+				//the email var is set and not empty
+				$searchEmailArray = $this->userModel->searchEmail($_POST);
+				echo json_encode(array('message'=>'email_search', 'result'=>$searchEmailArray));
+			}else{
+				echo json_encode(array('message'=>'["email"] must be set and not be empty'));
+			}
+		}else{
+			// send message that we should be receiving a $_POST
+			echo json_encode(array('message'=>'use post'));
+		}
+	}
+
 }
 ?>

@@ -70,10 +70,10 @@ $(document).ready(function(){
 					//it will register the user if they do not exist and will return the created userid
 					
 					$.ajax({
-						type:'POST', 
+						type:'GET', 
 						url: '../application/user/fblogin',
 						data:{
-							fb_id:			data.id,
+							fba_id:			data.id,
 							fb_first_name:	data.first_name || '',
 							fb_middle_name:	data.middle_name || '',
 							fb_last_name:	data.last_name || '',
