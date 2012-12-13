@@ -17,7 +17,7 @@ Class MapController{
 	
 	public function hello(){
 		
-		$checkEmailResult = $this->loginModel->add(array("user_email"=>"a"));
+		$checkEmailResult = $this->mapModel->getCampuses(array($data['google_id']=>'1'));
 		echo json_encode(array('message'=>'email only', 'result'=>$checkEmailResult));
 		//echo "hello";
 		

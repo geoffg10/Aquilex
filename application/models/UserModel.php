@@ -11,7 +11,7 @@ require('../core/Database.php');
   * This class handles all of the the CRUD calls for the user 
   * it handles email and facebook 
   */
-Class Test extends UserModel{
+Class UserModel extends Database{
 	/**
       * searchEmail method will use a wildcard param to get like emails
       *	like emails will match the user input to the beginning of the email value only
@@ -112,7 +112,7 @@ Class Test extends UserModel{
 		$st = $this->db->prepare($sqlst);
 		$results = $st->execute(array(":fb_id"=>$data['fb_id'], ":fb_first_name"=>$data['fb_first_name'], ":fb_middle_name"=>$data['fb_middle_name'], ":fb_last_name"=>$data['fb_last_name'], ":fb_gender"=>$data['fb_gender'], ":fb_link"=>$data['fb_link'], ":fb_locale"=>$data['fb_locale'], ":fb_name"=>$data['fb_name'], ":fb_timezone"=>$data['fb_timezone'], ":fb_updated_time"=>$data['fb_updated_time'], ":fb_username"=>$data['fb_username']));
 		
-		return $db->lastInsertId();
+		return $this->db->lastInsertId();
 	}
 	/**
       * validateFBUser method get the Fb user from the users table by the facebook id

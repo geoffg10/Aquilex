@@ -144,7 +144,7 @@ $(document).ready(function () {
                 var google_ref_id = results[i].id;
 
                 //createMarker({'name':results[i].name,'latlng':results[i].geometry.location});
-                getLocations(results[i], google_ref_id);
+                //getLocations(results[i], google_ref_id);
 
             } //end of for loop
         }
@@ -321,7 +321,7 @@ $(document).ready(function () {
                 if (successData.message == "location added") {
                     //should be calling this is your location
                 }
-                getLocations(data, data.id);
+                //getLocations(data, data.id);
             }
         });
     };

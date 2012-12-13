@@ -32,7 +32,7 @@ $(document).ready(function(){
 		}
 	}
 	//runs check on load
-	checkLocalStorage();
+	//checkLocalStorage();
 	
 	
 	FB.init({ //initializes the FB api
@@ -68,9 +68,10 @@ $(document).ready(function(){
 					//login to the DB, this will check if the user exists
 					//if the user exists than the userid is returned, 
 					//it will register the user if they do not exist and will return the created userid
+					
 					$.ajax({
 						type:'POST', 
-						url: 'xhr/fblogin.php', 
+						url: '../application/user/fblogin',
 						data:{
 							fb_id:			data.id,
 							fb_first_name:	data.first_name || '',
@@ -86,8 +87,10 @@ $(document).ready(function(){
 						}, 
 						dataType: 'json',
 						success: function(response) {
+							console.log("response ",response);
+							
 							//set the userObj to hold the userid generated in the DB
-							userObj.id = response.result.userid;
+							//userObj.id = response.result.userid;
 							//if there is local storage store both the userObj and the fbObj with the data
 							if(localStorage){
 								$('#aquilex-login').addClass("hide");
@@ -97,6 +100,7 @@ $(document).ready(function(){
 							}
 					    },error: function(errorResponse) {  
 						    //console.log(errorResponse);
+						    console.log("errorResponse ",errorResponse);
 						    
 				    }});
 				    //this will get the user's fb profile image to use in the frontend if wanted
