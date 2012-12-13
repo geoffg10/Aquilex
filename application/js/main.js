@@ -284,7 +284,7 @@ $(document).ready(function () {
     
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
+/* 
     
 											           AA              JJ        AA        XX       XX
 											        AA    AA           JJ     AA    AA      XX     XX
@@ -293,7 +293,7 @@ $(document).ready(function () {
 											        AA    AA    jj     jj     AA    AA       XX   XX
 											        AA    AA    jjjjjjjjj     AA    AA      XX     XX
 											    
-    
+ */   
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////----------------------------------------------------- GET CAMPUSES  -------------------------------//////
@@ -542,7 +542,7 @@ $(document).ready(function () {
         }); //end of ajax
     }; // end of getRooms function
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+/*    
     
 							        CCCC  			LL				IIIIIIIIIIIIIII  		CCCC         KKKK       KKK
 							    CC       CC			LL					  III   	    CC       CC      KKKK      KKK
@@ -553,8 +553,9 @@ $(document).ready(function () {
 							    CC					LL					  III			CC               KKKK   KKK
 							    CC        CC		LL					  III			CC		 CC      KKKK    KKK
 							       CCCCC			LLLLLLLLLLLL	IIIIIIIIIIIIIIII		CCCCC        KKKK     KKK 
-							
+*/							
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -674,7 +675,7 @@ $(document).ready(function () {
             $("#schoolAddedMSG").fadeOut(
                 'slow', function () {
                 // the "add your school" modal will then fade out and be removed from the DOM
-                $("#Z").fadeOut('slow');
+                $("#schoolModal").fadeOut('slow');
             }).remove();
             // the school that you chose will then be added to ul "our added list" which is the top part of the " add your school" modal.		
         }).appendTo('#ourAddedList');
