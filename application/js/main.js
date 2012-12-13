@@ -53,21 +53,39 @@ $(document).ready(function () {
             zoom: 15,
             center: pos
         };
+        
+        var image = new google.maps.MarkerImage(
+	      'img/mapIcons/user-icon.png',
+		    new google.maps.Size(32,37),
+		    new google.maps.Point(0,0),
+		    new google.maps.Point(16,37)
+		);
+
 
         map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions); //create a map and place it in its container with initial options
         userMarker = new google.maps.Marker({ //create current location marker on the map
             position: pos,
             map: map,
             title: 'You are here',
-            draggable: true
+            draggable: true,
+            icon:image
+
         });
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
 
         google.maps.event.addListener(map, 'zoom_changed', function () {
 
+	        
             if (map.getZoom() == 16) {
                 clearMarkers('building');
-                getCampuses()
+                getCampuses();
+                $('#schoolCrumb').addClass('hide');
+                $('#buildingCrumb').addClass('hide');
+
+                
+            }else if(map.getZoom() == 17){
+	            $('#buildingCrumb').addClass('hide');
+
             }
         });
 
@@ -664,11 +682,19 @@ $(document).ready(function () {
 //////----------------------------------------------------- ADDING A NEW BUILDING -------------------------------//////
 
     $('#navAddBuilding').on('click', function () {
+        var image = new google.maps.MarkerImage(
+	      'img/mapIcons/add-icon.png',
+		    new google.maps.Size(32,37),
+		    new google.maps.Point(0,0),
+		    new google.maps.Point(16,37)
+		);
+        
         ADDBUILDINGMarker = new google.maps.Marker({ //create current location marker on the map
             position: pos,
             map: map,
             title: 'drag me',
-            draggable: true
+            draggable: true,
+            icon:image
         });
         console.log(pos)
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
