@@ -114,7 +114,7 @@ $(document).ready(function(){
     //can change the text when the email is found
 	$('input[name="email"]').focusout(function(e){
 	
-		console.log($(this).val());
+		//console.log($(this).val());
 		$.ajax({
 			type:'POST', 
 			url: 'xhr/login.php', 

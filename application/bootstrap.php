@@ -1,4 +1,7 @@
 <?php
+	//load the Settings
+	require("Settings.php");
+	
 	//the url that was called
 	$url = $_SERVER["REQUEST_URI"];
 	
@@ -45,11 +48,21 @@
 		}
 	}
 	
+
+	
+	if(!isset($request[0])){
+		$request[0] = "Map";
+		$request[1] = "index";
+	}
+	
+	//file name of our controller
+	$controllerName = ucfirst($request[0]."Controller");
+	
 	// include the controller
-	include("controllers/$request[0].php");
+	include("../controllers/$controllerName.php");
 	
 	// instantiate the controller
-	$controller = new $request[0]."Controller"();
+	$controller = new $controllerName;
 	
 	// call the method
 	$controller->$request[1]();
