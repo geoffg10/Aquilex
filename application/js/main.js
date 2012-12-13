@@ -3,7 +3,21 @@
 	Date: December 2, 2012
 	Project: MDD - Aquilex
 	Project co-auth: Geoffrey Ganga, Jarvis Jardin
-
+	Contact info
+	-------------
+		Renee Blunt:
+					  renee.blunt@gmail.com
+					  (407) 536-9168
+					  
+     Geoffrey Ganga: 
+     				  bakerskategg09@gmail.com
+     				  (678) 825-5628
+     				  
+      Jarvis Jardin: 
+      				 jjardin@rocketmail.com
+      				  (201) 779-6182
+      				  
+   ------------------------------------------
 	The below code is accessing the Google Maps APIv3 and the Google Places API
 	Also using maxmind for ip location
 
@@ -267,124 +281,156 @@ $(document).ready(function () {
             }
         }
     }
+    
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+    
+											           AA              JJ        AA        XX       XX
+											        AA    AA           JJ     AA    AA      XX     XX
+											        AAAAAAAA           jj     AAAAAAAA       XX   XX
+											        AA    AA           jj     AA    AA         XXX
+											        AA    AA    jj     jj     AA    AA       XX   XX
+											        AA    AA    jjjjjjjjj     AA    AA      XX     XX
+											    
+    
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /*
-	//////////////////////////////////////////////////////////////////////////////////////  AJAX
-*/
 //////----------------------------------------------------- GET CAMPUSES  -------------------------------//////
 
-    function getCampuses() { // add location to DB, takes the place object
-        $.ajax({
+    function getCampuses() { 
+    //starting the ajax call to database 
+       $.ajax({
+       	//the type of method we are going to use
+       	//using GET because we are tying to get information
             type: 'get',
+        // the php file that we are calling 
             url: 'xhr/getCampuses.php',
+        //the type of data we are going to be gathering is going to be json
             dataType: 'json',
+        // if everything works out right the success function will run
             success: function (response) {
+            	// looping through the results that we are getting back
                 for (var i = 0; i < response.result.length; i++) {
-
+	                // creating a variable latitude and longitude
                     var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude)
-
+                    //create markers for the campuses
                     createMarker(response.result[i].name, ltlg, response.result[i].id, 'school', 17);
-                }
-            },
+                }// end of the for loop
+            },// end of the success function
+            // if there is an error, then this error function will happen
             error: function (error) {
-                console.log('error', error);
-            }
-        });
-    };
+            }// end of error function
+        });// end of ajax function
+    };// end of get campuses
 
 
 
 //////----------------------------------------------------- ADD USER LOCATIONS -------------------------------//////
 
-    function addUserLocation(data) { // add location to DB, takes the place object
-        //console.log("addLocation ",data.geometry.location.$a);
-        //console.log(data);
+    function addUserLocation(data) {
+     //starting the ajax call to database 
         $.ajax({
+        //the type of method we are going to use
+       	//using POST because we are tying to POST the information
             type: 'POST',
+        // data is what we are sending 
             data: {
                 latitude: data.$a,
                 longitude: data.ab
             },
+        // the php file that we are calling 
             url: 'xhr/addlocation.php',
+        //the type of data we are going to be gathering is going to be json
             dataType: 'json',
+        // if the ajax called worked correctly, then this success function will run
             success: function (data) {
-                //console.log(data);
-            }
-        });
-    };
+                
+            }// end of success function
+        });// end of ajax
+    };//end of add user location
+    
+    
 //////----------------------------------------------------- GET LOCATIONS  -------------------------------//////
 
     function getLocations(place, google_ref_id) { // performing ajax to check db with results then display results
         //takes two params, one is the google place and the second is the id of the google place
-        //successLocDB is the location from the DB
-        //console.log('in getlocations ',data);
+     // starting the ajax call to the database
         $.ajax({
+        	//using POST because we are tying to POST the information
             type: 'POST',
+            // the data that we are sending to is the google reference id
             data: {
                 google_ref_id: google_ref_id
             },
+            // the php file that we are calling to make this function run
             url: 'xhr/getlocations.php',
+            //the type of data we will be expecting to be returned is JSON
             dataType: 'json',
+            //if everything runs correctly then this function wil run with successLocDB as its param
+            //successLocDB is a ref to the database
             success: function (successLocDB) {
-                //console.log(successLocData.result);
-
+                //if the result from the database is no record then
                 if (successLocDB.result == 'no record') {
-
-
-                    //console.log("make the list");
+                    //call the function makeList
                     makeList(place);
                 } else {
-                    //console.log("make added list");
+                    //if the data has a record then you will call the make Added school, with place, the successLocDB result passed into the function
                     makeAddedSchool(place, successLocDB.result);
 
-                    //makeAddedSchool(place, dataDB)
+                    //call the schools from the database
                     schoolsFromDB(place, successLocDB.result);
-                }
-            },
+                }//end of else
+            },// end of success function
+            //if there is an error then error function run
             error: function (error) {
-                console.log("error ", error);
-            }
+              
+            }//end of error function
         }); //end of ajax
-
-
-    }; // end of function
+    }; // end of getLocations function
 
 
 //////----------------------------------------------------- ADD NEW CAMPUS  -------------------------------//////
 
-    function addmyCampus(data) { // add location to DB, takes the place object
+// add my campus function
+    function addmyCampus(data) { 
+    	// starting the ajax call
         $.ajax({
+        	//using POST because we are tying to POST the information
             type: 'POST',
+            //the data we are going to be sending to the database and will be using
             data: {
-                latitude: data.geometry.location.$a,
-                longitude: data.geometry.location.ab,
-                name: data.name,
-                google_ref_id: data.id,
-                added_by_id: 1
+                latitude: data.geometry.location.$a,//latitude is grabbing the latitude from the location
+                longitude: data.geometry.location.ab,//longitude is grabbing the longititude from the location
+                name: data.name,//grabbing the name form the data
+                google_ref_id: data.id,//google ref id, we are sending the campus id to the database
+                added_by_id: 1 // added by user which has an id
             },
+            //the php fiile we are using to send the information to the database
             url: 'xhr/addcampus.php',
+            // the type of data we are expecting back is in the json format
             dataType: 'json',
+            //success function
             success: function (successData) {
-
-	            
-
-
-                //console.log(successData, "was added to database");
-                //console.log(data.reference);
+                //if the message is location added then
                 if (successData.message == "location added") {
                     //should be calling this is your location
-                }
+                }//end of if
+                //calling the getLocations functoin and passing the data that we are recieveing  and the id of the data to the function
                 getLocations(data, data.id);
-            }
-        });
-    };
+            }//end of the success function
+        });// end of ajax
+    };// end of addmycampus function
 
 //////----------------------------------------------------- ADD NEW BUILDING  -------------------------------//////
 
+
     function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy) { // add building to DB
-        //console.log("this function is running");
+        //starting the ajax call
         $.ajax({
+        	//using POST because we are tying to POST the information
             type: 'POST',
+            //the data is going to be the campus id, the position, the name, and who the info was added by
             data: {
                 campus_id: campus_identify,
                 latitude: newBuildinglatitude,
@@ -393,25 +439,26 @@ $(document).ready(function () {
                 added_by_id: addedBy
 
             },
+            // the php file we are going to use to help make this work
             url: 'xhr/addbuilding.php',
+            //the type of data we are expecting is going to be in JSON format
             dataType: 'json',
+            //success function
             success: function (successData) {
-                console.log(successData, "was added to database");
-                //console.log(data.reference);
+                //if the success data has an error
                 if (successData.error) {
-                    console.log("something didnt work bro")
                 } else {
-                    console.log("dude it worked, dont stress")
-                    //$('#infoBoxBtn').addClass
+                  //if it worked, then set the infowindow (when you click on the marker, the information bubble that pops up) should be the new buildings name
                     infowindow.getContent(newBuildingName);
 
-                }
-            },
+                }//end of else
+            },//end of success
+            //error function
             error: function (errorData) {
                 console.log(errorData);
-            }
-        });
-    };
+            }//end of error
+        });// end of ajax
+    };// end of add new building
 
 //////----------------------------------------------------- GET BUILDINGS   -------------------------------//////
 
@@ -420,88 +467,94 @@ $(document).ready(function () {
 
 
         $.ajax({
+            //using POST because we are tying to POST the information
             type: 'POST',
+            // the data  is going to be the campus_id which is data
             data: {
                 campus_id: data
             },
+            // the php file we are going to be using
             url: 'xhr/getbuildings.php',
+            //the type of response we are expecting is going to be json format
             dataType: 'json',
+            //success function
             success: function (response) {
+            	// if the response you are getting  is not no record
                 if (response.result != "no record") {
-                   
-                   
+                  	// loop through each result you are getting
                     for (var i = 0; i < response.result.length; i++) {
 
-	                    
+	                    //creating a variable called ltlg which is the response latitude and longitude
                         var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude);
-                        
+                        //calling the get rooms fucntion and passing the name, id , and the variable into tit
                         getRooms(response.result[i].name, response.result[i].id, ltlg);
+                    };// end of for loop
+                }// end of if statement
 
-                       // createMarker(response.result[i].name, ltlg, response.result[i].id, 'building', 20);
-                    };
-
-                }
-
-            },
+            },// end of success function
+            //error function
             error: function (error) {
                 console.log("error ", error);
-            }
+            }// end of error
         }); //end of ajax
-
-
-    }; // end of function
+    }; // end of getbuilding function
 
 
 //////----------------------------------------------------- GET ROOMS  -------------------------------//////
 
     function getRooms(name, id,ltlg) { // performing ajax to get Rooms from the selected Buildings 
         $.ajax({
+           	//using POST because we are tying to POST the information
             type: 'POST',
+            // the data we are using is the building id
             data: {
                 building_id: id
             },
+            // the php file we are calling
             url: 'xhr/getrooms.php',
+            //the type of data we are expecting back is in the json format
             dataType: 'json',
+            //success function 
             success: function (response) {
-
-
+	            // if the responses message is rooms
                 if (response.message = "rooms") {
+                	//create a variable called html which is a ul with a class of room list
                     var html = "<ul class='roomList'>";
-	                
+	                // looop through the results
                     for (var i = 0; i < response.result.length; i++) {
-                    
-
+	                   // creating a variable called li which is a li with the results names
                        var li ="<li class='roomName'>"+response.result[i].name+"</li>";
-                       
+                       // each time an li is created add it to the ul
                      	html += li;
-                    }
-                    
+                    }// end of for loop
+                    // adding the end tag of the ul to the html variable
                     html += '</ul>';
-                    
+                    //calling the create marker function and passing in name, position, id, buiilding, and the variable html which is the ul
                     createMarker(name, ltlg ,id, 'building', 20,html);   
-                    	
                 } else {
                     console.log('NO ROOMS');
-                }
-
-
-
-            },
+                }//end of else
+            },// end of success
+            //error message
             error: function (error) {
                 console.log("error ", error);
-            }
+            }//end of error message
         }); //end of ajax
-
-
-    }; // end of function
-
-
-
-
-
-    /*
-	//////////////////////////////////////////////////////////////////////////////////////  Click Events
-*/
+    }; // end of getRooms function
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+							        CCCC  			LL				IIIIIIIIIIIIIII  		CCCC         KKKK       KKK
+							    CC       CC			LL					  III   	    CC       CC      KKKK      KKK
+							    CC					LL					  III           CC               KKKK    KKK
+							   CC					LL                    III          CC                KKKK  KKK
+							   CC					LL					  III		   CC                KKKKK
+							   CC					LL					  III		   CC                KKKK  KKK
+							    CC					LL					  III			CC               KKKK   KKK
+							    CC        CC		LL					  III			CC		 CC      KKKK    KKK
+							       CCCCC			LLLLLLLLLLLL	IIIIIIIIIIIIIIII		CCCCC        KKKK     KKK 
+							
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
