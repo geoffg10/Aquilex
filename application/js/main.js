@@ -510,15 +510,19 @@ $(document).ready(function () {
     $('#useGPS').click(function (e) { //enables the use of GPS and moved the user's marker to there location 
 
         if (navigator.geolocation) { //if geolocation is possible for user
+        	// getting the current position of the user 
             navigator.geolocation.getCurrentPosition(function (position) { //on success
-
+	            //setting the users lat to the lat position cordinate
                 userLat = position.coords.latitude;
+                //setting the users long to the long position cordinate
                 userLong = position.coords.longitude;
 
+                //creating a new position and passing the users locations (based off latitude and longitude)
                 pos = new google.maps.LatLng(userLat, userLong);
+                // dropping a marker to display users location on the map
                 userMarker.setPosition(pos);
+                //after the pin is dropped, then center the map based off their location
                 map.setCenter(pos);
-
             }, function () {
                 //when geolocation didn't work
                 handleNoGeolocation(true);
@@ -529,10 +533,10 @@ $(document).ready(function () {
         }
         return false;
     });
-
-
-    $('#addLocation').click(function (e) { //button to add location to DB
-        addUserLocation(userMarker.position); //add to DB function
+    //clicking on the addlocation button
+    $('#addLocation').click(function (e) {
+    	// calling the addUserLocation and passing in the params, position of the marker created. 
+        addUserLocation(userMarker.position);
     });
 
 //////----------------------------------------------------- LIST OF CAMPUS FROM GOOGLE -------------------------------//////
@@ -582,6 +586,7 @@ $(document).ready(function () {
     function schoolsFromDB(place, dataDB) {
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
         // the message saying "school has been added" will slowly fade in
+        
         $('<li>' + place.name + '</li>').appendTo('#ourAddedList').click(function (e) {
             map.setZoom(17);
             pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
