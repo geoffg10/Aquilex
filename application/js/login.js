@@ -86,6 +86,7 @@ $(document).ready(function(){
 						}, 
 						dataType: 'json',
 						success: function(response) {
+							//console.log(respose);
 							//set the userObj to hold the userid generated in the DB
 							userObj.id = response.result.userid;
 							//if there is local storage store both the userObj and the fbObj with the data

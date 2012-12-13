@@ -410,13 +410,14 @@ $(document).ready(function () {
 // add my campus function
     function addmyCampus(data) { 
     	// starting the ajax call
+    	console.log(data);
         $.ajax({
         	//using POST because we are tying to POST the information
             type: 'POST',
             //the data we are going to be sending to the database and will be using
             data: {
-                latitude: data.geometry.location.$a,//latitude is grabbing the latitude from the location
-                longitude: data.geometry.location.ab,//longitude is grabbing the longititude from the location
+                latitude: data.geometry.location.Ya,//latitude is grabbing the latitude from the location
+                longitude: data.geometry.location.Za,//longitude is grabbing the longititude from the location
                 name: data.name,//grabbing the name form the data
                 google_ref_id: data.id,//google ref id, we are sending the campus id to the database
                 added_by_id: 1 // added by user which has an id
@@ -427,13 +428,17 @@ $(document).ready(function () {
             dataType: 'json',
             //success function
             success: function (successData) {
+            	console.log(successData)
                 //if the message is location added then
                 if (successData.message == "location added") {
                     //should be calling this is your location
                 }//end of if
                 //calling the getLocations functoin and passing the data that we are recieveing  and the id of the data to the function
                 getLocations(data, data.id);
-            }//end of the success function
+            },//end of the success function
+            error: function (errorData) {
+            	console.log(errorData);
+            }//end of the error function
         });// end of ajax
     };// end of addmycampus function
 
@@ -460,16 +465,20 @@ $(document).ready(function () {
             dataType: 'json',
             //success function
             success: function (successData) {
+            	console.log('success')
                 //if the success data has an error
                 if (successData.error) {
+                
                 } else {
                   //if it worked, then set the infowindow (when you click on the marker, the information bubble that pops up) should be the new buildings name
+                  console.log('else in the success')
                     infowindow.getContent(newBuildingName);
 
                 }//end of else
             },//end of success
             //error function
             error: function (errorData) {
+            	consle.log('error')
                 console.log(errorData);
             }//end of error
         });// end of ajax
@@ -703,9 +712,13 @@ $(document).ready(function () {
                     .click(function (e) { // calling the ajax function when the button is clicked 
                     //the ajax function will send the school to the database
                     // calling the addCampus function and passing place into it
-                    addmyCampus(place);
+                                        console.log(place);
+
+                    addmyCampus(place); //on line 396
+                    
                     // after the school you chose has been clicked and added to the database, it is then removed from the list of schools
                     $(this).remove();
+                    
                 });
             } else {
 	            // if is hidden is false then
@@ -739,8 +752,12 @@ $(document).ready(function () {
         $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
            
            	$('#schoolCrumb').removeClass('hide').html(dataDB[0].name);               	
+<<<<<<< HEAD
            	chosenSchool = dataDB[0].name;
            	
+=======
+           	addLocationLocalStorage(dataDB[0]);
+>>>>>>> fixing the add building
            	
             map.setZoom(17);
             pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
@@ -828,7 +845,7 @@ $(document).ready(function () {
 
     })
     
-//////----------------------------------------------------- ADDING A NEW BUILDING -------------------------------//////
+//////----------------------------------------------------- NAVIGATION  ADD NEW BUILDING BTN CLICK -------------------------------//////
 	// clicking on the add building button 
     $('#navAddBuilding').on('click', function () {
     	// creating a variable which is the google maps marker image
@@ -838,6 +855,7 @@ $(document).ready(function () {
 		    new google.maps.Size(32,37),
 		    new google.maps.Point(0,0),
 		    new google.maps.Point(16,37)
+		 
 		);
         // creating a variable called ADDBUILDINGmarker which is going to create a current location marker and getting
         	
@@ -860,8 +878,11 @@ $(document).ready(function () {
         // adding an event listener to the marker
         google.maps.event.addListener(ADDBUILDINGMarker, 'click', function () { //add click function to open a dialog to display the marker's details
 	        // we are adding an input field and a button so that when the user is ready to add the building they can add a name to the building
-            infowindow.setContent("<form><label id='newBuildingsName'>" + 'Name of location' + "</label><input id=" + 'infoBoxInput' + " type=" + 'text' + " placeholder=" + 'name location' + "><button id=" + 'infoBoxBtn' + "  type=" + 'submit' + " class=" + 'btn' + ">" + 'Submit' + "</button></form>");
-            infowindow.open(map, this);
+         
+      
+         
+           infowindow.setContent("<form><label id='newBuildingsName'>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
+		  	infowindow.open(map, this);
             map.setZoom(17);
         });
 
@@ -875,19 +896,20 @@ $(document).ready(function () {
 
 //////----------------------------------------------------- ADDING NEW BUILDING CLICK FUNCTION -------------------------------//////
 
-    $("#infoBoxBtn").on('click', function () {
+    $("#infoBoxBtn").live('click', function () {
+       console.log("boobs");
        
         google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function () {
             var dragLng = ADDBUILDINGMarker.getPosition().ab;
             var dragLat = ADDBUILDINGMarker.getPosition().$a;
         });
         var campusobject = JSON.parse(localStorage.chosenCampus);
-        var user = JSON.parse(localStorage.userObj); // parsing the user object in order to call the .id
+        //var user = JSON.parse(localStorage.userObj);
         var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
         var newBuildinglatitude = ADDBUILDINGMarker.getPosition().$a; // getting the latitude value from the local storage
         var newBuildinglongitude = ADDBUILDINGMarker.getPosition().ab; // getting the longitude value from the local storage
         var newBuildingCampus_identify = campusobject[0].id; // getting the campus id from the local storage
-        var addedBy = JSON.parse(user.id);
+        //var addedBy = JSON.parse(user.id);
         console.log(newBuildingCampus_identify);
 
         //addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
