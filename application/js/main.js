@@ -617,20 +617,19 @@ $(document).ready(function () {
                 'slow', function () {
                 // the "add your school" modal will then fade out and be removed from the DOM
                 $("#Z").fadeOut('slow');
-               // console.log("inside 411 makeAddedSchoolList");
-
             }).remove();
             // the school that you chose will then be added to ul "our added list" which is the top part of the " add your school" modal.		
         }).appendTo('#ourAddedList');
         // calling the local storage function
         addLocationLocalStorage(dataDB);
+        //if your chosen school is hidden
         if ($("#chosenSchool").hasClass("hide")) {
+        	// remove the class hide and make it appear
             $("#chosenSchool").removeClass("hide");
-
         } else {
+        	// else if it isnt, then make it hidden again
             $("#chosenSchool").addClass("hide");
         }
-
         //populates the fav dropdown and click to zoom
     };// end of makeAddedSchools
     
@@ -653,59 +652,69 @@ $(document).ready(function () {
     // if there is a school in the local storage, then the modal shouldnt show up
     //if there no school is in the local storage then the modal should show up
     function createSelectedLocation() {
+    	// if there is local storage
         if (localStorage) {
+        	// and if there is a chosen campus inside the local storage
             if (localStorage.chosenCampus) {
+            	// then create a variable that will parse the choosen campus inside the local storage
                 var data = JSON.parse(localStorage.chosenCampus);
-                //console.log(localStorage.chosenCampus);
+              	// empty the paragraph tag that contains the choosen campus and adds it to the chosen school banner  
                 $('<p>' + localStorage.chosenCampus.name + '</p>').empty().appendTo('#yourchosenSchool');
             } else {
+            	// school modal shows up
                 $("#schoolModal").removeClass("hide");
             }
         } else {
             //show modal
             $("#schoolModal").removeClass("hide");
-
-            //console.log()
         }
     }; // end of adding location to local storage
 
 
-
+    // calling the createSelectedLocation function, no params are passed into it
     createSelectedLocation();
-
-
-
 
 //////----------------------------------------------------- CLOSING SCHOOL MODAL -------------------------------//////
 
+	// when you click on the close button "x"
     $('#closeSchoolModal').on('click', function () {
+    	// hide the school modal
         $('#schoolModal').addClass("hide");
 
     })
     
 //////----------------------------------------------------- ADDING A NEW BUILDING -------------------------------//////
-
+	// clicking on the add building button 
     $('#navAddBuilding').on('click', function () {
+    	// creating a variable which is the google maps marker image
         var image = new google.maps.MarkerImage(
+        	// getting the image from the folder struct
 	      'img/mapIcons/add-icon.png',
 		    new google.maps.Size(32,37),
 		    new google.maps.Point(0,0),
 		    new google.maps.Point(16,37)
 		);
-        
+        // creating a variable called ADDBUILDINGmarker which is going to create a current location marker and getting
+        	
         ADDBUILDINGMarker = new google.maps.Marker({ //create current location marker on the map
+        	//setting properties for ADDBUILDINGmarker
+        	//position is getting the position
             position: pos,
             map: map,
+            //letting the user know that they can drag the marker
             title: 'drag me',
+            // setting the marker to become draggable
             draggable: true,
+            //setting the icon to be an image
             icon:image
         });
         console.log(pos)
+        //creating a new infowindow. Infowindow is the "details box" that shows up when you click on the icon
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
 
-
+        // adding an event listener to the marker
         google.maps.event.addListener(ADDBUILDINGMarker, 'click', function () { //add click function to open a dialog to display the marker's details
-
+	        // we are adding an input field and a button so that when the user is ready to add the building they can add a name to the building
             infowindow.setContent("<form><label id='newBuildingsName'>" + 'Name of location' + "</label><input id=" + 'infoBoxInput' + " type=" + 'text' + " placeholder=" + 'name location' + "><button id=" + 'infoBoxBtn' + "  type=" + 'submit' + " class=" + 'btn' + ">" + 'Submit' + "</button></form>");
             infowindow.open(map, this);
             map.setZoom(17);
@@ -749,6 +758,7 @@ $(document).ready(function () {
     });
 //////----------------------------------------------------- SHOW ADD ROOM CLICK -------------------------------//////
 
+	// when the  show addroom button is clicked
     $('#showAddRoomBtn').on('click',function(){
 	    
 	   console.log('show room button!'); 
@@ -756,19 +766,26 @@ $(document).ready(function () {
     
 //////----------------------------------------------------- SCHOOL BREADCRUMBS -------------------------------//////
     
+    // the bread crumbs are clickable
+    // so when a user clicks on the school crumb
     $('#schoolCrumb').on('click', function(){
 	    
+	    //hiding the bread crumb
 	    $('#schoolCrumb').addClass('hide');
+	    //hiding the buidling bread crumb
 	    $('#buildingCrumb').addClass('hide');
+	    //setting what the maps zoom should be at
 	    map.setZoom(16);
     });//END OF SCHOOL CRUMBS
+//////----------------------------------------------------- BUILDING BREADCRUMBS -------------------------------//////
     
+    //when the building crumb is pressed
     $('#buildingCrumb').on('click', function(){     
     
+    	//hide the bread crumb
     	$('#buildingCrumb').addClass('hide');
+    	//set the maps zoom 
     	map.setZoom(17);
-
-    	
     });// END OF BUILDING CRUMBS   	
 
 });
