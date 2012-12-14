@@ -278,11 +278,11 @@ $(document).ready(function () {
             	
             	chosenBuilding = name;
             	
-            	infowindow.setContent('<h4>'+name+'</h4>'+content+"<form class='hide' id='addRoomForm'><input id='addRoomInput' type='text' placeholder='Room Name'><button id='addRoomBtn' class='btn'> Add Room </button></form>"+"<button id='showAddRoomBtn' class='btn'>+</button>");
+            	infowindow.setContent('<h4>'+name+'</h4>'+content+"<form id='addRoomForm' class='hide' ><input id='addRoomInput' type='text' placeholder='Room Name'><button id='addRoomBtn' class='btn'> Add Room </button></form>"+"<button id='showAddRoomBtn' class='btn'>+</button>");
             	
             	
             }
-            
+             
             infowindow.open(map, this);
             map.setZoom(zoom);
 
@@ -623,9 +623,7 @@ $(document).ready(function () {
 	    var html = '';
 	    
 	    if(school == ''){
-		    
-		    console.log('search','"',value,'"','in school table');
-		   
+   
 		   $.ajax({
 		   		type:'POST',
 		   		data:{
@@ -641,15 +639,15 @@ $(document).ready(function () {
 			   		//console.log(response);
 				   		for(var i = 0;i<response.result.length;i++){
 
-					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult" data="'+response.result+'" >'+response.result[i].name +'<p>';	
+					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult aquilex-well well well-small" data-lat="'+response.result[i].latitude+'" data-lng="'+response.result[i].longitude+'" data-type="school">'+response.result[i].name +'</p>';	
 					   		html+=p;
 
 				   		};
 				   		
 			   		}else{
 					  	
-					  	var li =  '<p>'+response.result +'</p>';	
-					  	html+= li
+					  	var p =  '<p class="well aquilex-well well-small">'+response.result +'</p>';	
+					  	html+= p
 					};
 						
 				   		//$('#searchAutoComplete').removeClass('hide');
@@ -679,19 +677,20 @@ $(document).ready(function () {
 			   		//console.log(response);
 				   		for(var i = 0;i<response.result.length;i++){
 
-					   		var li =  '<li>'+response.result[i].name +'</li>';	
-					   		html+= li;
+					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult well aquilex-well well-small" data-lat="'+response.result[i].latitude+'" data-lng="'+response.result[i].longitude+'" data-type="building">'+response.result[i].name +'</p>';	
+					   		html+=p;
 
 				   		};
 				   		
 			   		}else{
 					  	
-					  	var li =  '<li>'+response.result +'</li>';	
+					  	var li =  '<p class="well well-small">'+response.result +'</p>';	
 					  	html+= li
 					};
-						html += '</ul>';
+						
 				   		//$('#searchAutoComplete').removeClass('hide');
 				   		$('#autocompletelist').html(html)
+				   				
 				},
 				error:function(response){
 		   			console.log(response)
@@ -1001,10 +1000,17 @@ $(document).ready(function () {
 //////----------------------------------------------------- SHOW ADD ROOM CLICK -------------------------------//////
 
 	// when the  show addroom button is clicked
-    $('#showAddRoomBtn').on('click',function(){
+    $('#showAddRoomBtn').live('click',function(){
 	    
-	   console.log('show room button!'); 
+	   $('#addRoomForm').removeClass('hide'); 
+	   $('#showAddRoomBtn').html('close');
+	   
     });
+    
+    $('#addRoomBtn').live('click',function(){
+	 	$('#addRoomForm').addClass('hide');   
+	 	$('#showAddRoomBtn').html('+');
+   	});
     
 //////----------------------------------------------------- SCHOOL BREADCRUMBS -------------------------------//////
     
@@ -1034,9 +1040,10 @@ $(document).ready(function () {
 
 	$('#searchBar').keyup(function(){
 		
+		$('#autocompletelist').removeClass('hide');
+
 		if($('#schoolCrumb').hasClass('hide')){
 			//console.log($('#searchBar').val());
-			
 			search('','','',$('#searchBar').val())
 		}else if($('#buildingCrumb').hasClass('hide')){
 			//console.log(chosenSchool,":",$('#searchBar').val())
@@ -1048,28 +1055,43 @@ $(document).ready(function () {
 		
 	});
 
-//////--------------------------------------------------- SEARCH FIELD BLUR  -----------------------------------////////
+//////--------------------------------------------------- AUTO COMPLETE BREADCRUMBS  -----------------------------------////////
 	
-/*	$('#searchBar').blur(function(){
+	$('body').on('click','.searchResult',function(e){
+				
+		var tar = e.target,
+			type = e.srcElement.dataset.type;
 		
-		$('#autocompletelist').html('');	
-	}); */
-	
+		
+		if(type == 'school'){
+			console.log('in school');
+			chosenSchool = {'name':e.srcElement.innerHTML,'id':tar.id};
 
-	$('.searchResult').live('click',function(e){
-		console.log(e);
-		
-		var t = e.target
-		
-		$('#schoolCrumb').removeClass('hide').html(t.name);               	
-       	chosenSchool = {'name':t.name,'id':t.id};
-       	
-       	
-        map.setZoom(17);
-      //  pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
-       // map.setCenter(pos);
+			
+			$('#schoolCrumb').removeClass('hide').html(chosenSchool.name);               	
+			getBuildings(tar.id);
 
-       // getBuildings(dataDB[0].id);
+
+			
+		}else if(type == 'building'){
+		
+		   console.log('in building');
+           chosenBuilding = e.srcElement.innerHTML;
+
+           console.log(chosenBuilding);
+          
+           $('#buildingCrumb').removeClass('hide').html(chosenBuilding);
+            	
+
+			
+  			
+		}
+		
+		map.setZoom(17);
+        pos = new google.maps.LatLng(e.srcElement.dataset.lat,e.srcElement.dataset.lng);
+        map.setCenter(pos);
+
+        $('#autocompletelist').html('');
 		
 	});	
 	
