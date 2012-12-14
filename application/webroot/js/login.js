@@ -166,6 +166,15 @@ $(document).ready(function(){
 			success: function(response) {
 				console.log('the root response ',response);
 				
+				if(response.message=="user_added"){
+					//user created
+				}else if(response.message=="validated"){
+					//user validated
+				}else if(response.message=="fail_validation"){
+					//failed password validation
+				}else{
+					//wrong or empty variables, didn't use post
+				}
 				
 /*
 				if(response.message=="connected"){
@@ -202,7 +211,7 @@ $(document).ready(function(){
 	 $('#changepass').submit(function(e){
 		 $.ajax({
 			type:'POST', 
-			url: 'xhr/updatepass.php', 
+			url: '../application/user/updatepass',  
 			data:{
 				oldpass: $('input[name=oldpass]').val(),
 				newpass: $('input[name=newpass]').val(),
@@ -211,12 +220,14 @@ $(document).ready(function(){
 			dataType: 'json',
 			success: function(response) {
 				console.log(response);
+/*
 				if(response.result == "wrong password"){
 					$("#changepass .control-group").addClass('error alert alert-error').find('span').removeClass('hide');
 				}
 				if(response.result == "password updated"){
 					
 				}
+*/
 		    },error: function(data) {  
 			    console.log(data);
 		    }});

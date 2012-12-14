@@ -83,13 +83,13 @@ Class UserModel extends Database{
       *
       * @param associative array $data is expecting the id of the user
       *
-      * @return string of 'password updated'
+      * @return boolean, if success returns true
       */
 	public function changePass($data){
 		$sqlst = "UPDATE users SET user_pass = :newpass WHERE id = :id";
 		$st = $this->db->prepare($sqlst);
-		$st->execute(array(":id"=>$data['id'], ":newpass"=>$data['newpass']));
-		return 'password updated';
+		$result = $st->execute(array(":id"=>$data['id'], ":newpass"=>$data['newpass']));
+		return $result;
 	}
 	/**
       * checkFBUser method will check to see if the FB user already exists in the user table

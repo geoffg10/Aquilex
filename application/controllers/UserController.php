@@ -1,6 +1,15 @@
 <?php
+/**
+  * Project Aquilex
+  * @author  Renee Blunt <renee.blunt@gmail.com>
+  * December 13, 2012
+  *
+  */
 require("../models/UserModel.php");
-
+/**
+  * This class handles all of the logic for loggin in and account management 
+  * it uses the UserModel for all DB calls
+  */
 Class UserController{
 	
 	private $userModel;
@@ -54,9 +63,11 @@ Class UserController{
       */
 	public function searchEmail(){
 		if(isset($_POST)){
+			//the email var is set and not empty
 			if(isset($_POST['email']) && $_POST['email'] !=''){
-				//the email var is set and not empty
+				//search for the email using the email (uses a like keyword%)
 				$searchEmailArray = $this->userModel->searchEmail($_POST);
+				//this will return emails that match in an array, even array[0]
 				echo json_encode(array('message'=>'email_search', 'result'=>$searchEmailArray));
 			}else{
 				echo json_encode(array('message'=>'["email"] must be set and not be empty'));
@@ -76,38 +87,87 @@ Class UserController{
       * @return the following successful messages: user_added w/user_id, validated w/user_id; fail messages: fail_validation, $_POST["email"] and $_POST["password"] must be set and not be empty, use post
       */
 	public function userlogin(){
+	
 		if(isset($_POST)){
+			//email and password must be set and not empty
 			if(isset($_POST['email']) && isset($_POST['password']) && $_POST['email']!='' && $_POST['password'] !=''){
 				//sha1 the password
-				$original = $_POST['password'];
 				$_POST['password'] = sha1($_POST['password']);
+				//first make sure the email exists
 				$checkEmailExists = $this->userModel->checkUserEmailExists($_POST);
 				
+				//email doesn't exist so insert user
 				if(count($checkEmailExists) === 0){
-					//email doesn't exist so insert user
+					//create account with existing post data
 					$insertUser = $this->userModel->insertUser($_POST);
 					echo json_encode(array('message'=>'user_added', 'result'=>array('user_id'=>$insertUser)));
+				
 					
-				}elseif(count($checkEmailExists) === 1){
-					//there is one match for email user_id, now check password
+				}elseif(count($checkEmailExists) === 1){ //there is one match for email user_id, now check password
+					
 					$validatePassword = $this->userModel->validateUser($_POST);
-					if(count($validatePassword) === 1){
-						//password matched
+					
+					if(count($validatePassword) === 1){ //pass matches
+						//send the user_id // for testing, should set it to session
 						echo json_encode(array('message'=>'validated', 'result'=>$validatePassword[0]));
+						
 					}else{
 						//password didn't match
-						echo json_encode(array('message'=>'fail_validation', 'result'=>"password doesn't match");
-					}
+						echo json_encode(array('message'=>'fail_validation', 'result'=>"password doesn't match"));
+						}
+					
 				}else{
 					//if there are multiple users than we have some bad data :(
 					echo json_encode(array('message'=>'multiple_users', 'result'=>'no bueno'));	
 				}
+				
 			}else{
 				echo json_encode(array('message'=>'$_POST["email"] and $_POST["password"] must be set and not be empty'));
 			}
 		}else{
 			echo json_encode(array('message'=>'use post'));
 		}		
+	}
+	/**
+      * updatepass method will check if the old password matches the user account first
+      *  if the account matches the password will be updated
+      *
+      * uses $_POST, and $_SESSION
+      * expecting ['oldpass'] ['newpass'] ['id']
+      *
+      * @return a successful message: update_password; fail messages: not_successful, invalid_password, $_POST["oldpass"] and $_POST["newpass"] must be set and not be empty, use post
+      */	
+	public function updatepass(){
+		if(isset($_POST)){
+			//oldpass and newpass must be set and not be empty
+			if(isset($_POST['oldpass']) && isset($_POST['newpass']) && $_POST['oldpass']!='' && $_POST['newpass']!=''){
+				//sha1 both passwords and set post[id] to the session id
+				$_POST['newpass'] = sha1($_POST['newpass']);
+				$_POST['oldpass'] = sha1($_POST['oldpass']);
+				$_POST['id'] = 15; //make this the session
+				
+				$checkpass = $this->userModel->checkUserPass($_POST);
+				
+				if(count($checkpass) === 1){//old password matches current account, now update it
+					$updatepass = $this->userModel->changePass($_POST); //returns a true false
+					
+					if($updatepass){ //if successful
+						echo json_encode(array('message'=>'update_password', 'result'=>'password updated'));
+					}else{//oh no there was an error!
+						echo json_encode(array('message'=>'not_successful', 'result'=>'issue with update'));
+					}
+				}else{
+					echo json_encode(array('message'=>'invalid_password', 'result'=>'try old password again'));
+				}
+			}else{
+				echo json_encode(array('message'=>'$_POST["oldpass"] and $_POST["newpass"] must be set and not be empty'));
+			}
+		}else{
+			echo json_encode(array('message'=>'use post'));
+		}		
+	}
+	public function deleteaccount(){
+
 	}
 
 }
