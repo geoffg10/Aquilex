@@ -28,16 +28,25 @@
 	        		<section class="container">
 <!-- 	   // LOGO -->
 
-	        		<a class="brand aquilex-logo" href="#"><img src="img/smallerlogo1.png" alt="Aquilex" /></a>
-
-	  <!-- // DROP DOWN NAV -->
+	        		<a class="brand aquilex-logo" href="#"><img src="webroot/img/smallerlogo1.png" alt="Aquilex" /></a>
+<!-- // DROP DOWN NAV -->
 	        		<ul class="nav nav-right pull-right">
-	        			<li class="dropdown star">
+	        			
+	        			
+<!--       // GPS BUTTON    -->
+						<li id='useGPS'><a href="#" ><img src="img/locations_icon.png" alt="gps"/></a> </li>
+
 <!-- 	   // FAVORITES DROP DOWN -->
+	        			
+	        			<li class="dropdown star">
+
+
 
 	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/sized_star.png" alt="favorites"/></a>
 
 	        				<ul class="dropdown-menu nav-tabs nav-stacked " id='favorites'>
+	        				
+	        				<li><a href='#' id="showAllSchools">Show All Schools</a></li>
 	        				</ul>
 	        			</li>
 <!-- 	   // SETTINGS DROP DOWN -->
@@ -45,7 +54,7 @@
 	        			<li class="dropdown cog">
 
 		        			
-	        			    <a id="test" href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png" alt="settings"/></a>
+	        			    <a  href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png" alt="settings"/></a>
 	        			    
 							<ul  id="dropDown-settings" class="dropdown-menu nav-tabs nav-stacked">
 								
@@ -145,24 +154,28 @@
 <!-- 	   // SEARCH BAR -->	
 	<section class="input-prepend">
 		<section class="btn-group">
-		    <button class="btn">
-		      Full Sail
+		    <button class="btn hide" id='schoolCrumb'>
+		      
 		      <span class="badge badge-inverse">X</span>
 		    </button>
-		    <button class="btn">
-		    	Room Name
+		    <button class="btn hide" id='buildingCrumb'>
+		    	
 		    	<span class="badge badge-inverse">X</span>
 		    </button>
 		  </section>
 	</section>       
 
 		<section class="input-append aquilex-searchbox">
-		  <input class="span2 searchBar" type="text">
+		  <input class="span2 searchBar " id="searchBar" type="text">
 		  <section class="btn-group">
 		    <button class="btn aquilex-searchbtn"><i class="icon-search"></i></button>
 		  </section>
+		
 		</section>
 		
+		<section id='autocompletelist'>
+		
+		</section>
         
 <!-- 	   // YOUR SCHOOL SELECTED -->        
         <section id="chosenSchool" class="alert alert-info hide">
@@ -172,7 +185,7 @@
      <!--
    // SCHOOL MODAL -->       
 
-<section id="schoolModal" class="hide schoo-modal"> 
+<section id="schoolModal" class="hide school-modal"> 
         <section id="myModal" class="modal aquilex-school-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	        <section class="modal-header">
 		        <button type="button" id="closeSchoolModal" class="close" data-dismiss="modal"><i class="icon-remove "></i></button>
@@ -186,12 +199,13 @@
 	       
 <!-- end of Our list -->
 	       <section>
-			    <button class=" btn btn-large btn-primary btn-block	" type="submit">Add School</button>
+
+			    <button id="addBtnBlue" class=" btn btn-large btn-primary btn-block	" type="submit">Add School</button>
 
 	       </section>
 	        
-		    <section  id="datastuff" class="modal-body">
-				<ul  class=" adding_schools-list" id="testList">
+		    <section  id="plusSchool" class="modal-body">
+				<ul  class=" adding_schools-list hide" id="schoolsPlusList">
 				</ul>
 		    </section>
 		    

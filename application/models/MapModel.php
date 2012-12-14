@@ -21,10 +21,24 @@ Class MapModel extends Database{
       *
       * @return associative array of all campuses in the database with campus_id, latitude, longitude, google_id, type
       */
+	public function getAllCampuses(){
+		$sqlst = "SELECT c.id, c.name, c.latitude, c.longitude, c.google_id, ct.type FROM campuses c LEFT JOIN campus_types ct on(c.campus_type_id = ct.id)";
+		$st = $this->db->prepare($sqlst);
+		$st->execute();
+		return $st->fetchAll();
+	}
+	/**
+      * getCampuses method will get all campuses that have been saved
+      *	in the database by the google id
+      *
+      * @param associative array $data is expecting the google_id
+      *
+      * @return associative array of all campuses in the database with campus_id, latitude, longitude, google_id, type
+      */
 	public function getCampuses($data){
 		$sqlst = "SELECT c.id, c.name, c.latitude, c.longitude, c.google_id, ct.type FROM campuses c LEFT JOIN campus_types ct on(c.campus_type_id = ct.id) WHERE google_id = :google_id";
 		$st = $this->db->prepare($sqlst);
-		$st->execute(array(":google_ref_id"=>$data['google_id']));
+		$st->execute(array(":google_id"=>$data['google_id']));
 		return $st->fetchAll();
 	}
 	/**
@@ -68,8 +82,8 @@ Class MapModel extends Database{
       *
       * @return associative array of campus_id
       */
-	private function addCampus($data){
-		$sqlst = "INSERT INTO campuses(name, longitude, latitude, campus_type_id, added_by_id, google_id)VALUES(:name, :longitude, :latitude, :added_by_id, :google_id)";
+	public function addCampus($data){
+		$sqlst = "INSERT INTO campuses(name, longitude, latitude, added_by_id, google_id)VALUES(:name, :longitude, :latitude, :added_by_id, :google_id)";
 		$st = $this->db->prepare($sqlst);
 		$st->execute(array(":name"=>$data['name'],":longitude"=>$data['longitude'], ":latitude"=>$data['latitude'], ":added_by_id"=>$data['added_by_id'], ":google_id"=>$data['google_id']));
 		$id = $this->db->lastInsertId();

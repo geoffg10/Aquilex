@@ -11,15 +11,29 @@ Class MapController{
 	
 	
 	public function index(){ //instantiate views
+		echo "<br/>";
 		include('../views/header.html');
 		include('../views/map.html');
 		include('../views/googleFooter.html');
 	}
+	public function getallcampuses(){
+		if(isset($_GET)){
+			$campuses = $this->mapModel->getAllCampuses($_GET);
+	
+	echo json_encode(array('message'=>'all_campuses', 'result'=>$campuses));
+		}else{
+			echo json_encode(array('message'=>'use post'));
+		}
+	}
+		
 	public function getcampuses(){
 		if(isset($_POST)){
-			$campuses = $this->mapModel->getCampuses($_POST);
-	
-	echo json_encode(array('message'=>'campuses', 'result'=>$campuses));
+			if(isset($_POST["google_id"]) && $_POST["google_id"] != ''){
+				$campuses = $this->mapModel->getCampuses($_POST);
+				echo json_encode(array('message'=>'campuses', 'result'=>$campuses));
+			}else{
+				echo json_encode(array('message'=>'$_POST["google_id"] must be set and not be empty'));
+			}
 		}else{
 			echo json_encode(array('message'=>'use post'));
 		}
@@ -55,13 +69,14 @@ Class MapController{
 	
 	public function addcampus(){
 		if(isset($_POST)){
-			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['added_by_id']) && isset($_POST['google_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['added_by_id']!='' && $_POST['google_id']!=''){
+			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude'])  && isset($_POST['google_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['google_id']!=''){
+				$_POST['added_by_id'] = 1; //this needs to be the session
 				
 				// first check to see if the capus exists in the campus table
 				$capuses = $this->mapModel->getCampuses($_POST);
-				if(count($result) == 1){ //campus exists, no insert
+				if(count($capuses) == 1){ //campus exists, no insert
 					echo json_encode(array('message'=>'campus_exists', 'result'=>'campus already exists'));
-				}elseif(count($result) == 0){ //campus doesn't exist so insert
+				}elseif(count($capuses) == 0){ //campus doesn't exist so insert
 					$insertCampus = $this->mapModel->addCampus($_POST);
 					echo json_encode(array('message'=>'campus_added', 'result'=>array('campus_id'=>$insertCampus)));
 				}else{
@@ -69,7 +84,7 @@ Class MapController{
 					echo json_encode(array('message'=>'duplicate_campuses', 'result'=>'no bueno'));
 				}
 			}else{
-				echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"], $_POST["added_by_id"], $_POST["google_id"] all need to be set and not empty'));
+				echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"], $_POST["google_id"] all need to be set and not empty'));
 			}
 			
 		}else{
@@ -79,13 +94,14 @@ Class MapController{
 	}
 	public function addbuilding(){
 		if(isset($_POST)){
-			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['added_by_id']) && isset($_POST['campus_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['added_by_id']!='' && $_POST['campus_id']!=''){
+			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['campus_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['campus_id']!=''){
+				$_POST['added_by_id'] = 1; //this needs to be the session
 				$insertBuilding = $this->mapModel->addBuilding($_POST);
 				
 				
-				echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding));
+				echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
 			}else{
-				echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["added_by_id"] ,$_POST["campus_id"] all need to be set and not empty'));
+				echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["campus_id"] all need to be set and not empty'));
 			}
 			
 		}else{
