@@ -108,6 +108,32 @@ Class MapController{
 			echo json_encode(array('message'=>'use post'));
 		}
 	}
+	public function autosearch(){
+		if(isset($_POST) && isset($_POST['table'])){
+			if($_POST['table'] == 'campus'){
+		
+				$locations = $this->mapModel->searchSchools($_POST);
+				
+				echo json_encode(array('message'=>'search School', 'result'=>$locations,'post'=>$_POST));
+		
+			}else if($_POST['table'] == 'building'){
+			
+				$locations = $this->mapModel->searchBuildings($_POST);
+				
+				echo json_encode(array('message'=>'search Building', 'result'=>$locations,'post'=>$_POST));
+		
+				
+			}else if($_POST['table'] == 'rooms'){  //we'll use this later
+				$locations = $this->mapModel->searchRooms($_POST);
+				
+				//echo json_encode(array('message'=>'search', 'result'=>$locations,'post'=>$_POST));
+				echo json_encode(array('message'=>'search Room', 'result'=>'SORRY! This Functionally is still being worked on'));
+				
+				
+			}			
+
+		}
+	}
 
 }
 ?>

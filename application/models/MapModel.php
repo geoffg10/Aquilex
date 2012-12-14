@@ -119,5 +119,35 @@ Class MapModel extends Database{
 		$id = $this->db->lastInsertId();
 		return $id;		
 	}
+	/**
+      * searchSchools method will search for schools beginning with the searchVal, wildcard search
+      *	
+      *
+      * @param associative array $data is expecting the value
+      *
+      * @return associative array of campuses
+      */
+	public function searchSchools($data){
+		$searchVal = $data['value'].'%';
+		$sqlst = "SELECT * FROM campuses WHERE name LIKE :v";
+		$st = $this->db->prepare($sqlst);
+		$st->execute(array(":v"=>$searchVal));
+		return $st->fetchAll();
+	}	
+	/**
+      * searchBuildings method will search for schools beginning with the searchVal, wildcard search
+      *	
+      *
+      * @param associative array $data is expecting the value
+      *
+      * @return associative array of buildings
+      */	
+	public function searchBuildings($data){
+		$searchVal = $data['value'].'%';
+		$sqlst = "SELECT * FROM buildings WHERE campus_id = :id and name LIKE :v";
+		$st = $this->db->prepare($sqlst);
+		$st->execute(array(":id"=>$data['id'],":v"=>$searchVal));
+		return $st->fetchAll();
+	}
 }
 ?>

@@ -600,7 +600,7 @@ $(document).ready(function () {
 			   		table: 'campus',
 			   		value:value	
 		   		},
-		   		url:'xhr/search.php',
+		   		url:'../application/map/autosearch',
 		   		dataType:'JSON',
 		   		success: function(response){
 			   		
@@ -639,7 +639,7 @@ $(document).ready(function () {
 			   		id:id,
 			   		value:value	
 		   		},
-		   		url:'xhr/search.php',
+		   		url:'../application/map/autosearch',
 		   		dataType:'JSON',
 		   		success: function(response){
 			   		
