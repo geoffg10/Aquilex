@@ -104,6 +104,49 @@
 			}else{
 				return 'no record';
 			}
-		}//close get buildings
+		}//close get campuses
+				
+		public function searchSchools($data){
+			$searchVal = $data['value'].'%';
+			
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "SELECT * FROM campuses WHERE name LIKE :v";
+			
+			$st = $db->prepare($sqlst);
+			
+			$results = $st->execute(array(":v"=>$searchVal));
+			
+			$resultData = $st->fetchAll(); //get all responses
+			
+			if($st->rowCount() > 0){ //if the record exists than 
+				//there is a record
+				return $resultData;
+			}else{
+				return 'no record';
+			}
+			
+		}//close search		
+		
+		public function searchBuildings($data){
+			$searchVal = $data['value'].'%';
+			
+			$db = new \PDO("mysql:hostname=127.0.0.1;port=8889;dbname=aquilex", "root", "root");
+			$sqlst = "SELECT * FROM buildings WHERE name LIKE :v";
+			
+			$st = $db->prepare($sqlst);
+			
+			$results = $st->execute(array(":v"=>$searchVal));
+			
+			$resultData = $st->fetchAll(); //get all responses
+			
+			if($st->rowCount() > 0){ //if the record exists than 
+				//there is a record
+				return $resultData;
+			}else{
+				return 'no record';
+			}
+			
+		}//close search		
+		
 	}
 ?>

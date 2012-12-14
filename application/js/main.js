@@ -37,6 +37,8 @@ $(document).ready(function () {
     var schoolArray = [];
     var buildingArray = [];
     var userJSONObj = {};
+    var chosenSchool;
+    var chosenBuilding;
 
 
     if (localStorage) {
@@ -88,18 +90,18 @@ $(document).ready(function () {
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
 
         google.maps.event.addListener(map, 'zoom_changed', function () {
-
+	        clearSearchBar();
 	        
             if (map.getZoom() == 16) {
                 clearMarkers('building');
                 getCampuses();
                 $('#schoolCrumb').addClass('hide');
                 $('#buildingCrumb').addClass('hide');
-
-                
+                chosenSchool = '';
+                chosenBuilding = '';
             }else if(map.getZoom() == 17){
 	            $('#buildingCrumb').addClass('hide');
-
+	            chosenBuilding = '';
             }
         });
 
@@ -130,6 +132,7 @@ $(document).ready(function () {
     //initialize();
     /*===================================================================================================== ##1 runs initialize on load
      */
+ 
     google.maps.event.addDomListener(window, 'load', initialize);
 
 
@@ -218,7 +221,7 @@ $(document).ready(function () {
                
                	
                $('#schoolCrumb').removeClass('hide').html(name);               	
-	           
+	           chosenSchool = name;
                 
                 getBuildings(id);
                 infowindow.setContent(name);
@@ -226,7 +229,11 @@ $(document).ready(function () {
 
             } else if (type == 'building') {
             	
+            	
+            	
             	$('#buildingCrumb').removeClass('hide').html(name);
+            	
+            	chosenBuilding = name;
             	
             	infowindow.setContent('<h4>'+name+'</h4>'+content+"<form class='hide' id='addRoomForm'><input id='addRoomInput' type='text' placeholder='Room Name'><button id='addRoomBtn' class='btn'> Add Room </button></form>"+"<button id='showAddRoomBtn' class='btn'>+</button>");
             	
@@ -281,6 +288,14 @@ $(document).ready(function () {
             }
         }
     }
+    
+///////-------------------------------------------------- CLEAR SEARCHBAR ----------------------------------/////
+
+	function clearSearchBar(){
+		
+		$('#searchBar').val('');	
+		
+	};    
     
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,6 +556,77 @@ $(document).ready(function () {
             }//end of error message
         }); //end of ajax
     }; // end of getRooms function
+    
+    
+    
+    
+    
+    function search(school,building,id,value){
+	    
+	    if(school == ''){
+		    
+		    console.log('search','"',value,'"','in school table');
+		   
+		   $.ajax({
+		   		type:'POST',
+		   		data:{
+			   		table: 'campus',
+			   		value:value	
+		   		},
+		   		url:'xhr/search.php',
+		   		dataType:'JSON',
+		   		success: function(response){
+			   	
+			   		//console.log(response);
+			   		for(var i = 0;i<response.result.length;i++){
+				   		
+				   		console.log("Results:",response.result[i].name)
+			   		};
+		   		},
+		   		error:function(response){
+		   			console.log(response)
+			   		
+		   		}   
+		   });	    
+		    		    
+	    }else if(building == ''){
+	    	console.log('search','"',value,'"','in building table from',school);
+	    	
+	    	$.ajax({
+		   		type:'POST',
+		   		data:{
+			   		table: 'building',
+			   		id:id,
+			   		value:value	
+		   		},
+		   		url:'xhr/search.php',
+		   		dataType:'JSON',
+		   		success: function(response){
+			   		console.log(response);
+			   		
+			   		for(var i = 0;i<response.result.length;i++){
+				   		
+				   		console.log("Results:",response.result[i].name)
+			   		};
+
+		   		},
+		   		error:function(response){
+		   			console.log(response)
+			   		
+		   		}   
+		   });	  
+	    	
+		    
+	    }else{
+		    console.log('search','"',value,'"','in rooms table from',building,'in',school);
+	    }
+	    
+	    
+	    
+	    
+	    
+    }
+    
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*    
     
@@ -653,13 +739,13 @@ $(document).ready(function () {
         $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
            
            	$('#schoolCrumb').removeClass('hide').html(dataDB[0].name);               	
-
+           	chosenSchool = dataDB[0].name;
+           	
            	
             map.setZoom(17);
             pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
             map.setCenter(pos);
 
-            console.log('dropdown click')
             getBuildings(dataDB[0].id);
         });
 
@@ -846,5 +932,25 @@ $(document).ready(function () {
     	//set the maps zoom 
     	map.setZoom(17);
     });// END OF BUILDING CRUMBS   	
+    
+//////--------------------------------------------------- AUTO COMPLETE -----------------------------------////////
 
+	$('#searchBar').keyup(function(){
+		
+		if($('#schoolCrumb').hasClass('hide')){
+			//console.log($('#searchBar').val());
+			
+			search('','','',$('#searchBar').val())
+		}else if($('#buildingCrumb').hasClass('hide')){
+			//console.log(chosenSchool,":",$('#searchBar').val())
+			search(chosenSchool,'','',$('#searchBar').val());
+		}else{
+			console.log(chosenSchool,chosenBuilding,$('#searchBar').val());
+			//search(chosenSchool,chosenBuilding,'',$('#searchBar').val());
+		}
+		
+	});
+
+
+    
 });
