@@ -707,7 +707,7 @@ $(document).ready(function () {
                 $('#addBtnBlue').html('hide list')
                 //making it hidden again
                 isHidden = false;
-                 
+                     
                 $('<li id="placeNames" class="alert alert-success">' + place.name + '<i  class="icon-plus pull-right muted"></i></li>').appendTo('#schoolsPlusList')
                     .click(function (e) { // calling the ajax function when the button is clicked 
                     //the ajax function will send the school to the database
