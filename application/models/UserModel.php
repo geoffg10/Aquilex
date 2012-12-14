@@ -21,10 +21,10 @@ Class UserModel extends Database{
       * @return array of all emails that match the wildcard value
       */
 	public function searchEmail($data){ //check email only
-		$wildCardEmail = $data['user_email'].'%'; //create the wildcard variable
-		$sqlst = "SELECT user_email FROM users WHERE user_email LIKE :user_email";
+		$wildCardEmail = $data['email'].'%'; //create the wildcard variable
+		$sqlst = "SELECT user_email FROM users WHERE user_email LIKE :email";
 		$st = $this->db->prepare($sqlst);
-		$st->execute(array(":user_email"=>$wildCardEmail));
+		$st->execute(array(":email"=>$wildCardEmail));
 		return $st->fetchAll();
 	}
 	/**
@@ -41,6 +41,13 @@ Class UserModel extends Database{
 		$st->execute(array(":user_email"=>$data['email']));
 		return $st->fetchAll();
 			
+	}
+	public function insertUser($data){
+		$sqlst = "INSERT INTO users(user_email, user_pass)VALUES(:user_email, :user_pass)";
+		$st = $this->db->prepare($sqlst);
+		$results = $st->execute(array(":user_email"=>$data['email'], ":user_pass"=>$data['password']));
+		
+		return $this->db->lastInsertId();
 	}
 	/**
       * validateUser method will validate that the given password matches the password in the DB for the provided email

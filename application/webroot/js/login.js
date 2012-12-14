@@ -70,7 +70,7 @@ $(document).ready(function(){
 					//it will register the user if they do not exist and will return the created userid
 					
 					$.ajax({
-						type:'GET', 
+						type:'POST', 
 						url: '../application/user/fblogin',
 						data:{
 							fba_id:			data.id,
@@ -121,20 +121,18 @@ $(document).ready(function(){
 		//console.log($(this).val());
 		$.ajax({
 			type:'POST', 
-			url: 'xhr/login.php', 
+			url: '../application/user/searchEmail', 
 			data:{
 				email: $(this).val()
 			}, 
 			dataType: 'json',
 			success: function(response) {
-				console.log(response);
-				if(response.message=="email only"){
-					console.log('just email');
-				}else if(response.message=="connected"){
-					console.log('user added');
+				// do something with 
+				if(response.message == "email_search"){
+					//do something with foreach result[i]user_email
 				}
 		    },error: function(data) {  
-			    console.log(data);
+			    //console.log(data);
 		    }});
 	});
 	
@@ -162,13 +160,14 @@ $(document).ready(function(){
 		
 		$.ajax({
 			type:'POST', 
-			url: 'xhr/login.php', 
+			url: '../application/user/userlogin', 
 			data:$(this).serialize(), 
 			dataType: 'json',
 			success: function(response) {
 				console.log('the root response ',response);
 				
 				
+/*
 				if(response.message=="connected"){
 					if(response.result.success == "password doesn't match"){
 						//do stuff when the password doesn't match
@@ -192,6 +191,7 @@ $(document).ready(function(){
 				}else if(response.message=="email only"){
 					console.log('just email');
 				}
+*/
 		    },error: function(data) {  
 			    console.log(data);
 		    }});//end ajax
