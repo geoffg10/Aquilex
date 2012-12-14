@@ -69,11 +69,11 @@ Class MapModel extends Database{
       * @return associative array of campus_id
       */
 	private function addCampus($data){
-		$sqlst = "INSERT INTO campuses(name, longitude, latitude, campus_type_id, added_by_id, google_ref_id)VALUES(:name, :longitude, :latitude, :added_by_id, :google_id)";
+		$sqlst = "INSERT INTO campuses(name, longitude, latitude, campus_type_id, added_by_id, google_id)VALUES(:name, :longitude, :latitude, :added_by_id, :google_id)";
 		$st = $this->db->prepare($sqlst);
 		$st->execute(array(":name"=>$data['name'],":longitude"=>$data['longitude'], ":latitude"=>$data['latitude'], ":added_by_id"=>$data['added_by_id'], ":google_id"=>$data['google_id']));
-		$id = $db->lastInsertId();
-		return array('campus_id'=>$id);
+		$id = $this->db->lastInsertId();
+		return $id;
 	}
 	/**
       * addBuilding method will add a building to the buildings table
@@ -87,8 +87,8 @@ Class MapModel extends Database{
 		$sqlst = "INSERT INTO buildings (campus_id, latitude, longitude, name, added_by_id) VALUES(:campus_id, :latitude, :longitude, :name, :added_by_id)";
 		$st = $this->db->prepare($sqlst);
 		$st->execute(array(":campus_id"=>$data['campus_id'], ":latitude"=>$data['latitude'], ":longitude"=>$data['longitude'], ":name"=>$data['name'], ":added_by_id"=>$data['added_by_id']));
-		$id = $db->lastInsertId();
-		return array('building_id'=>$id);		
+		$id = $this->db->lastInsertId();
+		return $id;		
 	}
 	/**
       * addRoom method will add a room to the rooms table
@@ -102,8 +102,8 @@ Class MapModel extends Database{
 		$sqlst = "INSERT INTO rooms (building_id, latitude, longitude, name, added_by_id) VALUES(:building_id, :latitude, :longitude, :name, :added_by_id)";
 		$st = $this->db->prepare($sqlst);
 		$st->execute(array(":building_id"=>$data['building_id'], ":latitude"=>$data['latitude'], ":longitude"=>$data['longitude'], ":name"=>$data['name'], ":added_by_id"=>$data['added_by_id']));
-		$id = $db->lastInsertId();
-		return array('room_id'=>$id);		
+		$id = $this->db->lastInsertId();
+		return $id;		
 	}
 }
 ?>
