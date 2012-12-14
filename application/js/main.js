@@ -351,8 +351,8 @@ $(document).ready(function () {
             type: 'POST',
         // data is what we are sending 
             data: {
-                latitude: data.$a,
-                longitude: data.ab
+                latitude: data.Za,
+                longitude: data.Ya
             },
         // the php file that we are calling 
             url: 'xhr/addlocation.php',
@@ -445,7 +445,7 @@ $(document).ready(function () {
 //////----------------------------------------------------- ADD NEW BUILDING  -------------------------------//////
 
 
-    function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify, addedBy) { // add building to DB
+    function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify) { // add building to DB
         //starting the ajax call
         $.ajax({
         	//using POST because we are tying to POST the information
@@ -456,7 +456,7 @@ $(document).ready(function () {
                 latitude: newBuildinglatitude,
                 longitude: newBuildinglongitude,
                 name: newBuildingName,
-                added_by_id: addedBy
+                added_by_id: 1
 
             },
             // the php file we are going to use to help make this work
@@ -478,7 +478,7 @@ $(document).ready(function () {
             },//end of success
             //error function
             error: function (errorData) {
-            	consle.log('error')
+            	console.log('error')
                 console.log(errorData);
             }//end of error
         });// end of ajax
@@ -707,8 +707,8 @@ $(document).ready(function () {
                 $('#addBtnBlue').html('hide list')
                 //making it hidden again
                 isHidden = false;
-               
-                $('<li id="placeNames"><p class="btn btn-success" id="addSchooltoList" >add</p>' + place.name + '</li>').appendTo('#schoolsPlusList')
+                
+                $('<li id="placeNames" class="alert alert-success">' + place.name + '<i  class="icon-plus pull-right muted"></i></li>').appendTo('#schoolsPlusList')
                     .click(function (e) { // calling the ajax function when the button is clicked 
                     //the ajax function will send the school to the database
                     // calling the addCampus function and passing place into it
@@ -742,7 +742,7 @@ $(document).ready(function () {
         
         $('<li>' + place.name + '</li>').appendTo('#ourAddedList').click(function (e) {
             map.setZoom(17);
-            pos = new google.maps.LatLng(place.geometry.location.$a, place.geometry.location.ab);
+            pos = new google.maps.LatLng(place.geometry.location.Ya, place.geometry.locationZa);
             map.setCenter(pos);
             getBuildings(dataDB[0].id);
             $("#schoolModal").fadeOut('slow');
@@ -752,12 +752,12 @@ $(document).ready(function () {
         $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
            
            	$('#schoolCrumb').removeClass('hide').html(dataDB[0].name);               	
-<<<<<<< HEAD
+
            	chosenSchool = dataDB[0].name;
            	
-=======
+
            	addLocationLocalStorage(dataDB[0]);
->>>>>>> fixing the add building
+
            	
             map.setZoom(17);
             pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
@@ -900,19 +900,19 @@ $(document).ready(function () {
        console.log("boobs");
        
         google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function () {
-            var dragLng = ADDBUILDINGMarker.getPosition().ab;
-            var dragLat = ADDBUILDINGMarker.getPosition().$a;
+            var dragLng = ADDBUILDINGMarker.getPosition().Ya;
+            var dragLat = ADDBUILDINGMarker.getPosition().Za;
         });
         var campusobject = JSON.parse(localStorage.chosenCampus);
         //var user = JSON.parse(localStorage.userObj);
         var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
-        var newBuildinglatitude = ADDBUILDINGMarker.getPosition().$a; // getting the latitude value from the local storage
-        var newBuildinglongitude = ADDBUILDINGMarker.getPosition().ab; // getting the longitude value from the local storage
+        var newBuildinglatitude = ADDBUILDINGMarker.getPosition().Za; // getting the latitude value from the local storage
+        var newBuildinglongitude = ADDBUILDINGMarker.getPosition().Ya; // getting the longitude value from the local storage
         var newBuildingCampus_identify = campusobject[0].id; // getting the campus id from the local storage
-        //var addedBy = JSON.parse(user.id);
+        var addedBy = 1;
         console.log(newBuildingCampus_identify);
 
-        //addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
+        addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
     })
 
 //////----------------------------------------------------- SHOW ALL SCHOOLS CLICK -------------------------------//////

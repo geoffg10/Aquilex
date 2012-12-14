@@ -2,7 +2,9 @@
 hey chris, im using a new best practice
 instead of using text-indent im using font size 0
 */
-
+*{
+	list-style-type: none;
+}
 
 
 /*------------------------- global styles ---------------------------*/
@@ -213,9 +215,7 @@ input.span2.aquilex-span{
 	display: none;
 }
 
-
-
-
+------------------------  Modal list items ---------------------------*/
 
 
 
