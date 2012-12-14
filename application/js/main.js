@@ -786,12 +786,8 @@ $(document).ready(function () {
         $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
            
            	$('#schoolCrumb').removeClass('hide').html(dataDB[0].name);               	
-<<<<<<< HEAD
 
-           	chosenSchool = dataDB[0].name;
-=======
            	chosenSchool = {'name':dataDB[0].name,'id':dataDB[0].id};
->>>>>>> auto complete
            	
 
            	addLocationLocalStorage(dataDB[0]);
