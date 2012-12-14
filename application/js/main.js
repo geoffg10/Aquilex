@@ -37,10 +37,13 @@ $(document).ready(function () {
     var schoolArray = [];
     var buildingArray = [];
     var userJSONObj = {};
-    var chosenSchool;
+    var chosenSchool = {};
     var chosenBuilding;
+    var typeahead = [];
 
 
+
+    
     if (localStorage) {
         if (localStorage.userObj) {
             userJSONObj = JSON.parse(localStorage.userObj);
@@ -221,8 +224,8 @@ $(document).ready(function () {
                
                	
                $('#schoolCrumb').removeClass('hide').html(name);               	
-	           chosenSchool = name;
-                
+	           chosenSchool = {'name':name, 'id':id};
+                console.log(chosenBuilding);
                 getBuildings(id);
                 infowindow.setContent(name);
 
@@ -295,7 +298,12 @@ $(document).ready(function () {
 		
 		$('#searchBar').val('');	
 		
-	};    
+	};  
+	
+	function updateSearch(){
+		
+		$('#searchBar').attr('data-source', "["+typeahead+"]")	
+	}; 
     
     
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -572,6 +580,8 @@ $(document).ready(function () {
     
     function search(school,building,id,value){
 	    
+	    var html = '';
+	    
 	    if(school == ''){
 		    
 		    console.log('search','"',value,'"','in school table');
@@ -585,12 +595,26 @@ $(document).ready(function () {
 		   		url:'xhr/search.php',
 		   		dataType:'JSON',
 		   		success: function(response){
-			   	
+			   		
+			   		
+					if(response.result != 'no record'){			   	
 			   		//console.log(response);
-			   		for(var i = 0;i<response.result.length;i++){
+				   		for(var i = 0;i<response.result.length;i++){
+
+					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult" data="'+response.result+'" >'+response.result[i].name +'<p>';	
+					   		html+=p;
+
+				   		};
 				   		
-				   		console.log("Results:",response.result[i].name)
-			   		};
+			   		}else{
+					  	
+					  	var li =  '<p>'+response.result +'</p>';	
+					  	html+= li
+					};
+						
+				   		//$('#searchAutoComplete').removeClass('hide');
+				   		$('#autocompletelist').html(html)
+				   				
 		   		},
 		   		error:function(response){
 		   			console.log(response)
@@ -599,8 +623,7 @@ $(document).ready(function () {
 		   });	    
 		    		    
 	    }else if(building == ''){
-	    	console.log('search','"',value,'"','in building table from',school);
-	    	
+	    		    	
 	    	$.ajax({
 		   		type:'POST',
 		   		data:{
@@ -611,21 +634,32 @@ $(document).ready(function () {
 		   		url:'xhr/search.php',
 		   		dataType:'JSON',
 		   		success: function(response){
-			   		console.log(response);
 			   		
-			   		for(var i = 0;i<response.result.length;i++){
-				   		
-				   		console.log("Results:",response.result[i].name)
-			   		};
+					if(response.result != 'no record'){			   	
+			   		//console.log(response);
+				   		for(var i = 0;i<response.result.length;i++){
 
-		   		},
-		   		error:function(response){
+					   		var li =  '<li>'+response.result[i].name +'</li>';	
+					   		html+= li;
+
+				   		};
+				   		
+			   		}else{
+					  	
+					  	var li =  '<li>'+response.result +'</li>';	
+					  	html+= li
+					};
+						html += '</ul>';
+				   		//$('#searchAutoComplete').removeClass('hide');
+				   		$('#autocompletelist').html(html)
+				},
+				error:function(response){
 		   			console.log(response)
 			   		
 		   		}   
 		   });	  
 	    	
-		    
+		   
 	    }else{
 		    console.log('search','"',value,'"','in rooms table from',building,'in',school);
 	    }
@@ -752,8 +786,12 @@ $(document).ready(function () {
         $('<li><a href="#">' + dataDB[0].name + '</a></li>').prependTo('#favorites').click(function (e) {
            
            	$('#schoolCrumb').removeClass('hide').html(dataDB[0].name);               	
+<<<<<<< HEAD
 
            	chosenSchool = dataDB[0].name;
+=======
+           	chosenSchool = {'name':dataDB[0].name,'id':dataDB[0].id};
+>>>>>>> auto complete
            	
 
            	addLocationLocalStorage(dataDB[0]);
@@ -965,7 +1003,7 @@ $(document).ready(function () {
 			search('','','',$('#searchBar').val())
 		}else if($('#buildingCrumb').hasClass('hide')){
 			//console.log(chosenSchool,":",$('#searchBar').val())
-			search(chosenSchool,'','',$('#searchBar').val());
+			search(chosenSchool.name,'',chosenSchool.id,$('#searchBar').val());
 		}else{
 			console.log(chosenSchool,chosenBuilding,$('#searchBar').val());
 			//search(chosenSchool,chosenBuilding,'',$('#searchBar').val());
@@ -973,6 +1011,31 @@ $(document).ready(function () {
 		
 	});
 
+//////--------------------------------------------------- SEARCH FIELD BLUR  -----------------------------------////////
+	
+/*	$('#searchBar').blur(function(){
+		
+		$('#autocompletelist').html('');	
+	}); */
+	
+
+	$('.searchResult').live('click',function(e){
+		console.log(e);
+		
+		var t = e.target
+		
+		$('#schoolCrumb').removeClass('hide').html(t.name);               	
+       	chosenSchool = {'name':t.name,'id':t.id};
+       	
+       	
+        map.setZoom(17);
+      //  pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
+       // map.setCenter(pos);
+
+       // getBuildings(dataDB[0].id);
+		
+	});	
+	
 
     
 });
