@@ -878,7 +878,7 @@ $(document).ready(function () {
             //if local storage contains the chosen campus, then stringify
             localStorage.chosenCampus = JSON.stringify(dataDB);
             // then puts the name of the school inside the "your chosen school" that is the blue box on the top of the page
-            $('<p>' + dataDB.name + '</p>').appendTo('#yourchosenSchool');
+            $('<p>' + dataDB[0].name + '</p>').appendTo('#yourchosenSchool');
         }
         campus = dataDB;
     }
@@ -893,9 +893,10 @@ $(document).ready(function () {
         	// and if there is a chosen campus inside the local storage
             if (localStorage.chosenCampus) {
             	// then create a variable that will parse the choosen campus inside the local storage
-                var data = JSON.parse(localStorage.chosenCampus);
-              	// empty the paragraph tag that contains the choosen campus and adds it to the chosen school banner  
-                $('<p>' + localStorage.chosenCampus.name + '</p>').empty().appendTo('#yourchosenSchool');
+                var lsData = JSON.parse(localStorage.chosenCampus);
+              	// empty the paragraph tag that contains the choosen campus and adds it to the chosen school banner 
+              	//console.log(lsData[0].name);
+                $('<p>' + lsData[0].name + '</p>').empty().appendTo('#yourchosenSchool');
             } else {
             	// school modal shows up
                 $("#schoolModal").removeClass("hide");
