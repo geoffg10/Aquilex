@@ -98,7 +98,7 @@ Class UserController{
 				if(count($checkEmailExists) === 0){
 					//create account with existing post data
 					$insertUser = $this->userModel->insertUser($_POST);
-					$this->loggedIn($insertUser);
+					$this->loggedIn($insertUser['user_id']);
 					echo json_encode(array('message'=>'user_added'));
 				
 					
@@ -108,8 +108,7 @@ Class UserController{
 					
 					if(count($validatePassword) === 1){ //pass matches
 						//send the user_id // for testing, should set it to session
-						
-						$_SESSION['user_id'] = $validatePassword[0];
+						$this->loggedIn($validatePassword[0]['user_id']);
 						echo json_encode(array('message'=>'validated'));
 						
 					}else{

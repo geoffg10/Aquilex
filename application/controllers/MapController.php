@@ -133,13 +133,34 @@ Class MapController{
 				if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['campus_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['campus_id']!=''){
 					
 					
-					$_POST['added_by_id'] = $_SESSION['user_id']['user_id'];
+					$_POST['added_by_id'] = $_SESSION['user_id'];
 					$insertBuilding = $this->mapModel->addBuilding($_POST);
 					
-					echo json_encode(array('message'=>'building_added', 'result'=>array('building_added'=>$insertBuilding)));
-					//echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
+					echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
 				}else{
 					echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["campus_id"] all need to be set and not empty'));
+				}
+				
+			}else{
+				echo json_encode(array('message'=>'use post'));
+			}	
+		}else{
+			echo json_encode(array('message'=>'must_log_in'));
+		}
+		
+	}
+	public function addroom(){
+		if(isset($_SESSION['user_id'])){
+			if(isset($_POST)){
+				if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['building_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['building_id']!=''){
+					
+					
+					$_POST['added_by_id'] = $_SESSION['user_id'];
+					$insertroom = $this->mapModel->addBuilding($_POST);
+					
+					echo json_encode(array('message'=>'building_added', 'result'=>array('room_id'=>$insertroom)));
+				}else{
+					echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["building_id"] all need to be set and not empty'));
 				}
 				
 			}else{
