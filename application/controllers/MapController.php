@@ -15,7 +15,7 @@ Class MapController{
 	private $mapModel;
 	
 	public function __construct(){
-		
+		session_start();
 		$this->mapModel = new MapModel();
 	}
 	/**
@@ -27,7 +27,8 @@ Class MapController{
       * 
       */		
 	public function index(){ //instantiate views
-		session_start();
+		
+		var_dump($_SESSION);
 		echo "<br/>";
 		include('../views/header.html');
 		include('../views/map.html');
@@ -102,10 +103,12 @@ Class MapController{
 	public function addcampus(){
 		if(isset($_POST)){
 			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude'])  && isset($_POST['google_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['google_id']!=''){
-				$_POST['added_by_id'] = 1; //this needs to be the session
+				
+				$_POST['added_by_id'] = $_SESSION['user_id']; //this needs to be the session
 				
 				// first check to see if the capus exists in the campus table
 				$capuses = $this->mapModel->getCampuses($_POST);
+				
 				if(count($capuses) == 1){ //campus exists, no insert
 					echo json_encode(array('message'=>'campus_exists', 'result'=>'campus already exists'));
 				}elseif(count($capuses) == 0){ //campus doesn't exist so insert
@@ -128,13 +131,13 @@ Class MapController{
 		if(isset($_SESSION['user_id'])){
 			if(isset($_POST)){
 				if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['campus_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['campus_id']!=''){
-					$_POST['added_by_id'] = 1; //this needs to be the session
 					
-					$_POST['added_by_id'] = $_SESSION['user_id'];
+					
+					$_POST['added_by_id'] = $_SESSION['user_id']['user_id'];
 					$insertBuilding = $this->mapModel->addBuilding($_POST);
 					
-					
-					echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
+					echo json_encode(array('message'=>'building_added', 'result'=>array('building_added'=>$insertBuilding)));
+					//echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
 				}else{
 					echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["campus_id"] all need to be set and not empty'));
 				}
@@ -143,7 +146,7 @@ Class MapController{
 				echo json_encode(array('message'=>'use post'));
 			}	
 		}else{
-			echo json_encode(array('message'=>'must_log_in', 'test'=>$_SESSION));
+			echo json_encode(array('message'=>'must_log_in'));
 		}
 		
 	}
@@ -173,6 +176,5 @@ Class MapController{
 
 		}
 	}
-
 }
 ?>

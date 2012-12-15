@@ -100,7 +100,7 @@ Class MapModel extends Database{
 	public function addBuilding($data){
 		$sqlst = "INSERT INTO buildings (campus_id, latitude, longitude, name, added_by_id) VALUES(:campus_id, :latitude, :longitude, :name, :added_by_id)";
 		$st = $this->db->prepare($sqlst);
-		$st->execute(array(":campus_id"=>$data['campus_id'], ":latitude"=>$data['latitude'], ":longitude"=>$data['longitude'], ":name"=>$data['name'], ":added_by_id"=>$data['added_by_id']));
+		$st->execute(array(":name"=>$data['name'],":longitude"=>$data['longitude'], ":latitude"=>$data['latitude'], ":added_by_id"=>$data['added_by_id'], ":campus_id"=>$data['campus_id']));
 		$id = $this->db->lastInsertId();
 		return $id;		
 	}

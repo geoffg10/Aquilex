@@ -11,10 +11,9 @@ require("../models/UserModel.php");
   * it uses the UserModel for all DB calls
   */
 Class UserController{
-	
 	private $userModel;
-	
 	public function __construct(){
+		session_start();
 		$this->userModel = new UserModel();
 	}
 	/**
@@ -25,7 +24,6 @@ Class UserController{
       *
       * @return the following successful messages: user_added w/user_id, user_found w/user_id; fail messages: multiple_users, expecting $_POST[fb_id], use post
       */
-
 	public function fblogin(){
 		if(isset($_POST)){
 			// check to make sure that the variable being used is fb_id and that it is not empty
@@ -100,8 +98,8 @@ Class UserController{
 				if(count($checkEmailExists) === 0){
 					//create account with existing post data
 					$insertUser = $this->userModel->insertUser($_POST);
-					$stuff = $this->loggedIn($insertUser);
-					echo json_encode(array('message'=>'user_added', 'result'=>array('user_id'=>$insertUser, 'session_id'=>$stuff)));
+					$this->loggedIn($insertUser);
+					echo json_encode(array('message'=>'user_added'));
 				
 					
 				}elseif(count($checkEmailExists) === 1){ //there is one match for email user_id, now check password
@@ -110,8 +108,9 @@ Class UserController{
 					
 					if(count($validatePassword) === 1){ //pass matches
 						//send the user_id // for testing, should set it to session
-						$stuff = $this->loggedIn($validatePassword[0]);
-						echo json_encode(array('message'=>'validated', 'result'=>$validatePassword[0], 'session_id'=>$stuff));
+						
+						$_SESSION['user_id'] = $validatePassword[0];
+						echo json_encode(array('message'=>'validated'));
 						
 					}else{
 						//password didn't match
@@ -175,12 +174,11 @@ Class UserController{
 		return $_SESSION['user_id'];
 	}
 	public function logOut(){
-		session_unset($_SESSION['user_id']);
+		//session_unset($_SESSION['user_id']);
 		echo json_encode(array('message'=>'logged_out'));
 	}
 	public function deleteaccount(){
 
 	}
-
 }
 ?>

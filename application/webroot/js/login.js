@@ -15,21 +15,17 @@ $(document).ready(function(){
 	
 	//checkLocalStorage will change the state of the user's navigation for login/logout, this can be called wherever a change is needed
 	function checkLocalStorage(){
-		if(localStorage){
-			if(localStorage.fbObject || localStorage.userObj){
-				if(localStorage.fbObject){
-					userObj = JSON.parse(localStorage.userObj);
-					fbObj = JSON.parse(localStorage.fbObject);
-				}else{
-					userObj = JSON.parse(localStorage.userObj);
-				}
-				$('#dropDown-settings').removeClass('hide');
-				$('#dropDown-login').addClass('hide');
-			}else{
-				$('#dropDown-login').removeClass('hide');
-				$('#dropDown-settings').addClass('hide');
-			}
+		var settings = $('#dropDown-settings');
+		var login = $('#dropDown-login');
+	
+		if(settings.hasClass('hide')){
+			$('#dropDown-settings').removeClass('hide');
+			$('#dropDown-login').addClass('hide');
+		}else{
+			$('#dropDown-login').removeClass('hide');
+			$('#dropDown-settings').addClass('hide');
 		}
+		
 	}
 	//runs check on load
 	//checkLocalStorage();
@@ -154,6 +150,7 @@ $(document).ready(function(){
 			localStorage.clear();
 			checkLocalStorage();
 		}
+		return false;
 	});
 	//normal login
 	$('#login').submit(function(e) {
@@ -168,8 +165,10 @@ $(document).ready(function(){
 				
 				if(response.message=="user_added"){
 					//user created
+					$('#aquilex-login').addClass("hide");
 				}else if(response.message=="validated"){
 					//user validated
+					$('#aquilex-login').addClass("hide");
 				}else if(response.message=="fail_validation"){
 					//failed password validation
 				}else{
@@ -220,14 +219,12 @@ $(document).ready(function(){
 			dataType: 'json',
 			success: function(response) {
 				console.log(response);
-/*
-				if(response.result == "wrong password"){
+				if(response.result == "invalid_password"){
 					$("#changepass .control-group").addClass('error alert alert-error').find('span').removeClass('hide');
 				}
-				if(response.result == "password updated"){
+				if(response.result == "update_password"){
 					
 				}
-*/
 		    },error: function(data) {  
 			    console.log(data);
 		    }});

@@ -12,5 +12,4 @@
 		const DB_USERNAME = 'root';
 		// database password
 		const DB_PASSWORD = 'root';
-		
 ?>

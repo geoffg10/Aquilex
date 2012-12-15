@@ -281,7 +281,7 @@ $(document).ready(function () {
             infowindow.open(map, this);
             map.setZoom(zoom);
 
-
+            return false;
 
         });
         
@@ -468,7 +468,6 @@ $(document).ready(function () {
 
     function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify) { // add building to DB
         //starting the ajax call
-        console.log(campus_identify);
         $.ajax({
         	//using POST because we are tying to POST the information
             type: 'POST',
@@ -478,7 +477,6 @@ $(document).ready(function () {
                 latitude: newBuildinglatitude,
                 longitude: newBuildinglongitude,
                 name: newBuildingName
-
             },
             // the php file we are going to use to help make this work
             url: '../application/map/addbuilding',
@@ -490,16 +488,11 @@ $(document).ready(function () {
                 //if the success data has an error
                 if(successData.message == "must_log_in"){
 	                //show login
-                }
-                
-                if (successData.error) {
-                
-                } else {
-                  //if it worked, then set the infowindow (when you click on the marker, the information bubble that pops up) should be the new buildings name
+                }else if(successData.message == "building_added"){
+	                //if it worked, then set the infowindow (when you click on the marker, the information bubble that pops up) should be the new buildings name
                   console.log('else in the success')
                     infowindow.getContent(newBuildingName);
-
-                }//end of else
+                }
             },//end of success
             //error function
             error: function (errorData) {
@@ -965,14 +958,14 @@ $(document).ready(function () {
         var campusobject = JSON.parse(localStorage.chosenCampus);
         //var user = JSON.parse(localStorage.userObj);
         var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
-        //var newBuildinglatitude = ADDBUILDINGMarker.getPosition().lat(); // getting the latitude value from the local storage
-        //var newBuildinglongitude = ADDBUILDINGMarker.getPosition().log(); // getting the longitude value from the local storage
+        var newBuildinglatitude = ADDBUILDINGMarker.getPosition().Ya; // getting the latitude value from the local storage
+        var newBuildinglongitude = ADDBUILDINGMarker.getPosition().Za; // getting the longitude value from the local storage
         console.log(campusobject);
         var newBuildingCampus_identify = campusobject.id; // getting the campus id from the local storage
 
-        console.log(newBuildingCampus_identify);
+        console.log(ADDBUILDINGMarker.getPosition().lat());
 
-        addNewBuilding(newBuildingName, dragLat, dragLng, newBuildingCampus_identify);
+        addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify);
         return false;
     })
 
