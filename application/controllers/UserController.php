@@ -100,7 +100,8 @@ Class UserController{
 				if(count($checkEmailExists) === 0){
 					//create account with existing post data
 					$insertUser = $this->userModel->insertUser($_POST);
-					echo json_encode(array('message'=>'user_added', 'result'=>array('user_id'=>$insertUser)));
+					$stuff = $this->loggedIn($insertUser);
+					echo json_encode(array('message'=>'user_added', 'result'=>array('user_id'=>$insertUser, 'session_id'=>$stuff)));
 				
 					
 				}elseif(count($checkEmailExists) === 1){ //there is one match for email user_id, now check password
@@ -109,7 +110,8 @@ Class UserController{
 					
 					if(count($validatePassword) === 1){ //pass matches
 						//send the user_id // for testing, should set it to session
-						echo json_encode(array('message'=>'validated', 'result'=>$validatePassword[0]));
+						$stuff = $this->loggedIn($validatePassword[0]);
+						echo json_encode(array('message'=>'validated', 'result'=>$validatePassword[0], 'session_id'=>$stuff));
 						
 					}else{
 						//password didn't match
@@ -144,7 +146,8 @@ Class UserController{
 				//sha1 both passwords and set post[id] to the session id
 				$_POST['newpass'] = sha1($_POST['newpass']);
 				$_POST['oldpass'] = sha1($_POST['oldpass']);
-				$_POST['id'] = 15; //make this the session
+				
+				$_POST['id'] = $_SESSION['user_id']; //make this the session
 				
 				$checkpass = $this->userModel->checkUserPass($_POST);
 				
@@ -165,6 +168,15 @@ Class UserController{
 		}else{
 			echo json_encode(array('message'=>'use post'));
 		}		
+	}
+	private function loggedIn($id){
+		
+		$_SESSION['user_id'] = $id;
+		return $_SESSION['user_id'];
+	}
+	public function logOut(){
+		session_unset($_SESSION['user_id']);
+		echo json_encode(array('message'=>'logged_out'));
 	}
 	public function deleteaccount(){
 

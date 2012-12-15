@@ -113,6 +113,41 @@ $(document).ready(function () {
             console.log('draggy', userMarker.getPosition());
 
         });
+       
+        
+         var styles = [
+    {
+      stylers: [
+        { hue: "#00ffe6" },
+        { saturation: -20 }
+      ]
+    },{
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [
+        { lightness: 100 },
+        { visibility: "simplified" }
+      ]
+    },{
+      featureType: "road",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
+    }
+  ];
+
+  // Create a new StyledMapType object, passing it the array of styles,
+  // as well as the name to be displayed on the map type control.
+  var styledMap = new google.maps.StyledMapType(styles,
+    {name: "Styled Map"});
+
+
+  //Associate the styled map with the MapTypeId and set it to display.
+  map.mapTypes.set('map_style', styledMap);
+  map.setMapTypeId('map_style');
+
+        
 
         /*===================================================================================================== ##2 getUniversities runs after initialize on load
          */
@@ -178,8 +213,6 @@ $(document).ready(function () {
             for (var i = 0; i < results.length; i++) {
             	
                 var google_id = results[i].id;
-                //createMarker({'name':results[i].name,'latlng':results[i].geometry.location});
-                console.log("getDBcampuses line 183");
                 getDBCampuses(results[i], google_id);
 
             } //end of for loop
@@ -189,8 +222,8 @@ $(document).ready(function () {
 //////----------------------------------------------------- CREATING MARKERS  -------------------------------//////
 
     //creates markers on the map. params(name of marker, Lat/Long of marker, id of information, type of marker, zoom distance, infowindow content
-    function createMarker(name, latlng, id, type, zoom,content) { 
-
+    function createMarker(name, latlng, id, type, zoom, content) { 
+//createMarker(response.result[i].name, ltlg, response.result[i].id, 'school', 17);
 	    // if statement to set 'icon' variable depending on the type 
 	    if(type=='school'){
 		    
@@ -227,7 +260,7 @@ $(document).ready(function () {
                	
                $('#schoolCrumb').removeClass('hide').html(name);               	
 	           chosenSchool = {'name':name, 'id':id};
-                console.log(chosenBuilding);
+                console.log(chosenSchool);
                 getBuildings(id);
                 infowindow.setContent(name);
 
@@ -341,7 +374,8 @@ $(document).ready(function () {
 	                // creating a variable latitude and longitude
                     var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude)
                     //create markers for the campuses
-                    createMarker(response.result[i].name, ltlg, response.result[i].id, 'school', 17);
+                    
+                    createMarker(response.result[i].name, ltlg, response.result[i].id, 'school', 17, '');
                 }// end of the for loop
             },// end of the success function
             // if there is an error, then this error function will happen
@@ -350,35 +384,8 @@ $(document).ready(function () {
             }// end of error function
         });// end of ajax function
     };// end of get campuses
-
-
-
-//////----------------------------------------------------- ADD USER LOCATIONS -------------------------------//////
-
-    function addUserLocation(data) {
-     //starting the ajax call to database 
-        $.ajax({
-        //the type of method we are going to use
-       	//using POST because we are tying to POST the information
-            type: 'POST',
-        // data is what we are sending 
-            data: {
-                latitude: data.Za,
-                longitude: data.Ya
-            },
-        // the php file that we are calling 
-            url: 'xhr/addlocation.php',
-        //the type of data we are going to be gathering is going to be json
-            dataType: 'json',
-        // if the ajax called worked correctly, then this success function will run
-            success: function (data) {
-                
-            }// end of success function
-        });// end of ajax
-    };//end of add user location
-    
-    
-//////----------------------------------------------------- GET LOCATIONS  -------------------------------//////
+   
+//////----------------------------------------------------- GET DBCampuses  -------------------------------//////
 
     function getDBCampuses(place, google_id) { // performing ajax to check db with results then display results
         //takes two params, one is the google place and the second is the id of the google place
@@ -397,7 +404,6 @@ $(document).ready(function () {
             //if everything runs correctly then this function wil run with successLocDB as its param
             //successLocDB is a ref to the database
             success: function (successLocDB) {
-            	console.log(successLocDB.result.length);
                 //if the result from the database is no record then
                 if (successLocDB.result.length == 0) {
                     //call the function makeList
@@ -462,6 +468,7 @@ $(document).ready(function () {
 
     function addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, campus_identify) { // add building to DB
         //starting the ajax call
+        console.log(campus_identify);
         $.ajax({
         	//using POST because we are tying to POST the information
             type: 'POST',
@@ -479,8 +486,12 @@ $(document).ready(function () {
             dataType: 'json',
             //success function
             success: function (successData) {
-            	console.log('success')
+            	console.log('success ', successData)
                 //if the success data has an error
+                if(successData.message == "must_log_in"){
+	                //show login
+                }
+                
                 if (successData.error) {
                 
                 } else {
@@ -583,7 +594,7 @@ $(document).ready(function () {
     }; // end of getRooms function
     
     
-    
+//////----------------------------------------------------- SEARCH -------------------------------//////    
     
     
     function search(school,building,id,value){
@@ -591,9 +602,7 @@ $(document).ready(function () {
 	    var html = '';
 	    
 	    if(school == ''){
-		    
-		    console.log('search','"',value,'"','in school table');
-		   
+   
 		   $.ajax({
 		   		type:'POST',
 		   		data:{
@@ -609,15 +618,15 @@ $(document).ready(function () {
 			   		//console.log(response);
 				   		for(var i = 0;i<response.result.length;i++){
 
-					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult" data="'+response.result+'" >'+response.result[i].name +'<p>';	
+					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult aquilex-well well well-small" data-lat="'+response.result[i].latitude+'" data-lng="'+response.result[i].longitude+'" data-type="school">'+response.result[i].name +'</p>';	
 					   		html+=p;
 
 				   		};
 				   		
 			   		}else{
 					  	
-					  	var li =  '<p>'+response.result +'</p>';	
-					  	html+= li
+					  	var p =  '<p class="well aquilex-well well-small">'+response.result +'</p>';	
+					  	html+= p
 					};
 						
 				   		//$('#searchAutoComplete').removeClass('hide');
@@ -639,7 +648,7 @@ $(document).ready(function () {
 			   		id:id,
 			   		value:value	
 		   		},
-		   		url:'../application/map/autosearch',
+		   		url:'xhr/search.php',
 		   		dataType:'JSON',
 		   		success: function(response){
 			   		
@@ -647,19 +656,20 @@ $(document).ready(function () {
 			   		//console.log(response);
 				   		for(var i = 0;i<response.result.length;i++){
 
-					   		var li =  '<li>'+response.result[i].name +'</li>';	
-					   		html+= li;
+					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult well aquilex-well well-small" data-lat="'+response.result[i].latitude+'" data-lng="'+response.result[i].longitude+'" data-type="building">'+response.result[i].name +'</p>';	
+					   		html+=p;
 
 				   		};
 				   		
 			   		}else{
 					  	
-					  	var li =  '<li>'+response.result +'</li>';	
+					  	var li =  '<p class="well well-small">'+response.result +'</p>';	
 					  	html+= li
 					};
-						html += '</ul>';
+						
 				   		//$('#searchAutoComplete').removeClass('hide');
 				   		$('#autocompletelist').html(html)
+				   				
 				},
 				error:function(response){
 		   			console.log(response)
@@ -724,10 +734,13 @@ $(document).ready(function () {
         }
         return false;
     });
+
+//////----------------------------------------------------- clicking on the addlocation button -------------------------------//////
     //clicking on the addlocation button
     $('#addLocation').click(function (e) {
     	// calling the addUserLocation and passing in the params, position of the marker created. 
         addUserLocation(userMarker.position);
+        return false;
     });
 
 //////----------------------------------------------------- LIST OF CAMPUS FROM GOOGLE -------------------------------//////
@@ -784,7 +797,8 @@ $(document).ready(function () {
         
         $('<li>' + place.name + '</li>').appendTo('#ourAddedList').click(function (e) {
             map.setZoom(17);
-            pos = new google.maps.LatLng(place.geometry.location.Ya, place.geometry.locationZa);
+            pos = new google.maps.LatLng(place.geometry.location.Ya, place.geometry.location.Za);
+            //console.log(place);
             map.setCenter(pos);
             getBuildings(dataDB[0].id);
             $("#schoolModal").fadeOut('slow');
@@ -885,7 +899,7 @@ $(document).ready(function () {
     $('#closeSchoolModal').on('click', function () {
     	// hide the school modal
         $('#schoolModal').addClass("hide");
-
+        return false;
     })
     
 //////----------------------------------------------------- NAVIGATION  ADD NEW BUILDING BTN CLICK -------------------------------//////
@@ -924,7 +938,7 @@ $(document).ready(function () {
          
       
          
-           infowindow.setContent("<form><label id='newBuildingsName'>"+'Name of location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
+           infowindow.setContent("<form id='newbldgform'><label id='newBuildingsName'>"+'Name of the location'+"</label><input id="+'infoBoxInput'+" type="+'text'+" placeholder="+'name location'+"><button id="+'infoBoxBtn'+"  type="+'submit'+" class="+'btn'+">"+'Submit'+"</button></form>");
 		  	infowindow.open(map, this);
             map.setZoom(17);
         });
@@ -932,29 +946,34 @@ $(document).ready(function () {
 
         google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function () {
             // this is the drag function
-
+            //console.log('get location ',ADDBUILDINGMarker.getPosition().lat());
         });
-
+        return false;
     });
 
 //////----------------------------------------------------- ADDING NEW BUILDING CLICK FUNCTION -------------------------------//////
-
-    $("#infoBoxBtn").live('click', function () {
+	
+    $('body').on('submit','#newbldgform', function () {
+       var dragLng;
+       var dragLat;
        
         google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function () {
-            var dragLng = ADDBUILDINGMarker.getPosition().Ya;
-            var dragLat = ADDBUILDINGMarker.getPosition().Za;
+        	
+            dragLng = ADDBUILDINGMarker.getPosition().log();
+            dragLat = ADDBUILDINGMarker.getPosition().lat();
         });
         var campusobject = JSON.parse(localStorage.chosenCampus);
         //var user = JSON.parse(localStorage.userObj);
         var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
-        var newBuildinglatitude = ADDBUILDINGMarker.getPosition().Za; // getting the latitude value from the local storage
-        var newBuildinglongitude = ADDBUILDINGMarker.getPosition().Ya; // getting the longitude value from the local storage
-        var newBuildingCampus_identify = campusobject[0].id; // getting the campus id from the local storage
-        var addedBy = 1;
+        //var newBuildinglatitude = ADDBUILDINGMarker.getPosition().lat(); // getting the latitude value from the local storage
+        //var newBuildinglongitude = ADDBUILDINGMarker.getPosition().log(); // getting the longitude value from the local storage
+        console.log(campusobject);
+        var newBuildingCampus_identify = campusobject.id; // getting the campus id from the local storage
+
         console.log(newBuildingCampus_identify);
 
-        addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify, addedBy);
+        addNewBuilding(newBuildingName, dragLat, dragLng, newBuildingCampus_identify);
+        return false;
     })
 
 //////----------------------------------------------------- SHOW ALL SCHOOLS CLICK -------------------------------//////
@@ -963,15 +982,23 @@ $(document).ready(function () {
 // clicking this makes the school modal show 
     $('#showAllSchools').on('click', function () {
         $("#schoolModal").removeClass('hide');
-
+        return false;
     });
 //////----------------------------------------------------- SHOW ADD ROOM CLICK -------------------------------//////
 
 	// when the  show addroom button is clicked
-    $('#showAddRoomBtn').on('click',function(){
+    $('#showAddRoomBtn').live('click',function(){
 	    
-	   console.log('show room button!'); 
+	   $('#addRoomForm').removeClass('hide'); 
+	   $('#showAddRoomBtn').html('close');
+	   return false;
     });
+    
+    $('#addRoomBtn').live('click',function(){
+	 	$('#addRoomForm').addClass('hide');   
+	 	$('#showAddRoomBtn').html('+');
+	 	return false;
+   	});
     
 //////----------------------------------------------------- SCHOOL BREADCRUMBS -------------------------------//////
     
@@ -985,6 +1012,7 @@ $(document).ready(function () {
 	    $('#buildingCrumb').addClass('hide');
 	    //setting what the maps zoom should be at
 	    map.setZoom(16);
+	    return false;
     });//END OF SCHOOL CRUMBS
 //////----------------------------------------------------- BUILDING BREADCRUMBS -------------------------------//////
     
@@ -995,11 +1023,14 @@ $(document).ready(function () {
     	$('#buildingCrumb').addClass('hide');
     	//set the maps zoom 
     	map.setZoom(17);
+    	return false;
     });// END OF BUILDING CRUMBS   	
     
 //////--------------------------------------------------- AUTO COMPLETE -----------------------------------////////
 
 	$('#searchBar').keyup(function(){
+		
+		$('#autocompletelist').removeClass('hide');
 		
 		if($('#schoolCrumb').hasClass('hide')){
 			//console.log($('#searchBar').val());
@@ -1022,24 +1053,44 @@ $(document).ready(function () {
 		$('#autocompletelist').html('');	
 	}); */
 	
-
-	$('.searchResult').live('click',function(e){
-		console.log(e);
-		
-		var t = e.target
-		
-		$('#schoolCrumb').removeClass('hide').html(t.name);               	
-       	chosenSchool = {'name':t.name,'id':t.id};
-       	
-       	
-        map.setZoom(17);
-      //  pos = new google.maps.LatLng(dataDB[0].latitude,dataDB[0].longitude);
-       // map.setCenter(pos);
-
-       // getBuildings(dataDB[0].id);
-		
-	});	
+//////--------------------------------------------------- AUTO COMPLETE BREADCRUMBS  -----------------------------------////////
 	
+	$('body').on('click','.searchResult',function(e){
+				
+		var tar = e.target,
+			type = e.srcElement.dataset.type;
+		
+		
+		if(type == 'school'){
+			console.log('in school');
+			chosenSchool = {'name':e.srcElement.innerHTML,'id':tar.id};
 
+			
+			$('#schoolCrumb').removeClass('hide').html(chosenSchool.name);               	
+			getBuildings(tar.id);
+
+
+			
+		}else if(type == 'building'){
+		
+		   console.log('in building');
+           chosenBuilding = e.srcElement.innerHTML;
+
+           console.log(chosenBuilding);
+          
+           $('#buildingCrumb').removeClass('hide').html(chosenBuilding);
+            	
+
+			
+  			
+		}
+		
+		map.setZoom(17);
+        pos = new google.maps.LatLng(e.srcElement.dataset.lat,e.srcElement.dataset.lng);
+        map.setCenter(pos);
+
+        $('#autocompletelist').html('');
+		return false;
+	});	
     
 });

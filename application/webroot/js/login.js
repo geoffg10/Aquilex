@@ -23,11 +23,11 @@ $(document).ready(function(){
 				}else{
 					userObj = JSON.parse(localStorage.userObj);
 				}
-				$('#dropDown-settings').removeAttr('style');
-				$('#dropDown-login').hide();
+				$('#dropDown-settings').removeClass('hide');
+				$('#dropDown-login').addClass('hide');
 			}else{
-				$('#dropDown-login').removeAttr('style');
-				$('#dropDown-settings').hide();
+				$('#dropDown-login').removeClass('hide');
+				$('#dropDown-settings').addClass('hide');
 			}
 		}
 	}

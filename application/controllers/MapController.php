@@ -1,31 +1,63 @@
 <?php
+/**
+  * Project Aquilex
+  * @author  Renee Blunt <renee.blunt@gmail.com>
+  * December 13, 2012
+  *
+  */
 require("../models/MapModel.php");
-
+/**
+  * This class handles all of the logic for map data
+  * it uses the MapModel for all DB calls
+  */
 Class MapController{
 	
 	private $mapModel;
 	
 	public function __construct(){
+		
 		$this->mapModel = new MapModel();
 	}
-	
-	
+	/**
+      * index method loads the pages to make the site work
+      * 
+      * TODO 
+      *
+      *
+      * 
+      */		
 	public function index(){ //instantiate views
+		session_start();
 		echo "<br/>";
 		include('../views/header.html');
 		include('../views/map.html');
 		include('../views/googleFooter.html');
 	}
+	/**
+      * getallcampuses method will get all of the campuses in the campus table
+      *  
+      * uses $_GET
+      * 
+      * @return an array of campuses
+      */
 	public function getallcampuses(){
 		if(isset($_GET)){
 			$campuses = $this->mapModel->getAllCampuses($_GET);
 	
 	echo json_encode(array('message'=>'all_campuses', 'result'=>$campuses));
 		}else{
-			echo json_encode(array('message'=>'use post'));
+			echo json_encode(array('message'=>'use get'));
 		}
 	}
-		
+	/**
+      * getcampuses method will check if the old password matches the user account first
+      *  if the account matches the password will be updated
+      *
+      * uses $_POST, and $_SESSION
+      * expecting ['oldpass'] ['newpass'] ['id']
+      *
+      * @return a successful message: update_password; fail messages: not_successful, invalid_password, $_POST["oldpass"] and $_POST["newpass"] must be set and not be empty, use post
+      */		
 	public function getcampuses(){
 		if(isset($_POST)){
 			if(isset($_POST["google_id"]) && $_POST["google_id"] != ''){
@@ -93,20 +125,27 @@ Class MapController{
 		
 	}
 	public function addbuilding(){
-		if(isset($_POST)){
-			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['campus_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['campus_id']!=''){
-				$_POST['added_by_id'] = 1; //this needs to be the session
-				$insertBuilding = $this->mapModel->addBuilding($_POST);
+		if(isset($_SESSION['user_id'])){
+			if(isset($_POST)){
+				if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude']) && isset($_POST['campus_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['campus_id']!=''){
+					$_POST['added_by_id'] = 1; //this needs to be the session
+					
+					$_POST['added_by_id'] = $_SESSION['user_id'];
+					$insertBuilding = $this->mapModel->addBuilding($_POST);
+					
+					
+					echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
+				}else{
+					echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["campus_id"] all need to be set and not empty'));
+				}
 				
-				
-				echo json_encode(array('message'=>'building_added', 'result'=>array('building_id'=>$insertBuilding)));
 			}else{
-				echo json_encode(array('message'=>'$_POST["name"], $_POST["longitude"], $_POST["latitude"],$_POST["campus_id"] all need to be set and not empty'));
-			}
-			
+				echo json_encode(array('message'=>'use post'));
+			}	
 		}else{
-			echo json_encode(array('message'=>'use post'));
+			echo json_encode(array('message'=>'must_log_in', 'test'=>$_SESSION));
 		}
+		
 	}
 	public function autosearch(){
 		if(isset($_POST) && isset($_POST['table'])){

@@ -180,6 +180,20 @@ ul.downdwn-mobile-effect {
 }
 
 
+.well.aquilex-well{
+	padding-top:9px;
+	margin-bottom: 0px;
+	border:none;
+}
+
+.scroll{
+	max-height:20%;
+	width:100%;
+	border:1px solid #ccc;
+	overflow:auto;
+	position:absolute;
+}
+
 /*------------------------- end of search bar ---------------------------*/
 
 
