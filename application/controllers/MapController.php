@@ -104,8 +104,6 @@ Class MapController{
 		if(isset($_POST)){
 			if(isset($_POST['name']) && isset($_POST['longitude']) && isset($_POST['latitude'])  && isset($_POST['google_id']) && $_POST['name']!='' && $_POST['longitude']!='' && $_POST['latitude']!='' && $_POST['google_id']!=''){
 				
-				$_POST['added_by_id'] = $_SESSION['user_id']; //this needs to be the session
-				
 				// first check to see if the capus exists in the campus table
 				$capuses = $this->mapModel->getCampuses($_POST);
 				

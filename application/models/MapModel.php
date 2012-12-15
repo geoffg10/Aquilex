@@ -83,9 +83,9 @@ Class MapModel extends Database{
       * @return associative array of campus_id
       */
 	public function addCampus($data){
-		$sqlst = "INSERT INTO campuses(name, longitude, latitude, added_by_id, google_id)VALUES(:name, :longitude, :latitude, :added_by_id, :google_id)";
+		$sqlst = "INSERT INTO campuses(name, longitude, latitude, google_id)VALUES(:name, :longitude, :latitude, :google_id)";
 		$st = $this->db->prepare($sqlst);
-		$st->execute(array(":name"=>$data['name'],":longitude"=>$data['longitude'], ":latitude"=>$data['latitude'], ":added_by_id"=>$data['added_by_id'], ":google_id"=>$data['google_id']));
+		$st->execute(array(":name"=>$data['name'],":longitude"=>$data['longitude'], ":latitude"=>$data['latitude'], ":google_id"=>$data['google_id']));
 		$id = $this->db->lastInsertId();
 		return $id;
 	}

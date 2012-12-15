@@ -390,6 +390,7 @@ $(document).ready(function () {
     function getDBCampuses(place, google_id) { // performing ajax to check db with results then display results
         //takes two params, one is the google place and the second is the id of the google place
      // starting the ajax call to the database
+     console.log('running getDBCapuses');
         $.ajax({
         	//using POST because we are tying to POST the information
             type: 'POST',
@@ -404,6 +405,7 @@ $(document).ready(function () {
             //if everything runs correctly then this function wil run with successLocDB as its param
             //successLocDB is a ref to the database
             success: function (successLocDB) {
+            	console.log('running getDBCapuses', successLocDB);
                 //if the result from the database is no record then
                 if (successLocDB.result.length == 0) {
                     //call the function makeList
@@ -833,7 +835,7 @@ $(document).ready(function () {
             // the school that you chose will then be added to ul "our added list" which is the top part of the " add your school" modal.		
         }).appendTo('#ourAddedList');
         // calling the local storage function
-        //addLocationLocalStorage(dataDB);
+        addLocationLocalStorage(dataDB);
         //if your chosen school is hidden
         if ($("#chosenSchool").hasClass("hide")) {
         	// remove the class hide and make it appear
