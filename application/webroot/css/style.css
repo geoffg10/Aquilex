@@ -229,6 +229,10 @@ input.span2.aquilex-span{
 	display: none;
 }
 
+.dropdown-menu.nav-tabs.nav-stacked.hide{
+	display: none;
+}
+
 ------------------------  Modal list items ---------------------------*/
 
 

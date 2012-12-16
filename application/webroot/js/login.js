@@ -27,6 +27,18 @@ $(document).ready(function(){
 		}
 		
 	}
+	function loginState() {  
+		var settings = $('#dropDown-settings');
+		var login = $('#dropDown-login');
+	
+		if(settings.hasClass('hide')){
+			$('#dropDown-settings').removeClass('hide');
+			$('#dropDown-login').addClass('hide');
+		}else{
+			$('#dropDown-login').removeClass('hide');
+			$('#dropDown-settings').addClass('hide');
+		}
+	}
 	//runs check on load
 	//checkLocalStorage();
 	
@@ -92,7 +104,7 @@ $(document).ready(function(){
 								$('#aquilex-login').addClass("hide");
 								localStorage.userObj = JSON.stringify(userObj);
 								localStorage.fbObject = JSON.stringify(data);
-								checkLocalStorage();
+								//checkLocalStorage();
 							}
 					    },error: function(errorResponse) {  
 						    //console.log(errorResponse);
@@ -148,7 +160,7 @@ $(document).ready(function(){
 				});
 			}
 			localStorage.clear();
-			checkLocalStorage();
+			//checkLocalStorage();
 		}
 		return false;
 	});
@@ -161,49 +173,22 @@ $(document).ready(function(){
 			data:$(this).serialize(), 
 			dataType: 'json',
 			success: function(response) {
-				console.log('the root response ',response);
-				
 				if(response.message=="user_added"){
 					//user created
+					loginState();
 					$('#aquilex-login').addClass("hide");
 				}else if(response.message=="validated"){
 					//user validated
+					loginState();
 					$('#aquilex-login').addClass("hide");
 				}else if(response.message=="fail_validation"){
 					//failed password validation
 				}else{
 					//wrong or empty variables, didn't use post
 				}
-				
-/*
-				if(response.message=="connected"){
-					if(response.result.success == "password doesn't match"){
-						//do stuff when the password doesn't match
-					}else if(response.result.success == "user added"){
-						//user can been added
-						userObj.id = response.result.userid;
-						$('#aquilex-login').addClass("hide");
-						if(localStorage){
-							localStorage.userObj = JSON.stringify(userObj);
-							checkLocalStorage();
-						}
-					}else if(response.result.success == "logged in"){
-						//user is logged in
-						userObj.id = response.result.userid;
-						$('#aquilex-login').addClass("hide");
-						if(localStorage){
-							localStorage.userObj = JSON.stringify(userObj);
-							checkLocalStorage();
-						}
-					}
-				}else if(response.message=="email only"){
-					console.log('just email');
-				}
-*/
 		    },error: function(data) {  
 			    console.log(data);
 		    }});//end ajax
-		    console.log(userObj);
 		return false;
 	 }); //close submit login
 	 
@@ -219,11 +204,14 @@ $(document).ready(function(){
 			dataType: 'json',
 			success: function(response) {
 				console.log(response);
-				if(response.result == "invalid_password"){
+				
+				if(response.message == "invalid_password"){
 					$("#changepass .control-group").addClass('error alert alert-error').find('span').removeClass('hide');
 				}
-				if(response.result == "update_password"){
-					
+				if(response.message == "update_password"){
+					$("#chngpw").hide("slow",function(){
+						$("#active-password").fadeIn().delay(2000).fadeOut();
+					});
 				}
 		    },error: function(data) {  
 			    console.log(data);

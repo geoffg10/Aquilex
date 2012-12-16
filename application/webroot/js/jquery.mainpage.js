@@ -262,29 +262,6 @@ $('#cancel-login').on('click', function(){
 		
 		
 	})// end of canceling changing password
-
-
-
-
-
-	var state = true;
-		function switchNav(){ //switches the navigation to display login/settings
-			if(state){ //if true display  settings and hide login
-				$("#dropDown-settings").addClass("hide");
-				$("#dropDown-login").removeClass("hide");
-			}else{ //if false hide settings and display login
-				$("#dropDown-settings").removeClass("hide");
-				$("#dropDown-login").addClass("hide");
-			}
-			
-		}
-		switchNav();
-		
-		
-		
-		
-		
-
 	
 })(jQuery); // end private scope
 

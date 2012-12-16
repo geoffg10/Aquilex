@@ -982,7 +982,8 @@ $(document).ready(function () {
 //////----------------------------------------------------- SHOW ADD ROOM CLICK -------------------------------//////
 
 	// when the  show addroom button is clicked
-    $('#showAddRoomBtn').live('click',function(){
+	
+    $('body').on('click','#showAddRoomBtn',function(){
 	    
 	   $('#addRoomForm').removeClass('hide'); 
 	   $('#showAddRoomBtn').html('close');
