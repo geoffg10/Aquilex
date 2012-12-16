@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Aquilex</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<!--  Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- CSS concatenated and minified via ant build script-->
+	 <link href="css/style.css" rel="stylesheet">
+	 <link href="css/bootstrap.css" rel="stylesheet">	<!-- end CSS-->
+	
+</head>
+<body class="landing">
+
+	<!-- Parent container for the page, load your core templates into this div -->
+	<section id="wrapper"></section>
+	<section class="masthead">
+<!-- 		//NAVIGATION -->
+	        <section class="navbar aquilex-nav">
+	        	<section class="navbar-inner dark-header">
+	        		<section class="container">
+<!-- 	   // LOGO -->
+
+	        		<a class="brand aquilex-logo" href="#"><img src="webroot/img/smallerlogo1.png" alt="Aquilex" /></a>
+<!-- // DROP DOWN NAV -->
+	        		<ul class="nav nav-right pull-right">
+	        			
+	        			
+<!--       // GPS BUTTON    -->
+						<li id='useGPS'><a href="#" ><img src="img/locations_icon.png" alt="gps"/></a> </li>
+
+<!-- 	   // FAVORITES DROP DOWN -->
+	        			
+	        			<li class="dropdown star">
+
+
+
+	        				<a href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/sized_star.png" alt="favorites"/></a>
+
+	        				<ul class="dropdown-menu nav-tabs nav-stacked " id='favorites'>
+	        				
+	        				<li><a href='#' id="showAllSchools">Show All Schools</a></li>
+	        				</ul>
+	        			</li>
+<!-- 	   // SETTINGS DROP DOWN -->
+	        			<li class="divider-vertical divider-down"></li>
+	        			<li class="dropdown cog">
+
+		        			
+	        			    <a  href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png" alt="settings"/></a>
+	        			    
+							<ul  id="dropDown-settings" class="dropdown-menu nav-tabs nav-stacked <?php echo (isset($_SESSION['user_id']) ? '' : 'hide') ?>">
+								
+								<li><a id="accSet" href="#" data-toggle="dropdown">ACCOUNT SETTINGS</a></li>
+								<li><a id="logout" href="#">LOGOUT</a></li>
+							</ul>
+							
+							<ul id="dropDown-login" class="dropdown-menu nav-tabs nav-stacked <?php echo (isset($_SESSION['user_id']) ? 'hide' : '') ?>">
+								<li><a id="log-me-in" href="#">LOGIN</a></li>
+							</ul>
+						
+
+							
+	        			</li>
+	        		</ul>
+	        		</section>
+	        	</section> <!-- close navbar-inner -->
+	        </section> <!-- close navbar -->
+        </section>
+        
+
+        
+        <section id="aquilex-login" class="login hide">
+        	<section id="aq-form-login" class="alert alert-success">
+			<form id="login" class="form-signin loginForm">
+		
+			
+					<input class="input-block-level email" name="email" type="email" placeholder="Email" required="required"  />
+					
+					<section class="control-group">
+						<input class="input-block-level password" name="password" type="text" placeholder="Password" required="required" />
+						<span class="help-inline hide">invalid password</span>
+					</section>
+					<input class="btn btn-success" type="submit" value="Log in" />
+					<input id="fbLogin" class="btn btn-primary " type="button" value="Sign in with facebook" />
+					<button id="cancel-login" class="btn btn-danger muted pull-right">cancel</button>
+					<p class="forgotPW"><a href="#">forgot password?</a></p>
+
+			  </form>
+        	</section>
+		</section><!-- end of login -->
+
+        
+
+<!-- 	   // USER SETTINGS MENU -->
+
+            <section id="accnt-settings" class="hide">
+	        	<ul class="nav nav-tabs nav-stacked">
+	              <li id="cPass"><a href="#">CHANGE PASSWORD</a></li>
+	              <li id="dPass"><a href="#">DELETE ACCOUNT</a><span id="accountDelted" class="hide text-error">Account has been deleted</span></li>
+	            </ul>
+      			<p id="settingsBack"><a href="#">close</a></p>
+	       </section>	
+
+ <!-- 	   // CHANGE PASSWORD -->  
+ 		<section id="chngpw" class="hide">
+        	<section id="aq-form-changepass" class="alert alert-success">
+			<form id="changepass" class="form-signin loginForm">
+			<fieldset>
+				<legend class="aquilex-cpwTitle">Change your password</legend>
+					<section class="control-group">
+						<input class="input-block-level" type="text" id="oldPassword" name="oldpass" placeholder="Old Password" required="required">
+						<span class="help-inline hide">invalid password</span>
+					</section>
+        			<input class="input-block-level" type="text" id="inputPassword" name="newpass" placeholder="New Password" required="required">
+					<input class="btn btn-success" id="pwBtn" type="submit" value="Change Password" />
+					<button id="cancelchangepw" class="btn btn-danger muted pull-right">cancel</button>
+					<p class="forgotPW"><a href="#">forgot password?</a></p>
+			</fieldset>
+			  </form>
+        	</section>
+		</section><!-- end of chang password -->
+
+<!-- 	   // password change success -->         
+        <section id="active-password" class="hide">
+        	<section class="alert alert-success">
+        		<p> Success! You have changed your password and that's awesome.</p>
+			    <p>Love,</p>
+				<p>-AQUILEX </p>        
+			</section>
+        </section>
+         
+<!-- 	   // SIGN UP THANK YOU MODAL -->         
+        <section id="active-account" class="hide">
+        	<section class="alert alert-success">
+        		<p> Success! WOOT WOOT!! Thanks for signing up!</p>
+			    <p>Love,</p>
+				<p>-AQUILEX </p>        
+			</section>
+        </section>
+        
+        
+        
+<!-- 	   // DELETE ACCOUNT MODAL -->
+        <section  id="deleteModel" class="alert fade in hide">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+	            <h4 class="alert-heading">Delete Account</h4>
+	            <p>Are you sure you want to delete your account?</p>
+	            <p>
+	              <a id="yes-delete" class="btn btn-success" href="#">Yes</a> <a id="no-delete" class="btn btn-danger" href="#">No</a>
+	            </p>
+        </section>        
+        
+
+	       
+<!-- 	   // SEARCH BAR -->	
+	<section class="input-prepend">
+		<section class="btn-group">
+		    <button class="btn hide" id='schoolCrumb'>
+		      
+		      <span class="badge badge-inverse">X</span>
+		    </button>
+		    <button class="btn hide" id='buildingCrumb'>
+		    	
+		    	<span class="badge badge-inverse">X</span>
+		    </button>
+		  </section>
+	</section>       
+
+		<section class="input-append aquilex-searchbox">
+		  <input class="span2 searchBar " id="searchBar" type="text">
+		  <section class="btn-group">
+		    <button class="btn aquilex-searchbtn"><i class="icon-search"></i></button>
+		  </section>
+		
+		</section>
+		
+		<section id='autocompletelist'>
+		
+		</section>
+        
+<!-- 	   // YOUR SCHOOL SELECTED -->        
+        <section id="chosenSchool" class="alert alert-info hide">
+        	<p id="yourchosenSchool" class="yourSchool"></p>
+  		</section>
+        
+     <!--
+   // SCHOOL MODAL -->       
+
+<section id="schoolModal" class="hide school-modal"> 
+        <section id="myModal" class="modal aquilex-school-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	        <section class="modal-header">
+		        <button type="button" id="closeSchoolModal" class="close" data-dismiss="modal"><i class="icon-remove "></i></button>
+		        <h3 id="myModalLabel">Select your school</h3>
+	        </section>
+	        <section id="ourList">
+	        	<ul  class="ourListAdded" id="ourAddedList">
+				</ul>
+		    </section>
+	        
+	       
+<!-- end of Our list -->
+	       <section>
+
+			    <button id="addBtnBlue" class=" btn btn-large btn-primary btn-block	" type="submit">Add School</button>
+
+	       </section>
+	        
+		    <section  id="plusSchool" class="modal-body">
+				<ul  class=" adding_schools-list hide" id="schoolsPlusList">
+				</ul>
+		    </section>
+		    
+		</section>
+</section>
+
+
+
+
+     
+ 
+<!--  end of header -->
