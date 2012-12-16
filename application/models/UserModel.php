@@ -115,11 +115,27 @@ Class UserModel extends Database{
       * @return associative array of the id of the user_id
       */
 	public function insertFBUser($data){
+		$sqlst = "INSERT INTO users(fb_id)VALUES(:fb_id)";
+		$st = $this->db->prepare($sqlst);
+		$results = $st->execute(array(":fb_id"=>$data['fb_id']));
+		
+		return $this->db->lastInsertId();
+	}
+	/**
+      * insertFBUser method will insert the FB user data into the users table
+      *	
+      *
+      * @param associative array $data is expecting the fb_id user data as follows
+      * fb_id, fb_first_name, fb_middle_name, fb_last_name, fb_gender, fb_link, fb_locale, fb_name, fb_timezone, fb_updated_time, fb_username
+      *
+      * @return associative array of the id of the user_id
+      */
+	public function insertFBData($data){
 		$sqlst = "INSERT INTO users(fb_id, fb_first_name, fb_middle_name, fb_last_name, fb_gender, fb_link, fb_locale, fb_name, fb_timezone, fb_updated_time, fb_username)VALUES(:fb_id, :fb_first_name, :fb_middle_name, :fb_last_name, :fb_gender, :fb_link, :fb_locale, :fb_name, :fb_timezone, :fb_updated_time, :fb_username)";
 		$st = $this->db->prepare($sqlst);
 		$results = $st->execute(array(":fb_id"=>$data['fb_id'], ":fb_first_name"=>$data['fb_first_name'], ":fb_middle_name"=>$data['fb_middle_name'], ":fb_last_name"=>$data['fb_last_name'], ":fb_gender"=>$data['fb_gender'], ":fb_link"=>$data['fb_link'], ":fb_locale"=>$data['fb_locale'], ":fb_name"=>$data['fb_name'], ":fb_timezone"=>$data['fb_timezone'], ":fb_updated_time"=>$data['fb_updated_time'], ":fb_username"=>$data['fb_username']));
 		
-		return $this->db->lastInsertId();
+		return $results;
 	}
 	/**
       * validateFBUser method get the Fb user from the users table by the facebook id

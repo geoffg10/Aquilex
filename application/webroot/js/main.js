@@ -1,8 +1,7 @@
 /* 
-	Author: Renee Blunt
 	Date: December 2, 2012
 	Project: MDD - Aquilex
-	Project co-auth: Geoffrey Ganga, Jarvis Jardin
+	Project co-auth: Geoffrey Ganga, Jarvis Jardin, Renee Blunt
 	Contact info
 	-------------
 		Renee Blunt:
@@ -110,7 +109,6 @@ $(document).ready(function () {
 
 
         google.maps.event.addListener(userMarker, 'dragend', function () {
-            console.log('draggy', userMarker.getPosition());
 
         });
        
@@ -260,7 +258,7 @@ $(document).ready(function () {
                	
                $('#schoolCrumb').removeClass('hide').html(name);               	
 	           chosenSchool = {'name':name, 'id':id};
-                console.log(chosenSchool);
+                
                 getBuildings(id);
                 infowindow.setContent(name);
 
@@ -390,7 +388,7 @@ $(document).ready(function () {
     function getDBCampuses(place, google_id) { // performing ajax to check db with results then display results
         //takes two params, one is the google place and the second is the id of the google place
      // starting the ajax call to the database
-     console.log('running getDBCapuses');
+    
         $.ajax({
         	//using POST because we are tying to POST the information
             type: 'POST',
@@ -405,7 +403,6 @@ $(document).ready(function () {
             //if everything runs correctly then this function wil run with successLocDB as its param
             //successLocDB is a ref to the database
             success: function (successLocDB) {
-            	console.log('running getDBCapuses', successLocDB);
                 //if the result from the database is no record then
                 if (successLocDB.result.length == 0) {
                     //call the function makeList
@@ -486,19 +483,17 @@ $(document).ready(function () {
             dataType: 'json',
             //success function
             success: function (successData) {
-            	console.log('success ', successData)
                 //if the success data has an error
                 if(successData.message == "must_log_in"){
 	                //show login
                 }else if(successData.message == "building_added"){
 	                //if it worked, then set the infowindow (when you click on the marker, the information bubble that pops up) should be the new buildings name
-                  console.log('else in the success')
+                 
                     infowindow.getContent(newBuildingName);
                 }
             },//end of success
             //error function
             error: function (errorData) {
-            	console.log('error')
                 console.log(errorData);
             }//end of error
         });// end of ajax
@@ -528,7 +523,6 @@ $(document).ready(function () {
                 	
                   	// loop through each result you are getting
                     for (var i = 0; i < response.result.length; i++) {
-	                    console.log(response.result[i]);
 	                    //creating a variable called ltlg which is the response latitude and longitude
                         var ltlg = new google.maps.LatLng(response.result[i].latitude, response.result[i].longitude);
                         //calling the get rooms fucntion and passing the name, id , and the variable into it
@@ -562,7 +556,7 @@ $(document).ready(function () {
             //success function 
             success: function (response) {
 	            // if the responses message is rooms
-	            console.log(response);
+	            
                 if (response.message = "rooms") {
                 	//create a variable called html which is a ul with a class of room list
                     var html = "<ul class='roomList'>";
@@ -578,7 +572,7 @@ $(document).ready(function () {
                     //calling the create marker function and passing in name, position, id, buiilding, and the variable html which is the ul
                     createMarker(name, ltlg ,id, 'building', 20,html);   
                 } else {
-                    console.log('NO ROOMS');
+                   //there are no rooms
                 }//end of else
             },// end of success
             //error message
@@ -610,7 +604,7 @@ $(document).ready(function () {
 			   		
 			   		
 					if(response.result != 'no record'){			   	
-			   		//console.log(response);
+			   		
 				   		for(var i = 0;i<response.result.length;i++){
 
 					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult aquilex-well well well-small" data-lat="'+response.result[i].latitude+'" data-lng="'+response.result[i].longitude+'" data-type="school">'+response.result[i].name +'</p>';	
@@ -648,7 +642,7 @@ $(document).ready(function () {
 		   		success: function(response){
 			   		
 					if(response.result != 'no record'){			   	
-			   		//console.log(response);
+			   		
 				   		for(var i = 0;i<response.result.length;i++){
 
 					   		var p =  '<p id="'+response.result[i].id +'" class="searchResult well aquilex-well well-small" data-lat="'+response.result[i].latitude+'" data-lng="'+response.result[i].longitude+'" data-type="building">'+response.result[i].name +'</p>';	
@@ -762,7 +756,7 @@ $(document).ready(function () {
                     .click(function (e) { // calling the ajax function when the button is clicked 
                     //the ajax function will send the school to the database
                     // calling the addCampus function and passing place into it
-                                        console.log(place);
+                    
 
                     addmyCampus(place); //on line 396
                     
@@ -793,7 +787,7 @@ $(document).ready(function () {
         $('<li>' + place.name + '</li>').appendTo('#ourAddedList').click(function (e) {
             map.setZoom(17);
             pos = new google.maps.LatLng(place.geometry.location.Ya, place.geometry.location.Za);
-            //console.log(place);
+            
             map.setCenter(pos);
             getBuildings(dataDB[0].id);
             $("#schoolModal").fadeOut('slow');
@@ -821,7 +815,7 @@ $(document).ready(function () {
 //////----------------------------------------------------- LIST OF CAMPUS THAT YOU CHOOSE -------------------------------//////
 
     function makeAddedSchool(place, dataDB) {
-    	console.log(dataDB);
+    	
         // this makes a list of the school you have chosen from google, and then has a message saying "your school has been added"
         // the message saying "school has been added" will slowly fade in
         $('<li>' + place.name + '<span id="schoolAddedMSG" class="text-success aquilex-block">School has been added</span></li>').fadeIn(
@@ -923,7 +917,7 @@ $(document).ready(function () {
             //setting the icon to be an image
             icon:image
         });
-        console.log(pos)
+        
         //creating a new infowindow. Infowindow is the "details box" that shows up when you click on the icon
         infowindow = new google.maps.InfoWindow(); //create infowindow, this is called later to display the location details when clicked
 
@@ -941,7 +935,7 @@ $(document).ready(function () {
 
         google.maps.event.addListener(ADDBUILDINGMarker, 'dragend', function () {
             // this is the drag function
-            //console.log('get location ',ADDBUILDINGMarker.getPosition().lat());
+           
         });
         return false;
     });
@@ -962,10 +956,10 @@ $(document).ready(function () {
         var newBuildingName = $("#infoBoxInput").val(); // getting the values of the input field
         var newBuildinglatitude = ADDBUILDINGMarker.getPosition().Ya; // getting the latitude value from the local storage
         var newBuildinglongitude = ADDBUILDINGMarker.getPosition().Za; // getting the longitude value from the local storage
-        console.log(campusobject);
+       
         var newBuildingCampus_identify = campusobject.id; // getting the campus id from the local storage
 
-        console.log(ADDBUILDINGMarker.getPosition().lat());
+       
 
         addNewBuilding(newBuildingName, newBuildinglatitude, newBuildinglongitude, newBuildingCampus_identify);
         return false;
@@ -976,6 +970,7 @@ $(document).ready(function () {
 // clicking the show all schools link from the drop down menu
 // clicking this makes the school modal show 
     $('#showAllSchools').on('click', function () {
+    	console.log('running');
         $("#schoolModal").removeClass('hide');
         return false;
     });
@@ -1029,14 +1024,11 @@ $(document).ready(function () {
 		$('#autocompletelist').removeClass('hide');
 		
 		if($('#schoolCrumb').hasClass('hide')){
-			//console.log($('#searchBar').val());
 			
 			search('','','',$('#searchBar').val())
 		}else if($('#buildingCrumb').hasClass('hide')){
-			//console.log(chosenSchool,":",$('#searchBar').val())
 			search(chosenSchool.name,'',chosenSchool.id,$('#searchBar').val());
 		}else{
-			console.log(chosenSchool,chosenBuilding,$('#searchBar').val());
 			//search(chosenSchool,chosenBuilding,'',$('#searchBar').val());
 		}
 		
@@ -1058,7 +1050,6 @@ $(document).ready(function () {
 		
 		
 		if(type == 'school'){
-			console.log('in school');
 			chosenSchool = {'name':e.srcElement.innerHTML,'id':tar.id};
 
 			
@@ -1068,11 +1059,9 @@ $(document).ready(function () {
 
 			
 		}else if(type == 'building'){
-		
-		   console.log('in building');
            chosenBuilding = e.srcElement.innerHTML;
 
-           console.log(chosenBuilding);
+           
           
            $('#buildingCrumb').removeClass('hide').html(chosenBuilding);
             	

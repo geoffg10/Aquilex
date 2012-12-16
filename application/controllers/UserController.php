@@ -25,6 +25,9 @@ Class UserController{
       * @return the following successful messages: user_added w/user_id, user_found w/user_id; fail messages: multiple_users, expecting $_POST[fb_id], use post
       */
 	public function fblogin(){
+		//
+		
+		
 		if(isset($_POST)){
 			// check to make sure that the variable being used is fb_id and that it is not empty
 			if(isset($_POST['fb_id']) && $_POST['fb_id'] != ""){
@@ -34,9 +37,14 @@ Class UserController{
 				if(count($checkFBUserResult) === 0){
 					//if the user doesn't exist it will run an insert and return the user_id	
 					$insertFBUser = $this->userModel->insertFBUser($_POST);
+					if($insertFBUser){
+						$this->userModel->insertFBData($_POST);
+					}
+					loggedIn($insertFBUser);
 					echo json_encode(array('message'=>'user_added', 'result'=>array('user_id'=>$insertFBUser)));
 				}elseif(count($checkFBUserResult) === 1){
 					//if there is one user it will return the user_id
+					loggedIn($checkFBUserResult[0]['user_id'])
 					echo json_encode(array('message'=>'user_found', 'result'=>array('user_id'=>$checkFBUserResult[0])));
 				}else{
 					//if there are multiple users than we have some bad data :(
@@ -167,15 +175,38 @@ Class UserController{
 			echo json_encode(array('message'=>'use post'));
 		}		
 	}
+	/**
+      * loggedIn is a private method will create user_id in the current session upon a successful login or user creation
+      *  
+      *
+      * 
+      * expecting no datatype but should be an int
+      *
+      * @return none
+      */
 	private function loggedIn($id){
 		
 		$_SESSION['user_id'] = $id;
-		return $_SESSION['user_id'];
 	}
-	public function logOut(){
-		//session_unset($_SESSION['user_id']);
+	/**
+      * logout method will unset the user_id in the session
+      *  
+      *
+      * @return json message logged_out
+      */
+	public function logout(){
+		
+		if(isset($_SESSION['user_id'])){
+			session_unset($_SESSION['user_id']);
+		}
 		echo json_encode(array('message'=>'logged_out'));
 	}
+	/** TODO
+      * deleteaccount method will disable the user in the DB
+      *  
+      *
+      * @return json message success
+      */
 	public function deleteaccount(){
 
 	}
