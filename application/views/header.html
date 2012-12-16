@@ -28,7 +28,11 @@
 	        		<section class="container">
 <!-- 	   // LOGO -->
 
+<<<<<<< HEAD
 	        		<a class="brand aquilex-logo" href="#"><img src="img/smallerlogo1.png" alt="Aquilex" /></a>
+=======
+	        		<a class="brand aquilex-logo" href="#"><img src="webroot/img/smallerlogo1.png" alt="Aquilex" /></a>
+>>>>>>> renee
 <!-- // DROP DOWN NAV -->
 	        		<ul class="nav nav-right pull-right">
 	        			
@@ -56,13 +60,13 @@
 		        			
 	        			    <a  href="#" class="dropdown-toggle " data-toggle="dropdown"><img src="img/og_cog.png" alt="settings"/></a>
 	        			    
-							<ul  id="dropDown-settings" class="dropdown-menu nav-tabs nav-stacked">
+							<ul  id="dropDown-settings" class="dropdown-menu nav-tabs nav-stacked <?php echo (isset($_SESSION['user_id']) ? '' : 'hide') ?>">
 								
 								<li><a id="accSet" href="#" data-toggle="dropdown">ACCOUNT SETTINGS</a></li>
 								<li><a id="logout" href="#">LOGOUT</a></li>
 							</ul>
 							
-							<ul id="dropDown-login" class="dropdown-menu nav-tabs nav-stacked hide">
+							<ul id="dropDown-login" class="dropdown-menu nav-tabs nav-stacked <?php echo (isset($_SESSION['user_id']) ? 'hide' : '') ?>">
 								<li><a id="log-me-in" href="#">LOGIN</a></li>
 							</ul>
 						
@@ -126,12 +130,21 @@
 			</fieldset>
 			  </form>
         	</section>
-		</section><!-- end of login -->
+		</section><!-- end of chang password -->
+
+<!-- 	   // password change success -->         
+        <section id="active-password" class="hide">
+        	<section class="alert alert-success">
+        		<p> Success! You have changed your password and that's awesome.</p>
+			    <p>Love,</p>
+				<p>-AQUILEX </p>        
+			</section>
+        </section>
          
 <!-- 	   // SIGN UP THANK YOU MODAL -->         
         <section id="active-account" class="hide">
         	<section class="alert alert-success">
-        		<p> Success! Thanks for signing up! Please check your inbox for your verification email.</p>
+        		<p> Success! WOOT WOOT!! Thanks for signing up!</p>
 			    <p>Love,</p>
 				<p>-AQUILEX </p>        
 			</section>
@@ -154,12 +167,21 @@
 <!-- 	   // SEARCH BAR -->	
 	<section class="input-prepend">
 		<section class="btn-group">
+<<<<<<< HEAD
 		    
 		    <button id='schoolCrumb' class="btn hide" > 
 		      <span class="badge badge-inverse">X</span>
 		    </button>
 		   
 		    <button id='buildingCrumb' class="btn hide">
+=======
+		    <button class="btn hide" id='schoolCrumb'>
+		      
+		      <span class="badge badge-inverse">X</span>
+		    </button>
+		    <button class="btn hide" id='buildingCrumb'>
+		    	
+>>>>>>> renee
 		    	<span class="badge badge-inverse">X</span>
 		    </button>
 		    
@@ -174,8 +196,13 @@
 		
 		</section>
 		
+<<<<<<< HEAD
 		<section id='autocompletelist' class="hide scroll">
 			
+=======
+		<section id='autocompletelist'>
+		
+>>>>>>> renee
 		</section>
         
 <!-- 	   // YOUR SCHOOL SELECTED -->        
